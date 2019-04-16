@@ -1,30 +1,32 @@
 package com.proyectos.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModel;
+
 //@XmlRootElement
+@ApiModel(description = "Información del Usuario")
 @Entity
 @Table(name = "MRA_USUARIO_TB")
-public class UsuarioTB implements Serializable {
+public class UsuarioTB extends BaseEntidadTB implements Serializable {
 
 	private static final long serialVersionUID = -5034711187700250581L;
 
 	@Id
-	@NotNull
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "usu_id_usuario", nullable = false, length = 10)
 	private long idUsuario;
 
 	@NotNull
-	@Column(name = "usu_usuario", nullable = false, length = 20)
+	@Column(name = "usu_usuario", nullable = false, length = 10)
 	private String usuario;
 
 	@NotNull
@@ -38,6 +40,19 @@ public class UsuarioTB implements Serializable {
 	@NotNull
 	@Column(name = "usu_numero_documento", nullable = false, length = 50)
 	private String numeroDocumento;
+
+	@NotNull
+	@Column(name = "usu_tipo_documento", nullable = false, length = 10)
+	private short tipoDocumento;
+
+	@NotNull
+	@Column(name = "usu_tipo_usuario", nullable = false, length = 10)
+	private short tipoUsuario;
+
+	@NotNull
+	@Column(name = "usu_fecha_nacimiento", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechaNacimiento;
 
 	public long getIdUsuario() {
 		return idUsuario;
@@ -77,6 +92,22 @@ public class UsuarioTB implements Serializable {
 
 	public void setNumeroDocumento(String numeroDocumento) {
 		this.numeroDocumento = numeroDocumento;
+	}
+
+	public short getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(short tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 }
