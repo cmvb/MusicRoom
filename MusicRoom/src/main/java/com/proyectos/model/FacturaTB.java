@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -61,7 +62,7 @@ public class FacturaTB extends BaseEntidadTB implements Serializable {
 	private short pendiente;
 
 	@NotNull
-	@OneToMany(mappedBy = "facturaTb")
+	@OneToMany(mappedBy = "facturaTb", fetch = FetchType.LAZY)
 	private List<PagoTB> listaPagoTb;
 
 	public long getIdFactura() {

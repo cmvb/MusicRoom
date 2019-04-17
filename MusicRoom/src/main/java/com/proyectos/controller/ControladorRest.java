@@ -3,6 +3,8 @@ package com.proyectos.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +24,7 @@ import com.proyectos.model.UsuarioTB;
 import com.proyectos.service.IUsuarioService;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/music-room/usuario")
 public class ControladorRest {
 
 	@Autowired
@@ -45,13 +47,13 @@ public class ControladorRest {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/consultarPorFiltros")
-	public ResponseEntity<List<UsuarioTB>> consultarPorFiltros(@RequestBody UsuarioTB usuario) {
+	public ResponseEntity<List<UsuarioTB>> consultarPorFiltros(@Valid @RequestBody UsuarioTB usuario) {
 		return new ResponseEntity<List<UsuarioTB>>(usuarioService.consultarPorFiltros(usuario), HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/crearUsuario")
-	public ResponseEntity<UsuarioTB> crear(@RequestBody UsuarioTB usuario) {
+	public ResponseEntity<UsuarioTB> crear(@Valid @RequestBody UsuarioTB usuario) {
 		UsuarioTB usuarioNuevo = new UsuarioTB();
 		usuarioNuevo = usuarioService.crear(usuario);
 
@@ -63,7 +65,7 @@ public class ControladorRest {
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/modificarUsuario")
-	public ResponseEntity<UsuarioTB> modificar(@RequestBody UsuarioTB usuario) {
+	public ResponseEntity<UsuarioTB> modificar(@Valid @RequestBody UsuarioTB usuario) {
 		UsuarioTB usuarioNuevo = new UsuarioTB();
 		usuarioNuevo = usuarioService.modificar(usuario);
 

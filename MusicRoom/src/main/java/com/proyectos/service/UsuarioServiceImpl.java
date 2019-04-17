@@ -2,6 +2,8 @@ package com.proyectos.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +16,19 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	@Autowired
 	private IUsuarioDao dao;
 
+	@Transactional
 	@Override
 	public UsuarioTB crear(UsuarioTB usuario) {
 		return dao.save(usuario);
 	}
 
+	@Transactional
 	@Override
 	public UsuarioTB modificar(UsuarioTB usuario) {
 		return dao.save(usuario);
 	}
 
+	@Transactional
 	@Override
 	public void eliminar(long idUsuario) {
 		dao.delete(idUsuario);

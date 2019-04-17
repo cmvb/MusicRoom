@@ -7,13 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 
 //@XmlRootElement
-@ApiModel(description = "Información del Préstamo del Inventario en el Bloque del Ensayo")
+@ApiModel(description = "Información del Préstamo del Inventario (Instrumento, accesorio... etc.) en el Bloque del Ensayo")
 @Entity
 @Table(name = "MRA_PRESTAMO_TB")
 public class PrestamoTB extends BaseEntidadTB implements Serializable {
@@ -31,6 +32,11 @@ public class PrestamoTB extends BaseEntidadTB implements Serializable {
 	@NotNull
 	@Column(name = "pre_documento_responsable", nullable = false, length = 20)
 	private String documentoResponsable;
+
+	@NotNull
+	@OneToOne
+	@JoinColumn(name = "pre_inventario", nullable = false, insertable = false)
+	private InventarioTB inventarioTb;
 
 	@NotNull
 	@ManyToOne
@@ -59,6 +65,14 @@ public class PrestamoTB extends BaseEntidadTB implements Serializable {
 
 	public void setDocumentoResponsable(String documentoResponsable) {
 		this.documentoResponsable = documentoResponsable;
+	}
+
+	public InventarioTB getInventarioTb() {
+		return inventarioTb;
+	}
+
+	public void setInventarioTb(InventarioTB inventarioTb) {
+		this.inventarioTb = inventarioTb;
 	}
 
 	public BloqueTB getBloqueTb() {
