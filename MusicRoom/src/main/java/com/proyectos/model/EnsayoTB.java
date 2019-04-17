@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -66,7 +67,7 @@ public class EnsayoTB extends BaseEntidadTB implements Serializable {
 	private String observaciones;
 
 	@NotNull
-	@OneToMany(mappedBy = "ensayoTb")
+	@OneToMany(mappedBy = "ensayoTb", fetch = FetchType.LAZY)
 	private List<BloqueTB> listaBloqueTb;
 
 	public long getIdEnsayo() {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -45,7 +46,7 @@ public class BloqueTB extends BaseEntidadTB implements Serializable {
 	private EnsayoTB ensayoTb;
 
 	@NotNull
-	@OneToMany(mappedBy = "bloqueTb")
+	@OneToMany(mappedBy = "bloqueTb", fetch = FetchType.LAZY)
 	private List<PrestamoTB> listaPrestamoTb;
 
 	public long getIdBloque() {
