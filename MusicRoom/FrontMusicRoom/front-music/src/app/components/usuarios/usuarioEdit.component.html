@@ -1,0 +1,106 @@
+<div class="section">
+	<div class="newMtto animated fadeIn">
+		<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+			<h5 class="mttoTitle">{{msg.lbl_mtto_usuario_title}} - {{msg.lbl_mtto_edicion}}</h5>
+			<blockquote class="blockquote mb-0"> 
+				<br />
+				<!-- CONTENIDO -->
+					<div id="filaUsuarioMtto" class="row justify-content-center">
+						<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 col-xl-12">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+									<div class="form-group">
+										<label class="obligatorio text-center w100">{{msg.lbl_mtto_usuario_nombre}}</label> <input
+											[(ngModel)]="objeto.nombre" type="text" class="form-control" maxlength="150">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+									<div class="form-group">
+										<label class="obligatorio text-center w100">{{msg.lbl_mtto_usuario_apellido}}</label> <input
+											[(ngModel)]="objeto.apellido" type="text" class="form-control" maxlength="150">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+									<div class="form-group">
+										<label class="obligatorio w100 text-center">{{msg.lbl_mtto_usuario_usuario}}</label> <input
+											[(ngModel)]="objeto.usuario" type="text"
+											class="form-control" maxlength="20">
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+									<div class="form-group">
+										<label class="obligatorio w100 text-center">{{msg.lbl_mtto_usuario_email}}</label> <input
+											[(ngModel)]="objeto.email" type="text" class="form-control" maxlength="500">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+									<div class="form-group">
+										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_rol}}</label>
+										<ng-select
+											[(ngModel)]="objeto.rol"
+											[items]="enumRolUsuario">
+										</ng-select>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+									<div class="form-group">
+										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_estado}}</label>
+										<ng-select
+											[(ngModel)]="objeto.estado"
+											[items]="enumEstadoUsuario">
+										</ng-select>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+									<div class="form-group">
+										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_sw_administrador}}</label>
+										<ng-select
+											[(ngModel)]="objeto.swAdministrador"
+											[items]="enumSiNo">
+										</ng-select>
+										
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+									<div class="form-group">
+										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_sw_activo}}</label>
+										<ng-select
+											[(ngModel)]="objeto.swActivo"
+											[items]="enumSiNo">
+										</ng-select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+ 
+					<div class="row row-btn justify-content-center">
+						<div
+							class="col-sm-2 col-xs-2 col-md-2 col-lg-2 col-xl-2 text-center">
+							<button (click)="sendBack()" placement="bottom"
+								mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button"
+								class="btn btn-danger btn-round w100 swExtra">
+								<i class="fa fa-arrow-left"></i> {{msg.lbl_btn_atras}}
+							</button>
+						</div>
+						<div
+							class="col-sm-2 col-xs-2 col-md-2 col-lg-2 col-xl-2 text-center">
+							<button (click)="sendUpdate()" placement="bottom"
+								mdl-tooltip-large="{{msg.lbl_tip_actualizar}}" type="button"
+								class="btn btn-cog btn-round w100 swEditar swCrear">
+								<i class="fa fa-eraser"></i> {{msg.lbl_btn_actualizar}}
+							</button>
+						</div>
+					</div>
+
+				<br />
+				<!-- CONTENIDO -->
+			</blockquote>
+			<br />
+		</div>
+	</div>
+</div>

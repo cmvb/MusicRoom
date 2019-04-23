@@ -30,6 +30,10 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 	private String usuario;
 
 	@NotNull
+	@Column(name = "usu_password", nullable = false, length = 200)
+	private String password;
+
+	@NotNull
 	@Column(name = "usu_nombre", nullable = false, length = 50)
 	private String nombre;
 
@@ -68,6 +72,14 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getNombre() {

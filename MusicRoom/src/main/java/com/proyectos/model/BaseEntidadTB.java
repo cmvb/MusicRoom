@@ -35,4 +35,44 @@ public class BaseEntidadTB {
 	@Column(name = "usuario_actualiza", nullable = false, length = 10)
 	private String usuarioActualiza = "SYSTEM (Temporal, se saca de la sesión)";
 
+	public short getEstado() {
+		return estado;
+	}
+
+	public void setEstado(short estado) {
+		this.estado = estado;
+	}
+
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public String getUsuarioCreacion() {
+		return usuarioCreacion;
+	}
+
+	public void setUsuarioCreacion(String usuarioCreacion) {
+		this.usuarioCreacion = usuarioCreacion;
+	}
+
+	public Date getFechaActualiza() {
+		return fechaActualiza;
+	}
+
+	public void setFechaActualiza(Date fechaActualiza) {
+		this.fechaActualiza = fechaActualiza;
+	}
+
+	public String getUsuarioActualiza() {
+		return usuarioActualiza;
+	}
+
+	public void setUsuarioActualiza(String usuarioActualiza) {
+		this.usuarioActualiza = usuarioActualiza;
+	}
+
 }

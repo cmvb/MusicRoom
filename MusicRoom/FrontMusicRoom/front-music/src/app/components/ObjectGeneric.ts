@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 export var url = 'http://localhost:8080/';
 
 @Injectable()
@@ -6,11 +6,12 @@ export class DataObjects {
 
   getConst() {
     return {
-      urlRestService: 'http://localhost:7001/Grad/rest/RestServices/',
+      urlRestService: 'http://localhost:9001/music-room/',
+      urlControllerUsuario: 'usuario/',
       //Model rango de fechas para NGBDatePicker
-      minDate: {year: 1000, month: 1, day: 1},
-      maxDate: {year: 3000, month: 1, day: 1},
-	  
+      minDate: { year: 1000, month: 1, day: 1 },
+      maxDate: { year: 3000, month: 1, day: 1 },
+
       idiomaEs: 1,
       idiomaEn: 2,
       phaseAdd: 'add',
@@ -22,8 +23,8 @@ export class DataObjects {
       tipoCampoEnum: 2,
       disabled: 'disabled',
       readOnly: 'readOnly',
-      idModal: {'info': 1, 'success': 2, 'warning': 3, 'danger': 4},
-      actionModal: {'show': 1, 'hidde': 2},
+      severity: ['info', 'success', 'warn', 'danger'],
+      actionModal: { 'show': 1, 'hidde': 2 },
       collectionSize: 0,
       maxSize: 1,
       rotate: true,
@@ -31,46 +32,59 @@ export class DataObjects {
     }
   };
 
+  getDataMessage() {
+    return {
+      // info, success, warning, danger
+      severity: '',
+      // Title of MSG
+      summary: '',
+      // Description of MSG
+      detail: ''
+    }
+  };
+
+
+  getDataException() {
+    return {
+      fecha: '',
+      mensaje: '',
+      detalles: ''
+    }
+  };
+
   getDataUsuario() {
     return {
-        //Usuario
-        idUsuario: '',
-        usuario: '',
-        clave: '',
-        tipoDocumento: '',
-        numeroDocumento: '',
-        primerNombre: '',
-        segundoNombre: '',
-        primerApellido: '',
-        segundoApellido: '',
-        sexo: '',
-        administrador: '',
-        tokenSesion: '',
-        tbSesion: this.getDataSesion(),
-        mensajeErrorSesion: '',
+      //Usuario
+      idUsuario: '',
+      usuario: '',
+      password: '',
+      nombre: '',
+      apellido: '',
+      numeroDocumento: '',
+      tipoDocumento: '',
+      tokenSesion: '',
 
-        //Abstract
-        estado: '',
-        usuarioCreacion: '',
-        fechaCreacion: '',
-        usuarioActualiza: '',
-        fechaActualiza: ''
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
     }
   };
 
   getDataSesion() {
     return {
-        idSesion: '',
-        tokenSesion: '',
-        usuario: '',
-        activo: '',
+      idSesion: '',
+      tokenSesion: '',
+      usuarioTb: this.getDataUsuario(),
 
-        //Abstract
-        estado: '',
-        usuarioCreacion: '',
-        fechaCreacion: '',
-        usuarioActualiza: '',
-        fechaActualiza: ''
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
     }
   };
 
@@ -79,22 +93,22 @@ export class DataObjects {
     return {
       sino: {
         cod: 1, valores: [
-          {value: 1, label: properties.lbl_enum_si},
-          {value: 0, label: properties.lbl_enum_no}
+          { value: 1, label: properties.lbl_enum_si },
+          { value: 0, label: properties.lbl_enum_no }
         ]
       },
       modulo: {
         cod: 2, valores: [
-          {value: 1, label: properties.lbl_enum_modulo_tb_perfil},
-          {value: 2, label: properties.lbl_enum_modulo_tb_usuario},
-          {value: 3, label: properties.lbl_enum_modulo_tb_perfil_x_usuario}
+          { value: 1, label: properties.lbl_enum_modulo_tb_perfil },
+          { value: 2, label: properties.lbl_enum_modulo_tb_usuario },
+          { value: 3, label: properties.lbl_enum_modulo_tb_perfil_x_usuario }
         ]
       },
       sexo: {
         cod: 3, valores: [
-          {value: 1, label: properties.lbl_enum_sexo_valor_masculino},
-          {value: 2, label: properties.lbl_enum_sexo_valor_femenino},
-          {value: 3, label: properties.lbl_enum_sexo_valor_ambos}
+          { value: 1, label: properties.lbl_enum_sexo_valor_masculino },
+          { value: 2, label: properties.lbl_enum_sexo_valor_femenino },
+          { value: 3, label: properties.lbl_enum_sexo_valor_ambos }
         ]
       },
       //valorIva: {cod: 25},

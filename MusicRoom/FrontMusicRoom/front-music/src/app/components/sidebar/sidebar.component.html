@@ -1,11 +1,18 @@
-<mdl-layout-drawer>
-    <mdl-layout-title>Title</mdl-layout-title>
-    <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" [routerLink]="['/layout/l1']" (click)="mdlLayout1.closeDrawer()">Link
-            1</a>
-        <a class="mdl-navigation__link" [routerLink]="['/layout/l2']" (click)="mdlLayout1.closeDrawer()">Link
-            2</a>
-        <a class="mdl-navigation__link" [routerLink]="['/layout/l3']" (click)="mdlLayout1.closeDrawer()">Link
-            3</a>
-    </nav>
-</mdl-layout-drawer>
+<nav class="mdl-navigation">
+    <a class="mdl-navigation__link" [routerLink]="['/usuarioQuery']" (click)="mdlLayout1.closeDrawer()">
+        <mdl-icon>account_circle</mdl-icon>
+        Usuarios
+    </a>
+    <a class="mdl-navigation__link" [routerLink]="['/usuarioQuery']" (click)="mdlLayout1.closeDrawer()">
+        <mdl-icon>ballot</mdl-icon>
+        Inventario
+    </a>
+    <a class="mdl-navigation__link" [routerLink]="['/usuarioEdit']" (click)="mdlLayout1.closeDrawer()">
+        <mdl-icon>3d_rotation</mdl-icon>
+        Movimientos
+    </a>
+    <a class="mdl-navigation__link" [routerLink]="['/usuarioEdit']" (click)="mdlLayout1.closeDrawer()">
+        <mdl-icon>calendar_today</mdl-icon>
+        Agenda
+    </a>
+</nav>

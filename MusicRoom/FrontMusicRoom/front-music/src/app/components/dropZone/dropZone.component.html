@@ -1,0 +1,87 @@
+<form id="formDropZone" action="" method="post"
+	enctype="multipart/form-data">
+	<div class="container">
+		<div class="row contenedorDual">
+
+			<script type="text/javascript">
+				window.addEventListener("dragover", function(e) {
+					e = e || event;
+					e.preventDefault();
+				}, false);
+				window.addEventListener("drop", function(e) {
+					e = e || event;
+					e.preventDefault();
+				}, false);
+			</script>
+
+			<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+				<div class="info-container">Usted puede importar su archivo
+					usando el siguiente DropZone. Recuerde que los formatos aceptados
+					son: "TXT/CSV"</div>
+				RUTA-MOSTRAR TEMPORALMENTE EN ETAPA DE DESARROLLO PARA DEPURAR =
+				{{apiUrl}}
+
+				<div class="row justify-content-center">
+					<div class="col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+						<div class="box-title">Dropzone</div>
+
+						<div class="content-container">
+							<div class="zona-drop-clean ocultar">
+								<div class="droping">No tiene permisos para realizar
+									operaciones con archivos</div>
+							</div>
+
+							<div class="zona-drop swCrear swEditar"
+								(drop)="uploadFile($event)" (dragover)="dragOver($event)">
+								<div (click)="startFileUp()" class="droping">
+									<div style="color: darkred" id="errorImage"
+										class="load-image ocultar">
+										<i style="font-size: 30px; margin-right: 20px;"
+											class="fa fa-exclamation-circle animated infinite tada"></i>
+										¡Error al subir el archivo!
+									</div>
+
+									<div style="color: darkgreen" id="responseImage"
+										class="load-image ocultar">
+										<i style="font-size: 30px; margin-right: 20px;"
+											class="fa fa-check animated infinite tada"></i> ¡Archivo
+										subido exitosamente!
+									</div>
+
+									<p id="textoImage">
+										<i class="fa fa-files-o"></i> Arrastre un Archivo o haga
+										[clic] acá para Importar
+									</p>
+
+									<input style="display: none" type="file" accept=".txt,.csv"
+										id="fileUp" (change)="uploadAjax()" multiple="1">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MODAL -->
+		<app-modal-noty [idModalInput]="idModal[0]"
+			[claseInput]="claseModal[0]" [closeInput]="closeModal[0]"
+			[confirmInput]="confirmModal[0]" [tituloInput]="tituloModal[0]"
+			[cuerpoInput]="cuerpoModal[0]" [ruteInput]="ruteModal[0]"></app-modal-noty>
+
+		<app-modal-noty [idModalInput]="idModal[1]"
+			[claseInput]="claseModal[1]" [closeInput]="closeModal[0]"
+			[confirmInput]="confirmModal[0]" [tituloInput]="tituloModal[1]"
+			[cuerpoInput]="cuerpoModal[1]" [ruteInput]="ruteModal[0]"></app-modal-noty>
+
+		<app-modal-noty [idModalInput]="idModal[2]"
+			[claseInput]="claseModal[2]" [closeInput]="closeModal[0]"
+			[confirmInput]="confirmModal[0]" [tituloInput]="tituloModal[2]"
+			[cuerpoInput]="cuerpoModal[2]" [ruteInput]="ruteModal[0]"></app-modal-noty>
+
+		<app-modal-noty [idModalInput]="idModal[3]"
+			[claseInput]="claseModal[3]" [closeInput]="closeModal[0]"
+			[confirmInput]="confirmModal[0]" [tituloInput]="tituloModal[3]"
+			[cuerpoInput]="cuerpoModal[2]" [ruteInput]="ruteModal[0]"></app-modal-noty>
+		<!-- MODAL -->
+	</div>
+</form>
