@@ -10,6 +10,8 @@ import { StaticTableComponent } from './static-table/static-table.component';
 import { MultiUploadComponent } from './multi-upload/multi-upload.component';
 import { DualListBoxComponent } from './dual-list-box/dual-list-box.component';
 import { ModalsComponent } from './modals/modals.component';
+import { UsuarioQueryComponent } from './usuarios/usuarioQuery.component';
+import { UsuarioEditComponent } from './usuarios/usuarioEdit.component';
 
 import { LoginGuard } from './login.guard';
 
@@ -22,6 +24,8 @@ const routes: Routes = [
   { path: 'multi-upload', component: MultiUploadComponent, canActivate: [LoginGuard] },
   { path: 'dual-list-box', component: DualListBoxComponent, canActivate: [LoginGuard] },
   { path: 'modals', component: ModalsComponent, canActivate: [LoginGuard] },
+  { path: 'usuarioQuery', component: UsuarioQueryComponent, canActivate: [LoginGuard] },
+  { path: 'usuarioEdit', component: UsuarioEditComponent, canActivate: [LoginGuard] },
 
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }

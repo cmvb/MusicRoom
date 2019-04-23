@@ -6,6 +6,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 // Imports Esenciales
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,8 +18,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from './components/app.routing';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
+
+// Imports Utilidades
+import { DataObjects } from './components/ObjectGeneric';
+import { Functions } from './components/Functions';
+import { Util } from './components/Util';
+import { LoginGuard } from './components/login.guard';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // Imports Componentes
 import { HomeComponent } from './components/home/home.component';
@@ -30,13 +41,10 @@ import { StaticTableComponent } from './components/static-table/static-table.com
 import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
 import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
 import { ModalsComponent } from './components/modals/modals.component';
-
-// Imports Utilidades
-import { DataObjects } from './components/ObjectGeneric';
-import { Functions } from './components/Functions';
-import { Util } from './components/Util';
-import { LoginGuard } from './components/login.guard';
-import { NgxPaginationModule } from 'ngx-pagination';
+import { UsuarioQueryComponent } from './components/usuarios/usuarioQuery.component';
+import { UsuarioEditComponent } from './components/usuarios/usuarioEdit.component';
+import { ConsultamttoComponent } from './components/consultaMtto/consultaMtto.component';
+import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
 
 @NgModule({
   declarations: [
@@ -49,12 +57,16 @@ import { NgxPaginationModule } from 'ngx-pagination';
     SidebarComponent,
     FooterComponent,
     DashboardComponent,
+    ConsultamttoComponent,
+    IteradorMttoComponent,
 
     DataTableComponent,
     StaticTableComponent,
     MultiUploadComponent,
     DualListBoxComponent,
-    ModalsComponent
+    ModalsComponent,
+    UsuarioQueryComponent,
+    UsuarioEditComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +79,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgxPaginationModule,
     BrowserAnimationsModule,
     MdlModule,
+    NgSelectModule,
 
     MatCardModule,
     MatGridListModule,
@@ -74,6 +87,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
+    InputTextModule,
+    MessagesModule,
+    MessageModule
   ],
   providers: [DataObjects, LoginGuard, Util, Functions],
   bootstrap: [AppComponent]

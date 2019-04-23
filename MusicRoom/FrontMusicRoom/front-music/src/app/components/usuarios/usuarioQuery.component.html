@@ -1,0 +1,67 @@
+<div class="section">
+	<div class="container mtto  animated fadeIn">
+		<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+			<h5 class="mttoTitle">{{msg.lbl_mtto_usuario_title}} - {{msg.lbl_mtto_consulta}}</h5>
+			<blockquote class="blockquote mb-0">
+				<br />
+				<!-- CONTENIDO -->
+					<div class="row justify-content-center">
+						<div class="col-sm-12 col-xs-12 col-md-4 col-lg-4 col-xl-4">
+						</div>
+						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2">
+							<div class="form-group">
+								<input placeholder="Enter a User..." (keydown)="consultaTeclaEnter($event)" [(ngModel)]="objetoFiltro.usuario" type="text" name="usuario"
+									id="usuario" class="form-control" maxlength="20">
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2">
+							<div class="form-group">
+								<input placeholder="Enter a First Name..." (keydown)="consultaTeclaEnter($event)" [(ngModel)]="objetoFiltro.nombre" type="text" name="usuario"
+									id="usuario" class="form-control" maxlength="20">
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2">
+							<div class="form-group">
+								<input placeholder="Enter a Last Name..." (keydown)="consultaTeclaEnter($event)" [(ngModel)]="objetoFiltro.apellido" type="text" name="usuario"
+									id="usuario" class="form-control" maxlength="20">
+							</div>
+						</div>
+						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2 text-center">
+							<div class="form-group">
+								<button (click)="sendSearch()" placement="bottom"
+									mdl-tooltip-large="{{msg.lbl_tip_buscar}}" type="button"
+									class="btn btn-danger btn-round w100 swBuscar">
+									<i class="fa fa-search"></i> {{msg.lbl_btn_consultar}}
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="row justify-content-center">
+						<div
+							class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2 text-right">
+							<button (click)="crear()" placement="bottom"
+								mdl-tooltip-large="{{msg.lbl_tip_agregar}}" type="button"
+								class="btn btn-danger btn-round w100 swCrear">
+								<i class="fa fa-plus"></i> {{msg.lbl_btn_edicion}}
+							</button>
+						</div>
+					</div>
+
+					<br />
+
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<app-consulta [btnEditar]="btnEditar" [btnEliminar]="btnEliminar"
+								(enviarObjetoEditar)="editar($event)"
+								(enviarObjetoEliminar)="eliminar($event)"
+								[cabeceras]="listaCabeceras" [lista]="listaConsulta"></app-consulta>
+						</div>
+					</div>
+				<br />
+				<!-- CONTENIDO -->
+			</blockquote>
+			<br />
+		</div>
+	</div>
+</div>

@@ -9,6 +9,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.VendorExtension;
 
+//@EnableJpaRepositories("com.proyectos")
 @SpringBootApplication
 public class MusicRoomApplication {
 

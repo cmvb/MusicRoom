@@ -2,24 +2,15 @@ package com.proyectos.service;
 
 import java.util.List;
 
+import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
 
 public interface IUsuarioService {
 
 	/*
-	 * Metodo para crear usuarios
+	 * Metodo para realizar el Logueo de la Aplicación
 	 */
-	public UsuarioTB crear(UsuarioTB idUsuario);
-
-	/*
-	 * Metodo para modificar usuarios
-	 */
-	public UsuarioTB modificar(UsuarioTB usuario);
-
-	/*
-	 * Metodo para eliminar un usuario por su ID
-	 */
-	public void eliminar(long idUsuario);
+	public SesionTB login(UsuarioTB usuarioFiltro);
 
 	/*
 	 * Metodo para consultar todos los usuarios
@@ -35,5 +26,20 @@ public interface IUsuarioService {
 	 * Metodo para consultar un usuario por su ID
 	 */
 	public UsuarioTB consultarPorId(long idUsuario);
+
+	/*
+	 * Metodo para crear usuarios
+	 */
+	public UsuarioTB crear(UsuarioTB usuario);
+
+	/*
+	 * Metodo para modificar usuarios
+	 */
+	public UsuarioTB modificar(UsuarioTB usuario);
+
+	/*
+	 * Metodo para eliminar un usuario por su ID
+	 */
+	public void eliminar(long idUsuario);
 
 }

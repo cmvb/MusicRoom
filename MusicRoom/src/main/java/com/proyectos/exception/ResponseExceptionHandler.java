@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.proyectos.util.PropertiesUtil;
+
 @ControllerAdvice
 @RestController
 public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
@@ -41,8 +43,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 			errores += e.getObjectName();
 		}
 
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),
-				"Se han encontrado los siguientes errores: ", errores);
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados"), errores);
 
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}

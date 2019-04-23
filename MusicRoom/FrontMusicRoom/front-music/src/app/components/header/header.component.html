@@ -1,11 +1,13 @@
-<mdl-layout-header mdl-layout-header-transparent>
-    <mdl-layout-header-row>
-        <mdl-layout-title>Title</mdl-layout-title>
-        <mdl-layout-spacer></mdl-layout-spacer>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" [routerLink]="['/layout/l1']">Link 1</a>
-            <a class="mdl-navigation__link" [routerLink]="['/layout/l2']">Link 2</a>
-            <a class="mdl-navigation__link" [routerLink]="['/layout/l3']">Link 3</a>
-        </nav>
-    </mdl-layout-header-row>
-</mdl-layout-header>
+<mdl-layout>
+    <mdl-layout-header>
+        <mdl-layout-header-row>
+            <img class="logo" src="/assets/images/MusicRoomLogoLarge.png" alt="logo"/>
+            <mdl-layout-spacer></mdl-layout-spacer>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" [routerLink]="['/layout/l1']">Link 1</a>
+                <a class="mdl-navigation__link" [routerLink]="['/layout/l2']">Link 2</a>
+                <a class="mdl-navigation__link" [routerLink]="['/layout/l3']">Link 3</a>
+            </nav>
+        </mdl-layout-header-row>
+    </mdl-layout-header>
+</mdl-layout>

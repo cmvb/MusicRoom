@@ -1,0 +1,31 @@
+<div class="demo-container demo-layout-transparent">
+    <!-- Importamos el Header -->
+    <app-header></app-header>
+  
+    <mdl-layout>
+      <mdl-layout-drawer>
+        <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo"/>
+        <!-- Importamos el Sidebar o Menú Lateral -->
+        <app-sidebar></app-sidebar>
+      </mdl-layout-drawer>
+  
+      <mdl-layout-content>
+        <div class="body-content">
+          <div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad">
+            <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+            <div class="content-page">
+              <div class="row justify-content-center">
+                <h3>Sample Layout</h3>
+                <button mdl-button (click)="mdlLayout1.toggleDrawer()" mdl-button-type="raised"
+                  mdl-colored="accent">Toggle
+                  Drawer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mdl-layout-content>
+    </mdl-layout>
+  
+    <!-- Importamos el Footer -->
+    <app-footer></app-footer>
+  </div>
