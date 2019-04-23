@@ -23,7 +23,7 @@ public class SesionDaoImpl extends AbstractDao<SesionTB> implements ISesionDao {
 
 	@Override
 	public SesionTB login(String usuario, String password) {
-		String passwordEncriptada = Util.encriptar(password, String.valueOf(new Date()));
+		String passwordEncriptada = Util.encriptar(password, usuario);
 
 		// PARAMETROS
 		Map<String, Object> pamameters = new HashMap<>();
