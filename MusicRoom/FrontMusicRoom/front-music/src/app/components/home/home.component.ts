@@ -63,6 +63,7 @@ export class HomeComponent implements OnInit {
           // Procesamiento o Lógica Específica
           console.log(this.data);
           this.usuario = this.data;
+          this.irDashboard();
         },
           error => {
             this.ex = error.error;
