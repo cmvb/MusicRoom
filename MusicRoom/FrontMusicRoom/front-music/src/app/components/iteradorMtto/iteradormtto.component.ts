@@ -41,7 +41,7 @@ export class IteradorMttoComponent implements OnInit {
   constructor(private http: Http, private router: Router, datasObject: DataObjects, util: Util) {
     this.enums = datasObject.getEnumerados();
     this.const = datasObject.getConst();
-    this.msg = datasObject.getProperties(this.const.idiomaEn);
+    this.msg = datasObject.getProperties(this.const.idiomaEs);
     this.objeto = datasObject.getDataUsuario();
     this.util = util;
     this.listaRemover = [];

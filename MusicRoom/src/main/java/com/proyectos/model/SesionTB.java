@@ -30,7 +30,7 @@ public class SesionTB extends BaseEntidadTB implements Serializable {
 
 	@NotNull
 	@OneToOne
-	@JoinColumn(name = "ses_usuario", nullable = false, insertable = false)
+	@JoinColumn(name = "ses_usuario", nullable = false, insertable = true)
 	private UsuarioTB usuarioTb;
 
 	public long getIdSesion() {

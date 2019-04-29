@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Util} from '../.././components/Util';
-import {RestService} from '../.././services/rest.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DataObjects } from '../.././components/ObjectGeneric';
+import { Util } from '../.././components/Util';
+import { RestService } from '../.././services/rest.service';
 
 declare var $: any;
 
@@ -13,124 +15,27 @@ declare var $: any;
 export class HeaderComponent implements OnInit {
   util: any;
   data: any = [];
-  usuario: any;
+  msg: any;
+  usuarioTb: any;
+  usuarioSesion: any;
 
-  constructor(public restService: RestService, util: Util) {
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
     this.util = util;
+    this.usuarioSesion = localStorage.getItem('usuarioSesion') === null ? null : JSON.parse(localStorage.getItem('usuarioSesion').toString());
+    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
   }
 
   ngOnInit() {
   }
 
-  /* method to call GET-API from rest.service */
-  getExampleRest() {
-    try {
-      let url = "http://localhost:7001/Grad/rest/RestServices/findAllUsuarios";
-      this.restService.getREST(url)
-        .subscribe(resp => {
-          console.log(resp, "res");
-          this.data = resp;
-
-          let i;
-          for(i=0; i < this.data.length; i++){
-            this.usuario = this.data[i];
-          }
-
-          console.log(this.data);
-          console.log(this.usuario);
-        },
-        error => {
-          console.log(error, "error");
-        })
-    } catch (e) {
-      console.log(e);
+  ngAfterContentInit() {
+    if (this.usuarioSesion !== null) {
+      this.usuarioTb = this.usuarioSesion.usuarioTb;
     }
   }
 
-  /* method to call POST-API from rest.service */
-  postExampleRest() {
-    try {
-      let url = "http://localhost:7001/Grad/rest/RestServices/findAllUsuarios";
-      let obj = {
-        idUsuario: 1,
-        usuario: "cmvb",
-        clave: "1234",
-        primerNombre: "Carlos",
-        primerApellido: "Vera"
-      }
-
-      this.restService.postREST(url, obj)
-        .subscribe(resp => {
-          console.log(resp, "res");
-          this.data = resp
-        },
-        error => {
-          console.log(error, "error");
-        })
-
-        console.log(this.data);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  /* method to call PUT-API from rest.service */
-  putExampleRest() {
-    try {
-      let url = "http://localhost:7001/Grad/rest/RestServices/findAllUsuarios";
-      let obj = {
-        idUsuario: 1,
-        usuario: "cmvb",
-        clave: "1234",
-        primerNombre: "Carlos",
-        primerApellido: "Vera"
-      }
-
-      this.restService.putREST(url, obj)
-        .subscribe(resp => {
-          console.log(resp, "res");
-          this.data = resp
-        },
-        error => {
-          console.log(error, "error");
-        })
-
-        console.log(this.data);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  /* method to call DELETE-API from rest.service */
-  deleteExampleRest() {
-    try {
-      let url = "http://localhost:7001/Grad/rest/RestServices/findAllUsuarios";
-      let id = 1;
-
-      this.restService.deleteREST(url, id)
-        .subscribe(resp => {
-          console.log(resp, "res");
-          this.data = resp
-        },
-        error => {
-          console.log(error, "error");
-        })
-
-        console.log(this.data);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  sidebarCollapse(){
-    $("#sidebar").toggleClass("active");
-    if($("#sidebar").hasClass("active")){
-      $(".content-inner-all").css("margin-left", "80px" );
-      $(".fixed-header-top").css("left", "80px" );
-    }
-    else{
-      $(".content-inner-all").css("margin-left", "200px" );
-      $(".fixed-header-top").css("left", "200px" );
-    }
+  cerrarSesion() {
+    this.util.limpiarSesion();
+    location.reload();
   }
 }

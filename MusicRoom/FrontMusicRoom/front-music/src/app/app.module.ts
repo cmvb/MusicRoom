@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
 
 // Imports Esenciales
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,7 +45,7 @@ import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.c
 import { ModalsComponent } from './components/modals/modals.component';
 import { UsuarioQueryComponent } from './components/usuarios/usuarioQuery.component';
 import { UsuarioEditComponent } from './components/usuarios/usuarioEdit.component';
-import { ConsultamttoComponent } from './components/consultaMtto/consultaMtto.component';
+import { ConsultaComponent } from './components/consulta/consulta.component';
 import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
 
 @NgModule({
@@ -57,7 +59,7 @@ import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.co
     SidebarComponent,
     FooterComponent,
     DashboardComponent,
-    ConsultamttoComponent,
+    ConsultaComponent,
     IteradorMttoComponent,
 
     DataTableComponent,
@@ -89,7 +91,9 @@ import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.co
     MatInputModule,
     InputTextModule,
     MessagesModule,
-    MessageModule
+    MessageModule,
+    TableModule,
+    CalendarModule
   ],
   providers: [DataObjects, LoginGuard, Util, Functions],
   bootstrap: [AppComponent]

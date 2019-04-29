@@ -20,6 +20,11 @@ public interface IUsuarioDao {
 	List<UsuarioTB> consultarPorFiltros(UsuarioTB usuarioFiltro);
 
 	/*
+	 * Metodo para consultar los usuarios por usuario y password (encriptadaMD5)
+	 */
+	List<UsuarioTB> consultarUsuarioPorUsuarioPasswordEnc(String usuario, String passwordEncriptada);
+
+	/*
 	 * Metodo para consultar un usuario por su ID
 	 */
 	UsuarioTB consultarPorId(long idUsuario);

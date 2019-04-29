@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataObjects } from '.././components/ObjectGeneric';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
+import { Functions } from '.././components/Functions';
 
 declare var $: any;
 
@@ -14,16 +15,20 @@ export class Util {
   mensaje: any;
   const: any;
   enums: any;
+  modeloTablas: any;
+  func: any;
+
   headers = new Headers({ 'Content-Type': 'application/json' });
   options = new RequestOptions({ headers: this.headers });
 
-  constructor(private http: Http, dataObject: DataObjects) {
+  constructor(private http: Http, dataObject: DataObjects, dataFunctions: Functions) {
     this.ex = dataObject.getDataException();
-    this.mensaje = dataObject.getDataMessage
+    this.mensaje = dataObject.getDataMessage();
     this.const = dataObject.getConst();
     this.msg = dataObject.getProperties(this.const.idiomaEs);
+    this.func = dataFunctions;
     this.enums = dataObject.getEnumerados();
-
+    this.modeloTablas = dataObject.getDataModeloTablas();
   }
 
   limpiarExcepcion() {
@@ -97,6 +102,7 @@ export class Util {
     return true;
   }
 
+  // Subir variables a la sesión
   agregarSesionXItem(listaItems) {
     if (listaItems == null || listaItems.length <= 0) {
       return false;
@@ -107,6 +113,16 @@ export class Util {
     return true;
   }
 
+  //limpiar las variables en sesion
+  limpiarVariableSesion() {
+    let sesion = JSON.parse(localStorage.getItem("usuarioSesion"));
+    localStorage.clear();
+    localStorage.setItem("usuarioSesion", JSON.stringify(sesion));
+
+    return true;
+  }
+
+  // Bajar variables a la sesión
   getSesionXItem(item) {
     if (item == null) {
       return null;
@@ -123,11 +139,8 @@ export class Util {
     else if (enumerado == this.enums.sexo.cod) {
       return this.enums.sexo.valores;
     }
-    else if (enumerado == this.enums.estadoUsuario.cod) {
-      return this.enums.estadoUsuario.valores;
-    }
-    else if (enumerado == this.enums.rolUsuario.cod) {
-      return this.enums.rolUsuario.valores;
+    else if (enumerado == this.enums.tipoUsuario.cod) {
+      return this.enums.tipoUsuario.valores;
     }
 
     else if (enumerado == null) {
@@ -359,6 +372,44 @@ export class Util {
     $('.modal-backdrop').remove();
   }
 
+  // Función que arma el model de las tablas de la aplicación
+  armarTabla(cabeceras, lista) {
+    let cols = [];
 
+    if (lista != null && lista.length > 0) {
+      let rows = Object.keys(lista[0]);
+      for (let j in rows) {
+        for (let c in cabeceras) {
+          let head = cabeceras[c];
+          let campo = rows[j].toString();
+          if (head.campoLista === campo) {
+            let obj = { field: '', header: '' };
+            Object.assign(this.modeloTablas, obj);
+            obj.header = head.nombreCabecera;
+            obj.field = campo;
 
+            cols.push(obj);
+          }
+        }
+      }
+    }
+
+    return cols;
+  }
+
+  mostrarNotificacion(exc) {
+    if (exc.mensaje === undefined) {
+      exc.mensaje = "";
+    }
+
+    debugger;
+
+    let mensaje = { severity: '', summary: '', detail: '' };
+    Object.assign(this.mensaje, mensaje);
+    mensaje.severity = exc.mensaje.length > 0 ? this.const.severity[2] : this.const.severity[3];
+    mensaje.summary = exc.mensaje.length > 0 ? "ADVERTENCIA: " : "ERROR: ";
+    mensaje.detail = exc.mensaje.length > 0 ? exc.mensaje : "No se ha podido establecer la conexión con el Servidor";
+
+    return mensaje;
+  }
 }

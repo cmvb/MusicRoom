@@ -91,6 +91,7 @@ public class Util {
 	public static final String ESTADO_ACTIVO_TEXTO = "A";
 	public static final String ESTADO_INACTIVO_TEXTO = "I";
 	public static final String STRINGVACIO = " ";
+	public static final String COMODIN = "%";
 
 	public static final String PREASIGNACION_EXITOSA = "Se realizó la Pre-Asignación del Inventario Satisfactoriamente.";
 	public static final String ASIGNACION_EXITOSA = "Se realizó la Asignación del Inventario Satisfactoriamente.";

@@ -23,32 +23,26 @@ export class UsuarioEditComponent implements OnInit {
   // Objetos de Sesion
   usuarioSesion: any;
   sesion: any;
+
   // Utilidades
   util: any;
   msg: any;
   const: any;
+  locale: any;
+  ex: any;
+  msgs = [];
 
   // Objetos de Datos
   phase: any;
   data: any;
   listaConsulta = [];
   objetoFiltro: any;
-  objetoEdit: any;
+  objeto: any;
 
   // Enumerados
   enums: any;
   enumSiNo = [];
-  enumEstadoUsuario = [];
-  enumRolUsuario = [];
-
-  // Opciones del Componente Consulta
-  btnEditar = true;
-  btnEliminar = true;
-  listaCabeceras = [
-    { 'campoLista': 'usuario', 'nombreCabecera': 'User' },
-    { 'campoLista': 'nombre', 'nombreCabecera': 'First Name' },
-    { 'campoLista': 'apellido', 'nombreCabecera': 'Last Name' },
-  ];
+  enumTipoUsuario = [];
 
   // Propiedades de las peticiones REST
   headers = new Headers({ 'Content-Type': 'application/json' });
@@ -58,11 +52,12 @@ export class UsuarioEditComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
     this.usuarioSesion = datasObject.getDataUsuario();
     this.sesion = datasObject.getDataSesion();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEn);
+    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
     this.const = datasObject.getConst();
     this.util = util;
     this.objetoFiltro = datasObject.getDataUsuario();
     this.enums = datasObject.getEnumerados();
+    this.locale = this.const.getLocaleESForCalendar();
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -72,21 +67,48 @@ export class UsuarioEditComponent implements OnInit {
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
     if (this.util.getSesionXItem('editParam') != null) {
-      this.objetoEdit = JSON.parse(localStorage.getItem('editParam'));
+      this.objeto = JSON.parse(localStorage.getItem('editParam'));
     }
 
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
-    this.enumEstadoUsuario = this.util.getEnum(this.enums.estadoUsuario.cod);
-    this.enumRolUsuario = this.util.getEnum(this.enums.rolUsuario.cod);
+    this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
     this.phase = this.util.getSesionXItem('phase');
   }
 
-  crearActualizar() {
-
+  limpiarExcepcion() {
+    this.ex = this.util.limpiarExcepcion;
+    this.msgs = [];
   }
 
-  sendBack() {
+  irGuardar() {
+    try {
+      this.limpiarExcepcion();
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'crearUsuario';
+      let obj = this.objeto;
+
+      this.restService.postREST(url, obj)
+        .subscribe(resp => {
+          console.log(resp, "res");
+          this.data = resp;
+        },
+          error => {
+            this.ex = error.error;
+            this.msgs.push(this.util.mostrarNotificacion(this.ex));
+            console.log(error, "error");
+          })
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  irAtras() {
     this.util.limpiarSesionXItem(['listaConsulta']);
     this.router.navigate(['/usuarioQuery']);
+  }
+
+  guardaTeclaEnter(event) {
+    if (event.which === 13) {
+      this.irGuardar();
+    }
   }
 }

@@ -1,106 +1,133 @@
-<div class="section">
-	<div class="newMtto animated fadeIn">
-		<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
-			<h5 class="mttoTitle">{{msg.lbl_mtto_usuario_title}} - {{msg.lbl_mtto_edicion}}</h5>
-			<blockquote class="blockquote mb-0"> 
-				<br />
-				<!-- CONTENIDO -->
-					<div id="filaUsuarioMtto" class="row justify-content-center">
-						<div class="col-sm-12 col-md-12 col-xs-12 col-lg-12 col-xl-12">
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-									<div class="form-group">
-										<label class="obligatorio text-center w100">{{msg.lbl_mtto_usuario_nombre}}</label> <input
-											[(ngModel)]="objeto.nombre" type="text" class="form-control" maxlength="150">
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-									<div class="form-group">
-										<label class="obligatorio text-center w100">{{msg.lbl_mtto_usuario_apellido}}</label> <input
-											[(ngModel)]="objeto.apellido" type="text" class="form-control" maxlength="150">
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-									<div class="form-group">
-										<label class="obligatorio w100 text-center">{{msg.lbl_mtto_usuario_usuario}}</label> <input
-											[(ngModel)]="objeto.usuario" type="text"
-											class="form-control" maxlength="20">
-									</div>
-								</div>
-							</div>
+<div class="demo-container demo-layout-transparent">
+	<!-- Importamos el Header -->
+	<app-header></app-header>
 
+	<mdl-layout>
+		<mdl-layout-drawer>
+			<img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo" />
+			<!-- Importamos el Sidebar o Menú Lateral -->
+			<app-sidebar></app-sidebar>
+		</mdl-layout-drawer>
 
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-									<div class="form-group">
-										<label class="obligatorio w100 text-center">{{msg.lbl_mtto_usuario_email}}</label> <input
-											[(ngModel)]="objeto.email" type="text" class="form-control" maxlength="500">
+		<mdl-layout-content>
+			<div class="body-content">
+				<!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+				<div class="content-page">
+					<div class="ui-g">
+						<div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
+							<h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_usuario_title}} -
+								{{msg.lbl_mtto_consulta}}
+							</h5>
+
+							<div class="ui-g center">
+								<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+									<div class="mdl-card__supporting-text">
+										<div class="ui-g center">
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_nombre}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtNombre"
+														(keydown)="guardaTeclaEnter($event)" [(ngModel)]="objeto.nombre"
+														type="text" size="50">
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_apellido}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtApellido"
+														(keydown)="guardaTeclaEnter($event)"
+														[(ngModel)]="objeto.apellido" type="text" size="50">
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_tipo_documento}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtTipoDocumento"
+														(keydown)="guardaTeclaEnter($event)"
+														[(ngModel)]="objeto.tipoDocumento" type="text" size="5">
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label
+													for="float-input">{{msg.lbl_mtto_usuario_numero_documento}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtNumeroDocumento"
+														(keydown)="guardaTeclaEnter($event)"
+														[(ngModel)]="objeto.numeroDocumento" type="text" size="50">
+												</span>
+											</div>
+										</div>
+
+										<div class="ui-g center">
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label
+													for="float-input">{{msg.lbl_mtto_usuario_fecha_nacimiento}}</label>
+												<span class="ui-float-label">
+													<p-calendar id="txtFechaNacimiento" [showIcon]="true"
+														[maxDate]="maxDate" [locale]="locale"
+														dateFormat="const.formatoFecha" [monthNavigator]="true"
+														[yearNavigator]="true" yearRange="const.rangoYears"
+														(keydown)="guardaTeclaEnter($event)"
+														[(ngModel)]="objeto.fechaNacimiento"></p-calendar>
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_usuario}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtUsuario" [disabled]="disabled"
+														(keydown)="guardaTeclaEnter($event)"
+														[(ngModel)]="objeto.usuario" type="text" size="10">
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_email}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtEmail" (keydown)="guardaTeclaEnter($event)"
+														[(ngModel)]="objeto.email" type="text" size="50">
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_tipo_usuario}}</label>
+												<span class="ui-float-label">
+													<ng-select [(ngModel)]="objeto.tipoUsuario"
+														[items]="enumTipoUsuario">
+													</ng-select>
+												</span>
+											</div>
+										</div>
 									</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-									<div class="form-group">
-										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_rol}}</label>
-										<ng-select
-											[(ngModel)]="objeto.rol"
-											[items]="enumRolUsuario">
-										</ng-select>
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-									<div class="form-group">
-										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_estado}}</label>
-										<ng-select
-											[(ngModel)]="objeto.estado"
-											[items]="enumEstadoUsuario">
-										</ng-select>
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-									<div class="form-group">
-										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_sw_administrador}}</label>
-										<ng-select
-											[(ngModel)]="objeto.swAdministrador"
-											[items]="enumSiNo">
-										</ng-select>
-										
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-									<div class="form-group">
-										<label class="obligatorio w100 text-center text-center">{{msg.lbl_mtto_usuario_sw_activo}}</label>
-										<ng-select
-											[(ngModel)]="objeto.swActivo"
-											[items]="enumSiNo">
-										</ng-select>
+
+									<div class="mdl-card__actions mdl-card--border">
+										<div class="ui-g center">
+											<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<button (click)="irAtras()" mdl-button mdl-tooltip-position="top"
+													mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button"
+													mdl-button-type="raised" mdl-colored="primary">
+													<i class="fa fa-arrow-left"></i> {{msg.lbl_btn_atras}}
+												</button>
+											</div>
+											<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<button (click)="irGuardar()" mdl-button mdl-tooltip-position="top"
+													mdl-tooltip-large="{{msg.lbl_tip_guardar}}" type="button"
+													mdl-button-type="raised" mdl-colored="accent">
+													<i class="fa fa-save"></i> {{msg.lbl_btn_guardar}}
+												</button>
+											</div>
+										</div>
+
+										<div class="ui-g center">
+											<p-messages severity="const.severity[2]" [(value)]="msgs"></p-messages>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
- 
-					<div class="row row-btn justify-content-center">
-						<div
-							class="col-sm-2 col-xs-2 col-md-2 col-lg-2 col-xl-2 text-center">
-							<button (click)="sendBack()" placement="bottom"
-								mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button"
-								class="btn btn-danger btn-round w100 swExtra">
-								<i class="fa fa-arrow-left"></i> {{msg.lbl_btn_atras}}
-							</button>
-						</div>
-						<div
-							class="col-sm-2 col-xs-2 col-md-2 col-lg-2 col-xl-2 text-center">
-							<button (click)="sendUpdate()" placement="bottom"
-								mdl-tooltip-large="{{msg.lbl_tip_actualizar}}" type="button"
-								class="btn btn-cog btn-round w100 swEditar swCrear">
-								<i class="fa fa-eraser"></i> {{msg.lbl_btn_actualizar}}
-							</button>
-						</div>
-					</div>
+				</div>
+			</div>
+		</mdl-layout-content>
+	</mdl-layout>
 
-				<br />
-				<!-- CONTENIDO -->
-			</blockquote>
-			<br />
-		</div>
-	</div>
+	<!-- Importamos el Footer -->
+	<app-footer></app-footer>
 </div>

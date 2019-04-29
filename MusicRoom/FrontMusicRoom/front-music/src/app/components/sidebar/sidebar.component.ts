@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Util} from '../.././components/Util';
+import { ActivatedRoute, Router } from '@angular/router';
+import 'rxjs/add/operator/map';
+import { DataObjects } from '../.././components/ObjectGeneric';
+import { Util } from '../.././components/Util';
+import { RestService } from '../.././services/rest.service';
 
 declare var $: any;
 
@@ -9,16 +13,46 @@ declare var $: any;
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  util:any;
-  usuario = 'ECM9631E';
-  nombreUsuario = 'Carlos Baene';
-  cargoUsuario = 'Ing. Sistemas';
-  anio = '2018';
+  // Objetos de Sesion
+  usuarioSesion: any;
+  sesion: any;
 
+  // Objetos de Datos
+  data: any;
+  ex: any;
+  usuario: any;
+  msgs = [];
 
-  constructor(util: Util) {
+  logueado: boolean;
+
+  // Utilidades
+  util: any;
+  msg: any;
+  const: any;
+
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
+    this.usuario = datasObject.getDataUsuario();
+    this.sesion = datasObject.getDataSesion();
+    this.ex = datasObject.getDataException();
+    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
+    this.const = datasObject.getConst();
     this.util = util;
   }
 
-  ngOnInit() {}
+  // Procesos que se ejecutan cuando algo en el DOM cambia
+  ngDoCheck() {
+  }
+
+  // Procesos que se ejecutan al cargar el componente
+  ngOnInit() {
+  }
+
+  limpiarExcepcion() {
+    this.ex = this.util.limpiarExcepcion;
+    this.msgs = [];
+  }
+
+  irMenu(menu) {
+    this.router.navigate(['/' + menu]);
+  }
 }
