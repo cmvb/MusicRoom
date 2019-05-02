@@ -91,12 +91,12 @@ export class UsuarioEditComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'crearUsuario';
       this.ajustarCombos();
       let obj = this.objeto;
-      debugger;
 
       this.restService.postREST(url, obj)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
+          this.irAtras();
         },
           error => {
             this.ex = error.error;

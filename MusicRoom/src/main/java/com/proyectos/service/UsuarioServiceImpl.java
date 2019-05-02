@@ -58,6 +58,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	@Transactional
 	@Override
 	public UsuarioTB crear(UsuarioTB usuario) {
+		usuario.setIdUsuario(sesionDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_USUARIO_TB));
 		return usuarioDAO.crear(usuario);
 	}
 
