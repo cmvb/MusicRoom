@@ -31,18 +31,19 @@ export class UsuarioEditComponent implements OnInit {
   locale: any;
   ex: any;
   msgs = [];
+  maxDate = new Date();
 
   // Objetos de Datos
   phase: any;
   data: any;
   listaConsulta = [];
-  objetoFiltro: any;
   objeto: any;
 
   // Enumerados
   enums: any;
   enumSiNo = [];
   enumTipoUsuario = [];
+  enumTipoDocumento = [];
 
   // Propiedades de las peticiones REST
   headers = new Headers({ 'Content-Type': 'application/json' });
@@ -55,9 +56,12 @@ export class UsuarioEditComponent implements OnInit {
     this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
     this.const = datasObject.getConst();
     this.util = util;
-    this.objetoFiltro = datasObject.getDataUsuario();
+    this.objeto = datasObject.getDataUsuario();
+    this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
+    this.objeto.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
+    this.objeto.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.enums = datasObject.getEnumerados();
-    this.locale = this.const.getLocaleESForCalendar();
+    this.locale = datasObject.getLocaleESForCalendar();
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -72,6 +76,7 @@ export class UsuarioEditComponent implements OnInit {
 
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
     this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
+    this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
     this.phase = this.util.getSesionXItem('phase');
   }
 
@@ -84,7 +89,9 @@ export class UsuarioEditComponent implements OnInit {
     try {
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'crearUsuario';
+      this.ajustarCombos();
       let obj = this.objeto;
+      debugger;
 
       this.restService.postREST(url, obj)
         .subscribe(resp => {
@@ -94,11 +101,25 @@ export class UsuarioEditComponent implements OnInit {
           error => {
             this.ex = error.error;
             this.msgs.push(this.util.mostrarNotificacion(this.ex));
+            this.inicializarCombos();
+
             console.log(error, "error");
           })
     } catch (e) {
       console.log(e);
     }
+  }
+
+  ajustarCombos() {
+    this.objeto.estado = this.objeto.estado.value;
+    this.objeto.tipoUsuario = this.objeto.tipoUsuario.value;
+    this.objeto.tipoDocumento = this.objeto.tipoDocumento.value;
+  }
+
+  inicializarCombos() {
+    this.objeto.estado = this.util.getValorEnumerado(this.enumSiNo, this.objeto.estado);
+    this.objeto.tipoDocumento = this.util.getValorEnumerado(this.enumTipoDocumento, this.objeto.tipoDocumento);
+    this.objeto.tipoUsuario = this.util.getValorEnumerado(this.enumTipoUsuario, this.objeto.tipoUsuario);
   }
 
   irAtras() {

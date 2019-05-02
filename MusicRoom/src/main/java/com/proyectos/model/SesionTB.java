@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -29,8 +30,8 @@ public class SesionTB extends BaseEntidadTB implements Serializable {
 	private String tokenSesion;
 
 	@NotNull
-	@OneToOne
-	@JoinColumn(name = "ses_usuario", nullable = false, insertable = true)
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ses_usuario")
 	private UsuarioTB usuarioTb;
 
 	public long getIdSesion() {

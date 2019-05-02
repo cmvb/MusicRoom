@@ -32,6 +32,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -39,6 +40,9 @@ import org.xml.sax.SAXException;
 
 import com.csvreader.CsvReader;
 import com.proyectos.enums.ESeveridadMensaje;
+import com.proyectos.enums.ETipoDocumento;
+import com.proyectos.enums.ETipoUsuario;
+import com.proyectos.model.UsuarioTB;
 
 public class Util {
 
@@ -818,4 +822,48 @@ public class Util {
 		return result;
 	}
 
+	public static List<String> validaDatos(String tabla, Object usuario) {
+		List<String> errores = new ArrayList<>();
+
+		switch (tabla) {
+		case ConstantesTablasNombre.MRA_USUARIO_TB:
+			errores = validarUsuario((UsuarioTB) usuario);
+
+			break;
+		}
+
+		return errores;
+	}
+
+	private static List<String> validarUsuario(UsuarioTB usuario) {
+		List<String> errores = new ArrayList<>();
+		final String VALOR_INCORRECTO = PropertiesUtil.getProperty("musicroom.msg.validate.valor.incorrecto");
+
+		if (StringUtils.isBlank(usuario.getNombre())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_nombre") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(usuario.getApellido())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_apellido") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(usuario.getNumeroDocumento())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_numero_documento") + VALOR_INCORRECTO);
+		}
+		if (usuario.getTipoDocumento() == ETipoDocumento.VACIO.ordinal()) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_tipo_documento") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(usuario.getUsuario())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_usuario") + VALOR_INCORRECTO);
+		}
+		if (usuario.getTipoUsuario() == ETipoUsuario.VACIO.ordinal()) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_tipo_usuario") + VALOR_INCORRECTO);
+		}
+		if (usuario.getFechaNacimiento() == null) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_fecha_nacimiento") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(usuario.getEmail()) || !esCorreoValido(usuario.getEmail())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_email") + VALOR_INCORRECTO);
+		}
+
+		return errores;
+	}
 }

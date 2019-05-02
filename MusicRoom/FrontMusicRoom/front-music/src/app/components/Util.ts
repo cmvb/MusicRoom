@@ -142,6 +142,9 @@ export class Util {
     else if (enumerado == this.enums.tipoUsuario.cod) {
       return this.enums.tipoUsuario.valores;
     }
+    else if (enumerado == this.enums.tipoDocumento.cod) {
+      return this.enums.tipoDocumento.valores;
+    }
 
     else if (enumerado == null) {
       return false;
@@ -168,6 +171,20 @@ export class Util {
       }
     })
     return name;
+  }
+
+  getValorEnumerado(enumerado, id) {
+    let valor = { value: 0, label: '' };
+
+    for (var key in enumerado) {
+      let obj = enumerado[key];
+      if (obj.value == id) {
+        valor = enumerado[key];
+        break;
+      }
+    }
+
+    return valor;
   }
 
   validaciones(objeto, path) {
@@ -401,8 +418,6 @@ export class Util {
     if (exc.mensaje === undefined) {
       exc.mensaje = "";
     }
-
-    debugger;
 
     let mensaje = { severity: '', summary: '', detail: '' };
     Object.assign(this.mensaje, mensaje);

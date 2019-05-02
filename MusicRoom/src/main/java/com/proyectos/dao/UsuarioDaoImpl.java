@@ -1,5 +1,6 @@
 package com.proyectos.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,12 +105,14 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 
 	@Override
 	public UsuarioTB crear(UsuarioTB usuario) {
+		usuario = colocarValoresDefecto(usuario);
 		super.create(usuario);
 		return usuario;
 	}
 
 	@Override
 	public UsuarioTB modificar(UsuarioTB usuario) {
+		usuario = colocarValoresDefecto(usuario);
 		super.update(usuario);
 		return usuario;
 	}
@@ -117,6 +120,22 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 	@Override
 	public void eliminar(long idUsuario) {
 		deleteById(idUsuario);
+	}
+
+	@Override
+	public long obtenerConsecutivo(String tabla) {
+		return super.obtenerConsecutivo(tabla);
+	}
+
+	private UsuarioTB colocarValoresDefecto(UsuarioTB entidad) {
+		if (entidad.getFechaCreacion() == null) {
+			entidad.setFechaCreacion(new Date());
+		}
+		entidad.setFechaActualiza(new Date());
+		entidad.setUsuarioCreacion("SYSTEM");
+		entidad.setUsuarioActualiza("SYSTEM");
+
+		return entidad;
 	}
 
 }

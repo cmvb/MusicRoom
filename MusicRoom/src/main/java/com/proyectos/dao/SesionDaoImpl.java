@@ -53,4 +53,9 @@ public class SesionDaoImpl extends AbstractDao<SesionTB> implements ISesionDao {
 		deleteById(idSesion);
 	}
 
+	@Override
+	public long obtenerConsecutivo(String tabla) {
+		return super.obtenerConsecutivo(tabla);
+	}
+
 }

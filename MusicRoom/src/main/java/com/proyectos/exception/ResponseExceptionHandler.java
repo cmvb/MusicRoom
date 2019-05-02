@@ -43,7 +43,8 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 			errores += e.getObjectName();
 		}
 
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados"), errores);
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),
+				PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados"), errores);
 
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}

@@ -29,4 +29,9 @@ public interface ISesionDao {
 	 */
 	void eliminar(long idSesion);
 
+	/*
+	 * Metodo para obtener el ID de una tabla
+	 */
+	long obtenerConsecutivo(String tabla);
+
 }

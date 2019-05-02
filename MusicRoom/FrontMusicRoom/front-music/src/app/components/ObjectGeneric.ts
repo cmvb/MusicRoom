@@ -7,11 +7,11 @@ export class DataObjects {
   getLocaleESForCalendar() {
     return {
       firstDayOfWeek: 1,
-      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+      dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
       dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-      monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
-      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
       today: 'Hoy',
       clear: 'Borrar'
     }
@@ -19,7 +19,7 @@ export class DataObjects {
 
   getConst() {
     return {
-      urlRestService: 'http://localhost:9002/music-room/',
+      urlRestService: 'http://localhost:9001/music-room/',
       urlControllerUsuario: 'usuario/',
       //Model rango de fechas para NGBDatePicker
       minDate: { year: 1000, month: 1, day: 1 },
@@ -138,11 +138,19 @@ export class DataObjects {
         ]
       },
       tipoUsuario: {
-        cod: 3, valores: [
+        cod: 4, valores: [
           { value: 0, label: properties.lbl_enum_generico_valor_vacio },
           { value: 1, label: properties.lbl_enum_tipo_usuario_valor_cliente },
           { value: 2, label: properties.lbl_enum_tipo_usuario_valor_empleado },
           { value: 3, label: properties.lbl_enum_tipo_usuario_valor_administrador }
+        ]
+      },
+      tipoDocumento: {
+        cod: 5, valores: [
+          { value: 0, label: properties.lbl_enum_generico_valor_vacio },
+          { value: 1, label: properties.lbl_enum_tipo_documento_valor_cc },
+          { value: 2, label: properties.lbl_enum_tipo_documento_valor_ti },
+          { value: 3, label: properties.lbl_enum_tipo_documento_valor_ce }
         ]
       },
       //valorIva: {cod: 25},
@@ -196,9 +204,9 @@ export class DataObjects {
       lbl_tip_eliminar: idioma == constant.idiomaEs ? '[Clic] para eliminar registro' : 'Click to delete the register selected',
       lbl_tip_buscar: idioma == constant.idiomaEs ? '[Clic] para buscar registros' : 'Click to search registers',
       lbl_tip_limpiar: idioma == constant.idiomaEs ? '[Clic] para limpiar' : 'Click to clean',
-      lbl_tip_anterior: idioma == constant.idiomaEs ? '[Clic] para Regresas' : 'Click to go back',
-      lbl_tip_actualizar: idioma == constant.idiomaEs ? '[Clic] para Actualizar' : 'Click to Update',
-      lbl_tip_guardar: idioma == constant.idiomaEs ? '[Clic] para Guardar' : 'Click to Save',
+      lbl_tip_anterior: idioma == constant.idiomaEs ? '[Clic] para Regresar' : 'Click to go back',
+      lbl_tip_actualizar: idioma == constant.idiomaEs ? '[Clic] para Actualizar' : 'Click to update',
+      lbl_tip_guardar: idioma == constant.idiomaEs ? '[Clic] para Guardar' : 'Click to save',
 
       //Enums
       lbl_enum_generico_valor_vacio: idioma == constant.idiomaEs ? 'Selecciona una opción' : 'Select a Item',
@@ -219,14 +227,22 @@ export class DataObjects {
       lbl_enum_tipo_usuario_valor_empleado: idioma == constant.idiomaEs ? 'Empleado' : 'Employed',
       lbl_enum_tipo_usuario_valor_administrador: idioma == constant.idiomaEs ? 'Administrador' : 'Admin',
 
+      lbl_enum_tipo_documento_valor_cc: idioma == constant.idiomaEs ? 'CC' : 'CC',
+      lbl_enum_tipo_documento_valor_ti: idioma == constant.idiomaEs ? 'TI' : 'TI',
+      lbl_enum_tipo_documento_valor_ce: idioma == constant.idiomaEs ? 'CE' : 'CE',
+
+      // Módulos Genéricos
+      lbl_mtto_generico_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
+
       // Módulo Usuario
       lbl_mtto_usuario_title: idioma == constant.idiomaEs ? 'Configuración de Usuarios' : 'Users Settings',
       lbl_mtto_usuario_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'First Name',
       lbl_mtto_usuario_apellido: idioma == constant.idiomaEs ? 'Apellido' : 'Last Name',
+      lbl_mtto_usuario_tipo_documento: idioma == constant.idiomaEs ? 'Tipo Documento' : 'Document Type',
+      lbl_mtto_usuario_numero_documento: idioma == constant.idiomaEs ? 'Número Documento' : 'Document Number',
       lbl_mtto_usuario_usuario: idioma == constant.idiomaEs ? 'Usuario' : 'User',
       lbl_mtto_usuario_email: idioma == constant.idiomaEs ? 'Email' : 'Email',
       lbl_mtto_usuario_fecha_nacimiento: idioma == constant.idiomaEs ? 'Fecha Nacimiento' : 'Birth Date',
-      lbl_mtto_usuario_estado: idioma == constant.idiomaEs ? 'Estado' : 'State',
       lbl_mtto_usuario_tipo_usuario: idioma == constant.idiomaEs ? 'Tipo Usuario' : 'User Type',
       lbl_mtto_usuario_sw_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
     }

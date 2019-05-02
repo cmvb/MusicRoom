@@ -12,6 +12,7 @@ import com.proyectos.dao.IUsuarioDao;
 import com.proyectos.enums.EEstado;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
+import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.Util;
 
 @Service
@@ -31,6 +32,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		if (sesion != null && sesion.getUsuarioTb() != null) {
 			if (sesion.getUsuarioTb().getEstado() == EEstado.ACTIVO.ordinal()) {
 				sesion.setTokenSesion(Util.generarToken(usuario.getUsuario()));
+				sesion.setIdSesion(sesionDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_SESION_TB));
 				sesion = sesionDAO.crear(sesion);
 			}
 		}

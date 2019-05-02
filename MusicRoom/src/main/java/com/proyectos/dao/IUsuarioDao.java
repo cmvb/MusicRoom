@@ -43,4 +43,9 @@ public interface IUsuarioDao {
 	 * Metodo para eliminar un usuario por su ID
 	 */
 	void eliminar(long idUsuario);
+
+	/*
+	 * Metodo para obtener el ID de una tabla
+	 */
+	long obtenerConsecutivo(String tabla);
 }

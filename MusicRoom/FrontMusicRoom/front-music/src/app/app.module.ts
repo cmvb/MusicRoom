@@ -30,6 +30,7 @@ import { Functions } from './components/Functions';
 import { Util } from './components/Util';
 import { LoginGuard } from './components/login.guard';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxUiLoaderModule, NgxUiLoaderHttpModule, NgxUiLoaderRouterModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION } from 'ngx-ui-loader';
 
 // Imports Componentes
 import { HomeComponent } from './components/home/home.component';
@@ -48,6 +49,36 @@ import { UsuarioEditComponent } from './components/usuarios/usuarioEdit.componen
 import { ConsultaComponent } from './components/consulta/consulta.component';
 import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
 
+// Constantes
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  "bgsColor": "#00ACC1",
+  "bgsOpacity": 0.5,
+  "bgsPosition": "bottom-right",
+  "bgsSize": 60,
+  "bgsType": "ball-spin-clockwise",
+  "blur": 5,
+  "fgsColor": "#00ACC1",
+  "fgsPosition": "center-center",
+  "fgsSize": 180,
+  "fgsType": "three-strings",
+  "gap": 24,
+  "logoPosition": "center-center",
+  "logoSize": 40,
+  "masterLoaderId": "master",
+  "overlayBorderRadius": "0",
+  "overlayColor": "rgba(40, 40, 40, 0.8)",
+  "pbColor": "#00ACC1",
+  "pbDirection": "ltr",
+  "pbThickness": 3,
+  "hasProgressBar": true,
+  "text": "",
+  "textColor": "#FFFFFF",
+  "textPosition": "center-center",
+  "threshold": 500
+};
+
+
+// Componentes
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,6 +113,9 @@ import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.co
     BrowserAnimationsModule,
     MdlModule,
     NgSelectModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderRouterModule,
+    NgxUiLoaderHttpModule.forRoot({ showForeground: true }),
 
     MatCardModule,
     MatGridListModule,

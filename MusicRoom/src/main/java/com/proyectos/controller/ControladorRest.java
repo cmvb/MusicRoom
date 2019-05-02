@@ -1,6 +1,5 @@
 package com.proyectos.controller;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +16,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.proyectos.enums.EEstado;
 import com.proyectos.exception.ModelNotFoundException;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
 import com.proyectos.service.IUsuarioService;
+import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.PropertiesUtil;
+import com.proyectos.util.Util;
 
 @RestController
 @RequestMapping("/music-room/usuario")
@@ -104,25 +104,45 @@ public class ControladorRest {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/crearUsuario")
 	public ResponseEntity<UsuarioTB> crear(@RequestBody UsuarioTB usuario) {
+		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_USUARIO_TB, usuario);
 		UsuarioTB usuarioNuevo = new UsuarioTB();
-		usuarioNuevo = usuarioService.crear(usuario);
+		if (errores.isEmpty()) {
+			usuarioNuevo = new UsuarioTB();
+			usuarioNuevo = usuarioService.crear(usuario);
+		} else {
+			StringBuilder mensajeErrores = new StringBuilder();
+			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(usuarioNuevo.getIdUsuario()).toUri();
+			for (String error : errores) {
+				mensajeErrores.append(error);
+			}
 
-		return ResponseEntity.created(location).build();
+			throw new ModelNotFoundException(erroresTitle + mensajeErrores);
+		}
+
+		return new ResponseEntity<UsuarioTB>(usuarioNuevo, HttpStatus.OK);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/modificarUsuario")
 	public ResponseEntity<UsuarioTB> modificar(@RequestBody UsuarioTB usuario) {
+		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_USUARIO_TB, usuario);
 		UsuarioTB usuarioNuevo = new UsuarioTB();
-		usuarioNuevo = usuarioService.modificar(usuario);
+		if (errores.isEmpty()) {
+			usuarioNuevo = new UsuarioTB();
+			usuarioNuevo = usuarioService.modificar(usuario);
+		} else {
+			StringBuilder mensajeErrores = new StringBuilder();
+			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(usuarioNuevo.getIdUsuario()).toUri();
+			for (String error : errores) {
+				mensajeErrores.append(error);
+			}
 
-		return ResponseEntity.created(location).build();
+			throw new ModelNotFoundException(erroresTitle + mensajeErrores);
+		}
+
+		return new ResponseEntity<UsuarioTB>(usuarioNuevo, HttpStatus.OK);
 	}
 
 	@DeleteMapping

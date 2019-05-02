@@ -16,7 +16,7 @@
 					<div class="ui-g">
 						<div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
 							<h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_usuario_title}} -
-								{{msg.lbl_mtto_consulta}}
+								{{msg.lbl_btn_crear}}
 							</h5>
 
 							<div class="ui-g center">
@@ -24,7 +24,8 @@
 									<div class="mdl-card__supporting-text">
 										<div class="ui-g center">
 											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label for="float-input">{{msg.lbl_mtto_usuario_nombre}}</label>
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_usuario_nombre}}</label>
 												<span class="ui-float-label">
 													<input pInputText id="txtNombre"
 														(keydown)="guardaTeclaEnter($event)" [(ngModel)]="objeto.nombre"
@@ -32,7 +33,8 @@
 												</span>
 											</div>
 											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label for="float-input">{{msg.lbl_mtto_usuario_apellido}}</label>
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_usuario_apellido}}</label>
 												<span class="ui-float-label">
 													<input pInputText id="txtApellido"
 														(keydown)="guardaTeclaEnter($event)"
@@ -40,15 +42,30 @@
 												</span>
 											</div>
 											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label for="float-input">{{msg.lbl_mtto_usuario_tipo_documento}}</label>
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_usuario_fecha_nacimiento}}</label>
 												<span class="ui-float-label">
-													<input pInputText id="txtTipoDocumento"
+													<p-calendar id="txtFechaNacimiento" [maxDate]="maxDate"
+														[locale]="locale" dateFormat="dd/mm/yy" [monthNavigator]="true"
+														[yearNavigator]="true" yearRange="1900:3000"
 														(keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.tipoDocumento" type="text" size="5">
+														[(ngModel)]="objeto.fechaNacimiento"></p-calendar>
+												</span>
+											</div>
+										</div>
+
+										<div class="ui-g center">
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_usuario_tipo_documento}}</label>
+												<span class="ui-float-label">
+													<ng-select id="txtTipoDocumento" [(ngModel)]="objeto.tipoDocumento"
+														[items]="enumTipoDocumento">
+													</ng-select>
 												</span>
 											</div>
 											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label
+												<label class="obligatorio"
 													for="float-input">{{msg.lbl_mtto_usuario_numero_documento}}</label>
 												<span class="ui-float-label">
 													<input pInputText id="txtNumeroDocumento"
@@ -56,23 +73,20 @@
 														[(ngModel)]="objeto.numeroDocumento" type="text" size="50">
 												</span>
 											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_usuario_email}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtEmail" (keydown)="guardaTeclaEnter($event)"
+														[(ngModel)]="objeto.email" type="text" size="50">
+												</span>
+											</div>
 										</div>
 
 										<div class="ui-g center">
 											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label
-													for="float-input">{{msg.lbl_mtto_usuario_fecha_nacimiento}}</label>
-												<span class="ui-float-label">
-													<p-calendar id="txtFechaNacimiento" [showIcon]="true"
-														[maxDate]="maxDate" [locale]="locale"
-														dateFormat="const.formatoFecha" [monthNavigator]="true"
-														[yearNavigator]="true" yearRange="const.rangoYears"
-														(keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.fechaNacimiento"></p-calendar>
-												</span>
-											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label for="float-input">{{msg.lbl_mtto_usuario_usuario}}</label>
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_usuario_usuario}}</label>
 												<span class="ui-float-label">
 													<input pInputText id="txtUsuario" [disabled]="disabled"
 														(keydown)="guardaTeclaEnter($event)"
@@ -80,17 +94,20 @@
 												</span>
 											</div>
 											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label for="float-input">{{msg.lbl_mtto_usuario_email}}</label>
-												<span class="ui-float-label">
-													<input pInputText id="txtEmail" (keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.email" type="text" size="50">
-												</span>
-											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label for="float-input">{{msg.lbl_mtto_usuario_tipo_usuario}}</label>
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_usuario_tipo_usuario}}</label>
 												<span class="ui-float-label">
 													<ng-select [(ngModel)]="objeto.tipoUsuario"
 														[items]="enumTipoUsuario">
+													</ng-select>
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label class="obligatorio"
+													for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
+												<span class="ui-float-label">
+													<ng-select id="txtEstado" [(ngModel)]="objeto.estado"
+														[items]="enumSiNo">
 													</ng-select>
 												</span>
 											</div>
