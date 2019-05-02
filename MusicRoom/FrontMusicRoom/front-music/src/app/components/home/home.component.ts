@@ -1,12 +1,8 @@
-import { Component, OnInit, Input, forwardRef, Inject } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/map';
-import { format } from 'url';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { DataObjects } from '../.././components/ObjectGeneric'
+import { DataObjects } from '../.././components/ObjectGeneric';
 import { Util } from '../.././components/Util';
-import { Observable } from 'rxjs';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { RestService } from '../.././services/rest.service';
 
 declare var $: any;
@@ -19,30 +15,36 @@ declare var $: any;
 })
 
 export class HomeComponent implements OnInit {
-  data: any;
+  // Objetos de Sesion
+  usuarioSesion: any;
+  sesion: any;
+
+  // Objetos de Datos
   ex: any;
   usuario: any;
+  msgs = [];
   logueado: boolean;
+
+  // Utilidades
   util: any;
   msg: any;
   const: any;
-  msgs = [];
-
-  usuarioLogin: any;
-  passwordLogin: any;
 
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
     this.usuario = datasObject.getDataUsuario();
+    this.sesion = datasObject.getDataSesion();
     this.ex = datasObject.getDataException();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEn);
+    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
     this.const = datasObject.getConst();
     this.util = util;
   }
 
-  ngOnInit() {
+  // Procesos que se ejecutan cuando algo en el DOM cambia
+  ngDoCheck() {
   }
 
-  ngDoCheck() {
+  // Procesos que se ejecutan al cargar el componente
+  ngOnInit() {
   }
 
   limpiarExcepcion() {
@@ -59,20 +61,15 @@ export class HomeComponent implements OnInit {
       this.restService.postREST(url, obj)
         .subscribe(resp => {
           console.log(resp, "res");
-          this.data = resp;
+          this.sesion = resp;
+
           // Procesamiento o Lógica Específica
-          console.log(this.data);
-          this.usuario = this.data;
+          this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
           this.irDashboard();
         },
           error => {
             this.ex = error.error;
-            let mensaje = this.util.mensaje;
-            mensaje.severity = this.const.severity[2];
-            mensaje.summary = "ADVERTENCIA: ";
-            mensaje.detail = this.ex.mensaje;
-
-            this.msgs.push(mensaje);
+            this.msgs.push(this.util.mostrarNotificacion(this.ex));
             console.log(error, "error");
           })
     } catch (e) {

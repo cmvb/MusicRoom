@@ -54,6 +54,10 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 	private short tipoUsuario;
 
 	@NotNull
+	@Column(name = "usu_email", nullable = false, length = 50)
+	private String email;
+
+	@NotNull
 	@Column(name = "usu_fecha_nacimiento", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaNacimiento;
@@ -112,6 +116,22 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 
 	public void setTipoDocumento(short tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
+	}
+
+	public short getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(short tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Date getFechaNacimiento() {

@@ -1,67 +1,100 @@
-<div class="section">
-	<div class="container mtto  animated fadeIn">
-		<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
-			<h5 class="mttoTitle">{{msg.lbl_mtto_usuario_title}} - {{msg.lbl_mtto_consulta}}</h5>
-			<blockquote class="blockquote mb-0">
-				<br />
-				<!-- CONTENIDO -->
-					<div class="row justify-content-center">
-						<div class="col-sm-12 col-xs-12 col-md-4 col-lg-4 col-xl-4">
-						</div>
-						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2">
-							<div class="form-group">
-								<input placeholder="Enter a User..." (keydown)="consultaTeclaEnter($event)" [(ngModel)]="objetoFiltro.usuario" type="text" name="usuario"
-									id="usuario" class="form-control" maxlength="20">
-							</div>
-						</div>
-						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2">
-							<div class="form-group">
-								<input placeholder="Enter a First Name..." (keydown)="consultaTeclaEnter($event)" [(ngModel)]="objetoFiltro.nombre" type="text" name="usuario"
-									id="usuario" class="form-control" maxlength="20">
-							</div>
-						</div>
-						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2">
-							<div class="form-group">
-								<input placeholder="Enter a Last Name..." (keydown)="consultaTeclaEnter($event)" [(ngModel)]="objetoFiltro.apellido" type="text" name="usuario"
-									id="usuario" class="form-control" maxlength="20">
-							</div>
-						</div>
-						<div class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2 text-center">
-							<div class="form-group">
-								<button (click)="sendSearch()" placement="bottom"
-									mdl-tooltip-large="{{msg.lbl_tip_buscar}}" type="button"
-									class="btn btn-danger btn-round w100 swBuscar">
-									<i class="fa fa-search"></i> {{msg.lbl_btn_consultar}}
-								</button>
+<div class="demo-container demo-layout-transparent">
+	<!-- Importamos el Header -->
+	<app-header></app-header>
+
+	<mdl-layout>
+		<mdl-layout-drawer>
+			<img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo" />
+			<!-- Importamos el Sidebar o Menú Lateral -->
+			<app-sidebar></app-sidebar>
+		</mdl-layout-drawer>
+
+		<mdl-layout-content>
+			<div class="body-content">
+				<!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+				<div class="content-page">
+					<div class="ui-g">
+						<div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
+							<h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_usuario_title}} -
+								{{msg.lbl_mtto_consulta}}
+							</h5>
+
+							<div class="ui-g center">
+								<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+									<div class="mdl-card__supporting-text">
+										<div class="ui-g center">
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_usuario}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtUsuario"
+														(keydown)="consultaTeclaEnter($event)"
+														[(ngModel)]="objetoFiltro.usuario" type="text" size="10">
+												</span>
+											</div>
+
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_nombre}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtNombre"
+														(keydown)="consultaTeclaEnter($event)"
+														[(ngModel)]="objetoFiltro.nombre" type="text" size="50">
+												</span>
+											</div>
+											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<label for="float-input">{{msg.lbl_mtto_usuario_apellido}}</label>
+												<span class="ui-float-label">
+													<input pInputText id="txtApellido"
+														(keydown)="consultaTeclaEnter($event)"
+														[(ngModel)]="objetoFiltro.apellido" type="text" size="50">
+												</span>
+											</div>
+										</div>
+
+										<br />
+
+										<div class="ui-g center">
+											<div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad">
+												<app-consulta [btnEditar]="btnEditar" [btnEliminar]="btnEliminar"
+													(enviarObjetoEditar)="editar($event)"
+													(enviarObjetoEliminar)="eliminar($event)"
+													[cabeceras]="listaCabeceras" [lista]="listaConsulta">
+												</app-consulta>
+											</div>
+										</div>
+									</div>
+
+									<div class="mdl-card__actions mdl-card--border">
+										<div class="ui-g center">
+											<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<button (click)="consultarUsuarios()" mdl-button
+													mdl-tooltip-position="top"
+													mdl-tooltip-large="{{msg.lbl_tip_buscar}}" type="button"
+													mdl-button-type="raised" mdl-colored="primary">
+													<i class="fa fa-search"></i> {{msg.lbl_btn_consultar}}
+												</button>
+											</div>
+											<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+												<button (click)="irCrear()" mdl-button mdl-tooltip-position="top"
+													mdl-tooltip-large="{{msg.lbl_tip_agregar}}" type="button"
+													mdl-button-type="raised" mdl-colored="accent">
+													<i class="fa fa-plus"></i> {{msg.lbl_btn_crear}}
+												</button>
+											</div>
+										</div>
+
+										<div class="ui-g center">
+											<p-messages severity="const.severity[2]" [(value)]="msgs"></p-messages>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</mdl-layout-content>
+	</mdl-layout>
 
-					<div class="row justify-content-center">
-						<div
-							class="col-sm-12 col-xs-12 col-md-2 col-lg-2 col-xl-2 text-right">
-							<button (click)="crear()" placement="bottom"
-								mdl-tooltip-large="{{msg.lbl_tip_agregar}}" type="button"
-								class="btn btn-danger btn-round w100 swCrear">
-								<i class="fa fa-plus"></i> {{msg.lbl_btn_edicion}}
-							</button>
-						</div>
-					</div>
-
-					<br />
-
-					<div class="row">
-						<div class="col-md-12 col-sm-12 col-xs-12">
-							<app-consulta [btnEditar]="btnEditar" [btnEliminar]="btnEliminar"
-								(enviarObjetoEditar)="editar($event)"
-								(enviarObjetoEliminar)="eliminar($event)"
-								[cabeceras]="listaCabeceras" [lista]="listaConsulta"></app-consulta>
-						</div>
-					</div>
-				<br />
-				<!-- CONTENIDO -->
-			</blockquote>
-			<br />
-		</div>
-	</div>
+	<!-- Importamos el Footer -->
+	<app-footer></app-footer>
 </div>

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 declare var $: any;
 //import {funciones} from '../../../src/assets/js/masterJS';
 export var numeroDecimales = 2;
@@ -9,8 +9,8 @@ export class Functions {
   autoFormat() {
     var listaElementos = $('.formatearNumero');
     //activar el metodo en diferentes eventos
-    listaElementos.each(function(ind, e) {
-      $(e).on('change keypress keyup', function() {
+    listaElementos.each(function (ind, e) {
+      $(e).on('change keypress keyup', function () {
         this.value = procesaFormatearNumero(this, numeroDecimales);
       });
       e.value = procesaFormatearNumero(e, numeroDecimales);
@@ -20,11 +20,30 @@ export class Functions {
     });
   }
 
+  bubblyBtn() {
+    var animateButton = function (e) {
+      e.preventDefault;
+      //reset animation
+      e.target.classList.remove('animate');
+
+      e.target.classList.add('animate');
+      setTimeout(function () {
+        e.target.classList.remove('animate');
+      }, 700);
+    };
+
+    var bubblyButtons = document.getElementsByClassName("bubbly-button");
+
+    for (var i = 0; i < bubblyButtons.length; i++) {
+      bubblyButtons[i].addEventListener('click', animateButton, false);
+    }
+  }
+
   onlyNumbers() {
     var listaElementos = $('.onlyNumbers');
     //activar el metodo en diferentes eventos
-    listaElementos.each(function(ind, e) {
-      $(e).on('change keypress keyup', function(event) {
+    listaElementos.each(function (ind, e) {
+      $(e).on('change keypress keyup', function (event) {
         if (!onlyNumbers(event)) {
           return false;
         }
@@ -38,8 +57,8 @@ export class Functions {
   onlyNumbersPlus() {
     var listaElementos = $('.onlyNumbersPlus');
     //activar el metodo en diferentes eventos
-    listaElementos.each(function(ind, e) {
-      $(e).on('change keypress keyup', function(event) {
+    listaElementos.each(function (ind, e) {
+      $(e).on('change keypress keyup', function (event) {
         if (!onlyNumbersPlus(event)) {
           return false;
         }
@@ -64,32 +83,32 @@ export class Functions {
   }
 
   revisarPermisos(url) {
-   /* if (url.indexOf('ipsResetPass') < 0) {
-      let objeto = JSON.parse(localStorage.getItem('usuario'));
-      for (let i in objeto.permisos) {
-        if (objeto.permisos[i].url.indexOf(url) > 0) {
-          if (objeto.permisos[i].swSearch == 0) {
-            inhabilitarAcciones("swBuscar");
-          }
-          if (objeto.permisos[i].swEdit == 0) {
-            inhabilitarAcciones("swEditar");
-          }
-          if (objeto.permisos[i].swDelete == 0) {
-            inhabilitarAcciones("swEliminar");
-          }
-          if (objeto.permisos[i].swAdd == 0) {
-            inhabilitarAcciones("swCrear");
-          }
-          if (objeto.permisos[i].swExtra == 0) {
-            inhabilitarAcciones("swExtra");
-          }
-        }
-      }
-    }*/
+    /* if (url.indexOf('ipsResetPass') < 0) {
+       let objeto = JSON.parse(localStorage.getItem('usuario'));
+       for (let i in objeto.permisos) {
+         if (objeto.permisos[i].url.indexOf(url) > 0) {
+           if (objeto.permisos[i].swSearch == 0) {
+             inhabilitarAcciones("swBuscar");
+           }
+           if (objeto.permisos[i].swEdit == 0) {
+             inhabilitarAcciones("swEditar");
+           }
+           if (objeto.permisos[i].swDelete == 0) {
+             inhabilitarAcciones("swEliminar");
+           }
+           if (objeto.permisos[i].swAdd == 0) {
+             inhabilitarAcciones("swCrear");
+           }
+           if (objeto.permisos[i].swExtra == 0) {
+             inhabilitarAcciones("swExtra");
+           }
+         }
+       }
+     }*/
   }
 
   initEnums() {
-    $('ng-select').each(function(index, element) {
+    $('ng-select').each(function (index, element) {
       let select = $(element);
       /*if(!select.value){
         select.value = select.find('option')[0].value;
@@ -107,9 +126,9 @@ export class Functions {
 export function inhabilitarAcciones(clase) {
   var listaElementos = $('.' + clase);
   //activar el permiso en diferentes acciones
-  listaElementos.each(function(ind, obj) {
+  listaElementos.each(function (ind, obj) {
     $(obj).addClass('pointer-event-none');
-    $(obj).on('click', function(event) {
+    $(obj).on('click', function (event) {
       $(this).attr('disabled', true);
       return false;
     });

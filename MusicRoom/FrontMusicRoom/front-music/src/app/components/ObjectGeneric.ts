@@ -4,13 +4,28 @@ export var url = 'http://localhost:8080/';
 @Injectable()
 export class DataObjects {
 
+  getLocaleESForCalendar() {
+    return {
+      firstDayOfWeek: 1,
+      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+      dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      today: 'Hoy',
+      clear: 'Borrar'
+    }
+  };
+
   getConst() {
     return {
       urlRestService: 'http://localhost:9001/music-room/',
       urlControllerUsuario: 'usuario/',
       //Model rango de fechas para NGBDatePicker
       minDate: { year: 1000, month: 1, day: 1 },
-      maxDate: { year: 3000, month: 1, day: 1 },
+      maxDate: new Date(),
+      formatoFecha: 'dd/mm/yy',
+      rangoYears: '1900:3000',
 
       idiomaEs: 1,
       idiomaEn: 2,
@@ -23,12 +38,21 @@ export class DataObjects {
       tipoCampoEnum: 2,
       disabled: 'disabled',
       readOnly: 'readOnly',
-      severity: ['info', 'success', 'warn', 'danger'],
+      severity: ['info', 'success', 'warn', 'error'],
       actionModal: { 'show': 1, 'hidde': 2 },
       collectionSize: 0,
       maxSize: 1,
       rotate: true,
       pageSize: 1,
+    }
+  };
+
+  getDataModeloTablas() {
+    return {
+      // Campo de la tabla
+      field: '',
+      // Encabezado
+      header: ''
     }
   };
 
@@ -42,7 +66,6 @@ export class DataObjects {
       detail: ''
     }
   };
-
 
   getDataException() {
     return {
@@ -62,7 +85,9 @@ export class DataObjects {
       apellido: '',
       numeroDocumento: '',
       tipoDocumento: '',
-      tokenSesion: '',
+      tipoUsuario: '',
+      fechaNacimiento: '',
+      email: '',
 
       //Abstract
       estado: '',
@@ -90,6 +115,7 @@ export class DataObjects {
 
   getEnumerados() {
     let properties = this.getProperties(this.getConst().idiomaEs);
+
     return {
       sino: {
         cod: 1, valores: [
@@ -111,49 +137,80 @@ export class DataObjects {
           { value: 3, label: properties.lbl_enum_sexo_valor_ambos }
         ]
       },
+      tipoUsuario: {
+        cod: 4, valores: [
+          { value: 0, label: properties.lbl_enum_generico_valor_vacio },
+          { value: 1, label: properties.lbl_enum_tipo_usuario_valor_cliente },
+          { value: 2, label: properties.lbl_enum_tipo_usuario_valor_empleado },
+          { value: 3, label: properties.lbl_enum_tipo_usuario_valor_administrador }
+        ]
+      },
+      tipoDocumento: {
+        cod: 5, valores: [
+          { value: 0, label: properties.lbl_enum_generico_valor_vacio },
+          { value: 1, label: properties.lbl_enum_tipo_documento_valor_cc },
+          { value: 2, label: properties.lbl_enum_tipo_documento_valor_ti },
+          { value: 3, label: properties.lbl_enum_tipo_documento_valor_ce }
+        ]
+      },
       //valorIva: {cod: 25},
-
     }
   };
 
   getProperties(idioma) {
     let constant = this.getConst();
     return {
+      // Generales
       lbl_info_sin_resultados: idioma == constant.idiomaEs ? 'Sin Resultados' : 'Without Results',
       lbl_info_fallo_conectar_base_datos: idioma == constant.idiomaEs ? 'No hay Conexión a la Base de Datos' : 'Without Conection to Data Base',
       lbl_info_cargando_resultados: idioma == constant.idiomaEs ? 'Cargando Resultados' : 'Loading Results',
       lbl_info_proceso_completo: idioma == constant.idiomaEs ? 'Proceso realizado Satisfactoriamente' : 'Process Complete',
 
+      // Modales
       lbl_info_titulo_modal_error: idioma == constant.idiomaEs ? 'ERROR' : 'ERROR',
       lbl_info_titulo_modal_informacion: idioma == constant.idiomaEs ? 'INFROMACION' : 'INFORMATION',
       lbl_info_titulo_modal_advertencia: idioma == constant.idiomaEs ? 'ADVERTECNIA' : 'WARNING',
       lbl_info_titulo_modal_proceso_exitoso: idioma == constant.idiomaEs ? 'PROCESO EXITOSO' : 'PROCESS COMPLETE',
 
-      //menu
+      // Menu
       lbl_menu_usuario: idioma == constant.idiomaEs ? 'Usuarios' : 'Users',
 
-      // actions
+      // Acciones
       lbl_btn_consultar: idioma == constant.idiomaEs ? 'Consultar' : 'Query',
-      lbl_btn_edicion: idioma == constant.idiomaEs ? 'Agregar' : 'Add',
+      lbl_btn_crear: idioma == constant.idiomaEs ? 'Crear' : 'Create',
+      lbl_btn_editar: idioma == constant.idiomaEs ? 'Editar' : 'Edit',
       lbl_btn_limpiar: idioma == constant.idiomaEs ? 'Limpiar' : 'Clean',
       lbl_btn_atras: idioma == constant.idiomaEs ? 'Atrás' : 'Back',
       lbl_btn_masivo: idioma == constant.idiomaEs ? 'Masivo' : 'Masive',
       lbl_btn_exportar: idioma == constant.idiomaEs ? 'Exportar' : 'Export',
       lbl_btn_importar: idioma == constant.idiomaEs ? 'Importar' : 'Import',
       lbl_btn_actualizar: idioma == constant.idiomaEs ? 'Actualizar' : 'Update',
+      lbl_btn_guardar: idioma == constant.idiomaEs ? 'Guardar' : 'Save',
       lbl_btn_ite_remover: idioma == constant.idiomaEs ? 'Remover' : 'Remove',
       lbl_btn_ite_agregar: idioma == constant.idiomaEs ? 'Agregar' : 'Add',
 
-      //Titles
-      lbl_tip_agregar: idioma == constant.idiomaEs ? 'Haga [Clic] para agregar un nuevo registro' : 'Click to add a new register',
-      lbl_tip_editar: idioma == constant.idiomaEs ? 'Haga [Clic] para editar registro' : 'Click to edit the register selected',
-      lbl_tip_eliminar: idioma == constant.idiomaEs ? 'Haga [Clic] para eliminar registro' : 'Click to delete the register selected',
-      lbl_tip_buscar: idioma == constant.idiomaEs ? 'Haga [Clic] para buscar registros' : 'Click to search registers',
-      lbl_tip_limpiar: idioma == constant.idiomaEs ? 'Haga [Clic] para limpiar' : 'Click to clean',
-      lbl_tip_anterior: idioma == constant.idiomaEs ? 'Haga [Clic] para Regresas' : 'Click to go back',
-      lbl_tip_actualizar: idioma == constant.idiomaEs ? 'Haga [Clic] para Actualizar' : 'Click to Update',
+      // Header
+      lbl_header_usuario: idioma == constant.idiomaEs ? 'Usuario' : 'User',
+      lbl_header_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
+
+      // Titles
+      lbl_mtto_consulta: idioma == constant.idiomaEs ? 'Consulta' : 'Query',
+      lbl_mtto_creacion_edicion: idioma == constant.idiomaEs ? 'Creación/Edición' : 'Create/Edit',
+
+      // Tooltips
+      lbl_tip_cerrar_sesion: idioma == constant.idiomaEs ? 'Cerrar Sesión' : 'End Session',
+      lbl_tip_agregar: idioma == constant.idiomaEs ? '[Clic] para agregar un nuevo registro' : 'Click to add a new register',
+      lbl_tip_editar: idioma == constant.idiomaEs ? '[Clic] para editar registro' : 'Click to edit the register selected',
+      lbl_tip_eliminar: idioma == constant.idiomaEs ? '[Clic] para eliminar registro' : 'Click to delete the register selected',
+      lbl_tip_buscar: idioma == constant.idiomaEs ? '[Clic] para buscar registros' : 'Click to search registers',
+      lbl_tip_limpiar: idioma == constant.idiomaEs ? '[Clic] para limpiar' : 'Click to clean',
+      lbl_tip_anterior: idioma == constant.idiomaEs ? '[Clic] para Regresar' : 'Click to go back',
+      lbl_tip_actualizar: idioma == constant.idiomaEs ? '[Clic] para Actualizar' : 'Click to update',
+      lbl_tip_guardar: idioma == constant.idiomaEs ? '[Clic] para Guardar' : 'Click to save',
 
       //Enums
+      lbl_enum_generico_valor_vacio: idioma == constant.idiomaEs ? 'Selecciona una opción' : 'Select a Item',
+
       lbl_enum_si: idioma == constant.idiomaEs ? 'Si' : 'Yes',
       lbl_enum_no: idioma == constant.idiomaEs ? 'No' : 'No',
 
@@ -166,16 +223,28 @@ export class DataObjects {
       lbl_enum_sexo_valor_femenino: idioma == constant.idiomaEs ? 'Femenino' : 'Femenino',
       lbl_enum_sexo_valor_ambos: idioma == constant.idiomaEs ? 'Ambos' : 'Ambos',
 
-      // Usuario
+      lbl_enum_tipo_usuario_valor_cliente: idioma == constant.idiomaEs ? 'Cliente' : 'Client',
+      lbl_enum_tipo_usuario_valor_empleado: idioma == constant.idiomaEs ? 'Empleado' : 'Employed',
+      lbl_enum_tipo_usuario_valor_administrador: idioma == constant.idiomaEs ? 'Administrador' : 'Admin',
+
+      lbl_enum_tipo_documento_valor_cc: idioma == constant.idiomaEs ? 'CC' : 'CC',
+      lbl_enum_tipo_documento_valor_ti: idioma == constant.idiomaEs ? 'TI' : 'TI',
+      lbl_enum_tipo_documento_valor_ce: idioma == constant.idiomaEs ? 'CE' : 'CE',
+
+      // Módulos Genéricos
+      lbl_mtto_generico_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
+
+      // Módulo Usuario
       lbl_mtto_usuario_title: idioma == constant.idiomaEs ? 'Configuración de Usuarios' : 'Users Settings',
       lbl_mtto_usuario_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'First Name',
       lbl_mtto_usuario_apellido: idioma == constant.idiomaEs ? 'Apellido' : 'Last Name',
+      lbl_mtto_usuario_tipo_documento: idioma == constant.idiomaEs ? 'Tipo Documento' : 'Document Type',
+      lbl_mtto_usuario_numero_documento: idioma == constant.idiomaEs ? 'Número Documento' : 'Document Number',
       lbl_mtto_usuario_usuario: idioma == constant.idiomaEs ? 'Usuario' : 'User',
       lbl_mtto_usuario_email: idioma == constant.idiomaEs ? 'Email' : 'Email',
-      lbl_mtto_usuario_estado: idioma == constant.idiomaEs ? 'Estado' : 'State',
-      lbl_mtto_usuario_rol: idioma == constant.idiomaEs ? 'Rol' : 'Role',
-      lbl_mtto_usuario_sw_administrador: idioma == constant.idiomaEs ? 'Administrador' : 'Admin',
-      lbl_mtto_usuario_sw_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active'
+      lbl_mtto_usuario_fecha_nacimiento: idioma == constant.idiomaEs ? 'Fecha Nacimiento' : 'Birth Date',
+      lbl_mtto_usuario_tipo_usuario: idioma == constant.idiomaEs ? 'Tipo Usuario' : 'User Type',
+      lbl_mtto_usuario_sw_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
     }
   };
 }

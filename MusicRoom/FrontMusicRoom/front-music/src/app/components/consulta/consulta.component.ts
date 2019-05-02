@@ -1,22 +1,17 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Http } from '@angular/http';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
-import { Util } from '../Util';
 import { DataObjects } from '../ObjectGeneric';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { Component, OnInit, Input, forwardRef, Inject, Output, EventEmitter } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { format } from 'url';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { RestService } from '../../services/rest.service';
+import { Util } from '../Util';
 
 @Component({
   selector: 'app-consulta',
-  templateUrl: './consultamtto.component.html',
-  styleUrls: ['./consultamtto.component.css']
+  templateUrl: './consulta.component.html',
+  styleUrls: ['./consulta.component.css']
 })
 
-export class ConsultamttoComponent implements OnInit {
+export class ConsultaComponent implements OnInit {
   @Input() lista: any[];
   @Input() cabeceras: any[];
   @Input() btnEditar: any[];
@@ -24,18 +19,24 @@ export class ConsultamttoComponent implements OnInit {
   @Output() enviarObjetoEditar: EventEmitter<any> = new EventEmitter();
   @Output() enviarObjetoEliminar: EventEmitter<any> = new EventEmitter();
 
+  cols: any[];
   p: number = 1;
 
   msg: any;
   const: any;
   util: any;
+
   constructor(private http: Http, private router: Router, datasObject: DataObjects, util: Util) {
     this.const = datasObject.getConst();
-    this.msg = datasObject.getProperties(this.const.idiomaEn);
+    this.msg = datasObject.getProperties(this.const.idiomaEs);
     this.util = util;
   }
 
   ngOnInit() {
+  }
+
+  ngAfterContentChecked() {
+    this.cols = this.util.armarTabla(this.cabeceras, this.lista);
   }
 
   editar(obj) {

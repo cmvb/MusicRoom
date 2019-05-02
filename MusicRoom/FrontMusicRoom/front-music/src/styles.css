@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-html, body {
+html, body, table {
   font-family: 'Roboto', 'Helvetica', sans-serif;
+  /*font-family: "Questrial";*/
+}
+
+h5 {
+  margin: 5px !important;
 }
 
 input {
@@ -280,16 +285,16 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .content-page {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
-  background: #ffffff;
+  background: #ececec69;
   height: 100%;
-  min-height: 505px;
+  min-height: 555px;
   margin-top: 75px;
-  padding: 10px;
+  padding: 5px;
 }
 
 .mdl-layout__content {
   background: #eaeaea;
-  background-image: url('assets/images/fondoBlanco.jpg');
+  background-image: url('assets/images/fondoMusicRoom.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -350,12 +355,19 @@ _:-ms-input-placeholder, :root .demo-graph {
   text-shadow: 1px 1px 3px white;
 }
 
+.mttoTitle {
+  color: #f4f4f4;
+  background: #4169ad6e;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 .shadow {
   text-shadow: 1px 1px 3px black;
 }
 
 .fontWhite {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .altura250px {
@@ -363,8 +375,13 @@ _:-ms-input-placeholder, :root .demo-graph {
   width: auto;
 }
 
+.mdl-list__item .mdl-list__item-primary-content .mdl-list__item-icon {
+  margin-right: 5px !important;
+}
+
 .center {
   text-align: center;
+  justify-content: center;
 }
 
 .boxShiny {
@@ -407,8 +424,150 @@ _:-ms-input-placeholder, :root .demo-graph {
   color: red;
 }
 
-.mdl-layout__header-row{
+.mdl-layout__header-row {
   background-image: url('assets/images/fondoLogin.jpg');
+}
+
+.mdl-card {
+  width: 100%;
+}
+
+.mdl-card__supporting-text {
+  width: 100%;
+}
+
+.btnCircularB {
+  min-width: 32px !important;
+  color: #607d8b;
+  background: rgba(140, 141, 142, 0.32);
+  box-shadow: #424242 1px 1px 1px;
+}
+
+.ui-float-label {
+  padding: 5px 10px;
+}
+
+.ui-float-label>label {
+  padding: 0 10px !important;
+}
+
+.ui-paginator .ui-paginator-first, .ui-paginator .ui-paginator-prev, .ui-paginator .ui-paginator-next, .ui-paginator .ui-paginator-last, .ui-paginator .ui-paginator-pages .ui-paginator-page {
+  height: 19px !important;
+  line-height: 18px !important;
+  color: #ffffff !important;
+}
+
+.ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+  height: 19px !important;
+  background-color: #448aff !important;
+}
+
+.ui-paginator .ui-paginator-pages {
+  height: 20px !important;
+}
+
+.ui-paginator {
+  height: 21px !important;
+  background-color: #424242 !important;
+  color: white !important;
+  border: 1px solid #212121 !important;
+}
+
+.ui-table .ui-table-thead>tr>th {
+  padding: 5px !important;
+  color: #ececec !important;
+  background: #448aff !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+}
+
+.ui-table .ui-table-tbody>tr>td {
+  padding: 2px !important;
+  text-transform: uppercase !important;
+}
+
+.fontNosifer {
+  /*font-family: "Nosifer Caps";*/
+  font-family: "Merienda One";
+}
+
+.espacioFooter {
+  margin-bottom: 70px;
+}
+
+.minWidth32 {
+  min-width: 32px !important;
+}
+
+.list-inline {
+  display: -webkit-inline-box;
+}
+
+.obligatorio::before {
+  content: '*';
+  color: red;
+}
+
+.ui-calendar {
+  display: flex;
+}
+
+.mdl-card, .mdl-card__supporting-text {
+  overflow: visible;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  text-align: left;
+}
+
+.ng-select .ng-select-container {
+  border: 1px solid #a6a6a6;
+}
+
+.ng-select .ng-select-container:hover, .ng-select .ng-select-container .ng-value-container .ng-input>input:hover {
+  cursor: pointer;
+}
+
+.ng-select .ng-select-container {
+  border-radius: 3px;
+  min-height: 33px;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  height: 33px;
+}
+
+.ui-datepicker {
+  padding: 5px !important;
+}
+
+.ui-datepicker .ui-datepicker-header .ui-datepicker-title select {
+  border-radius: 4px;
+}
+
+.ui-datepicker table th {
+  padding: 3px !important;
+}
+
+.ui-datepicker table td {
+  padding: 3px !important;
+}
+
+.ui-datepicker table td>a, body .ui-datepicker table td>span {
+  padding: 1px !important;
+}
+
+.logoProjects {
+  position: absolute;
+  float: right;
+  bottom: 17px;
+  height: 30px;
+  width: auto;
+  right: 10px;
+}
+
+.ui-calendar .ui-datepicker-prev, .ui-calendar .ui-datepicker-next {
+  display: none;
 }
 
 /* ---------------------------- MediaQuery ---------------------------- */
@@ -426,3 +585,13 @@ _:-ms-input-placeholder, :root .demo-graph {
     display: none;
   }
 }
+
+@media only screen and (max-width: 1024px) {
+  .mdl-layout__drawer-button {
+    background: #ffffffad;
+    border-radius: 50px;
+    color: black;
+  }
+}
+
+/* ---------------------------- MediaQuery ---------------------------- */

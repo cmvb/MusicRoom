@@ -24,7 +24,7 @@ public class BaseEntidadTB {
 
 	@NotNull
 	@Column(name = "usuario_creacion", nullable = false, length = 10)
-	private String usuarioCreacion = "SYSTEM (Temporal, se saca de la sesión)";
+	private String usuarioCreacion = "SYSTEM";
 
 	@NotNull
 	@Column(name = "fecha_actualiza", nullable = false)
@@ -33,7 +33,7 @@ public class BaseEntidadTB {
 
 	@NotNull
 	@Column(name = "usuario_actualiza", nullable = false, length = 10)
-	private String usuarioActualiza = "SYSTEM (Temporal, se saca de la sesión)";
+	private String usuarioActualiza = "SYSTEM";
 
 	public short getEstado() {
 		return estado;

@@ -23,10 +23,13 @@ export class UsuarioQueryComponent implements OnInit {
   // Objetos de Sesion
   usuarioSesion: any;
   sesion: any;
+
   // Utilidades
   util: any;
   msg: any;
+  ex: any;
   const: any;
+  msgs = [];
 
   // Objetos de Datos
   data: any;
@@ -37,9 +40,9 @@ export class UsuarioQueryComponent implements OnInit {
   btnEditar = true;
   btnEliminar = true;
   listaCabeceras = [
-    { 'campoLista': 'usuario', 'nombreCabecera': 'User' },
-    { 'campoLista': 'nombre', 'nombreCabecera': 'First Name' },
-    { 'campoLista': 'apellido', 'nombreCabecera': 'Last Name' },
+    { 'campoLista': 'usuario', 'nombreCabecera': 'Usuario' },
+    { 'campoLista': 'nombre', 'nombreCabecera': 'Nombre' },
+    { 'campoLista': 'apellido', 'nombreCabecera': 'Apellido' },
   ];
 
   // Propiedades de las peticiones REST
@@ -50,7 +53,7 @@ export class UsuarioQueryComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
     this.usuarioSesion = datasObject.getDataUsuario();
     this.sesion = datasObject.getDataSesion();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEn);
+    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
     this.const = datasObject.getConst();
     this.util = util;
     this.objetoFiltro = datasObject.getDataUsuario();
@@ -62,33 +65,30 @@ export class UsuarioQueryComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    let filtroTemporal = this.util.getSesionXItem('objetoFiltro');
-    if (filtroTemporal != null) {
-      this.objetoFiltro = filtroTemporal;
-    }
+    this.consultarUsuarios();
+  }
 
-    let listaTemporal = this.util.getSesionXItem('listaConsulta');
-    if (listaTemporal != null) {
-      this.listaConsulta = listaTemporal;
-    }
-    else {
-      this.consultarUsuarios();
-    }
+  limpiarExcepcion() {
+    this.ex = this.util.limpiarExcepcion;
+    this.msgs = [];
   }
 
   consultarUsuarios() {
     try {
+      this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'consultarPorFiltros';
       let obj = this.objetoFiltro;
+      obj.estado = "1";
 
       this.restService.postREST(url, obj)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
-          console.log(this.data);
           this.listaConsulta = this.data;
         },
           error => {
+            this.ex = error.error;
+            this.msgs.push(this.util.mostrarNotificacion(this.ex));
             console.log(error, "error");
           })
     } catch (e) {

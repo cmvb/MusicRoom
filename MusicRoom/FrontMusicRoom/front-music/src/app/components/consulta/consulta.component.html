@@ -1,0 +1,24 @@
+<p-table *ngIf="lista.length > 0; else sinResultados" [responsive]="true" [paginator]="true" [rows]="10"
+	[columns]="cols" [value]="lista">
+	<ng-template pTemplate="header" let-columns>
+		<tr>
+			<th *ngFor="let col of cols">
+				{{col.header}}
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowData let-columns="cols">
+		<tr>
+			<td *ngFor="let col of cols">
+				{{rowData[col.field]}}
+			</td>
+		</tr>
+	</ng-template>
+</p-table>
+<ng-template #sinResultados>
+	<div class="row align-items-center">
+		<div class="col">
+			<p class="bold">{{msg.lbl_info_sin_resultados}}</p>
+		</div>
+	</div>
+</ng-template>
