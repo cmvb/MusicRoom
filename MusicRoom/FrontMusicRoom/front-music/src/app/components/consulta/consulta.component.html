@@ -2,6 +2,8 @@
 	[columns]="cols" [value]="lista">
 	<ng-template pTemplate="header" let-columns>
 		<tr>
+			<th style="width: 50px"></th>
+			<th style="width: 50px"></th>
 			<th *ngFor="let col of cols">
 				{{col.header}}
 			</th>
@@ -9,6 +11,21 @@
 	</ng-template>
 	<ng-template pTemplate="body" let-rowData let-columns="cols">
 		<tr>
+			<td class="btnActions">
+				<button *ngIf="btnEditar" (click)="editar(rowData)" mdl-tooltip-position="bottom"
+					mdl-tooltip-large="{{msg.lbl_tip_editar}}" type="button"
+					class="hoverEdit shiny mdl-button mdl-js-button mdl-button--icon minWidth32">
+					<i class="material-icons">edit</i>
+				</button>
+			</td>
+			<td class="btnActions">
+				<button *ngIf="btnEliminar" (click)="eliminar(rowData)" mdl-tooltip-position="bottom"
+					mdl-tooltip-large="{{msg.lbl_tip_eliminar}}" type="button"
+					class="hoverDelete shiny mdl-button mdl-js-button mdl-button--icon minWidth32">
+					<i class="material-icons">delete</i>
+				</button>
+			</td>
+
 			<td *ngFor="let col of cols">
 				{{rowData[col.field]}}
 			</td>

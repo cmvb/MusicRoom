@@ -1,4 +1,4 @@
-package com.proyectos.dao;
+package com.proyectos.dao.impl;
 
 import java.util.List;
 
@@ -8,6 +8,9 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.proyectos.dao.AbstractDao;
+import com.proyectos.dao.ISesionDao;
+import com.proyectos.dao.IUsuarioDao;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
 import com.proyectos.util.Util;
@@ -50,6 +53,7 @@ public class SesionDaoImpl extends AbstractDao<SesionTB> implements ISesionDao {
 
 	@Override
 	public void eliminar(long idSesion) {
+		super.setClazz(SesionTB.class);
 		deleteById(idSesion);
 	}
 

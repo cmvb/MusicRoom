@@ -1,14 +1,12 @@
+import { Component, OnInit } from '@angular/core';
+import { Headers, RequestOptions } from '@angular/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import 'rxjs/add/operator/map';
-import { Util } from '../Util';
-import { DataObjects } from '../ObjectGeneric';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { Component, OnInit, Input, forwardRef, Inject } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { format } from 'url';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { RestService } from '../../services/rest.service';
+import { DataObjects } from '../ObjectGeneric';
+import { Util } from '../Util';
+import * as $ from 'jquery';
 
 declare var $: any;
 
@@ -16,7 +14,7 @@ declare var $: any;
   selector: 'app-usuario-query',
   templateUrl: './usuarioQuery.component.html',
   styleUrls: ['./usuarios.component.css'],
-  providers: [RestService]
+  providers: [RestService, MessageService]
 })
 
 export class UsuarioQueryComponent implements OnInit {
@@ -29,7 +27,6 @@ export class UsuarioQueryComponent implements OnInit {
   msg: any;
   ex: any;
   const: any;
-  msgs = [];
 
   // Objetos de Datos
   data: any;
@@ -50,7 +47,7 @@ export class UsuarioQueryComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
     this.usuarioSesion = datasObject.getDataUsuario();
     this.sesion = datasObject.getDataSesion();
     this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
@@ -68,9 +65,17 @@ export class UsuarioQueryComponent implements OnInit {
     this.consultarUsuarios();
   }
 
+  ngAfterViewInit() {
+    if (this.util.getSesionXItem('mensajeConfirmacion') != null) {
+      let mensajeConfirmacion = JSON.parse(localStorage.getItem('mensajeConfirmacion'));
+      this.messageService.clear();
+      this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: mensajeConfirmacion });
+      this.ex.mensaje = mensajeConfirmacion;
+    }
+  }
+
   limpiarExcepcion() {
     this.ex = this.util.limpiarExcepcion;
-    this.msgs = [];
   }
 
   consultarUsuarios() {
@@ -88,7 +93,10 @@ export class UsuarioQueryComponent implements OnInit {
         },
           error => {
             this.ex = error.error;
-            this.msgs.push(this.util.mostrarNotificacion(this.ex));
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
             console.log(error, "error");
           })
     } catch (e) {
@@ -103,7 +111,7 @@ export class UsuarioQueryComponent implements OnInit {
     return true;
   }
 
-  irEditar(objetoEdit) {
+  editar(objetoEdit) {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }]);
     this.router.navigate(['/usuarioEdit']);
     return true;
@@ -115,8 +123,32 @@ export class UsuarioQueryComponent implements OnInit {
     return true;
   }
 
-  eliminar(obj) {
+  eliminar(objetoEdit) {
+    try {
+      this.limpiarExcepcion();
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'eliminarUsuario';
 
+      this.restService.postREST(url, objetoEdit)
+        .subscribe(resp => {
+          console.log(resp, "res");
+          this.data = resp;
+          this.limpiar();
+          this.consultarUsuarios();
+          this.messageService.clear();
+          this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: 'El Usuario fue eliminado satisfactoriamente.' });
+          this.ex.mensaje = 'El Usuario fue eliminado satisfactoriamente.';
+        },
+          error => {
+            this.ex = error.error;
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
+            console.log(error, "error");
+          })
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   consultaTeclaEnter(event) {

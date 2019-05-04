@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Util} from '../.././components/Util';
+import * as $ from 'jquery';
 
 declare var $: any;
 

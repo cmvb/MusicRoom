@@ -1,4 +1,4 @@
-package com.proyectos.service;
+package com.proyectos.service.impl;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import com.proyectos.dao.IUsuarioDao;
 import com.proyectos.enums.EEstado;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
+import com.proyectos.service.IUsuarioService;
 import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.Util;
 
@@ -58,7 +59,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	@Transactional
 	@Override
 	public UsuarioTB crear(UsuarioTB usuario) {
-		usuario.setIdUsuario(sesionDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_USUARIO_TB));
+		usuario.setIdUsuario(usuarioDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_USUARIO_TB));
 		return usuarioDAO.crear(usuario);
 	}
 

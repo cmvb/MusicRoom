@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DataObjects } from '.././components/ObjectGeneric';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Headers, Http, RequestOptions } from '@angular/http';
 import { Functions } from '.././components/Functions';
+import { DataObjects } from '.././components/ObjectGeneric';
 
 declare var $: any;
 
@@ -415,15 +414,20 @@ export class Util {
   }
 
   mostrarNotificacion(exc) {
-    if (exc.mensaje === undefined) {
-      exc.mensaje = "";
-    }
-
     let mensaje = { severity: '', summary: '', detail: '' };
-    Object.assign(this.mensaje, mensaje);
-    mensaje.severity = exc.mensaje.length > 0 ? this.const.severity[2] : this.const.severity[3];
-    mensaje.summary = exc.mensaje.length > 0 ? "ADVERTENCIA: " : "ERROR: ";
-    mensaje.detail = exc.mensaje.length > 0 ? exc.mensaje : "No se ha podido establecer la conexión con el Servidor";
+    if (exc != null) {
+      if (exc.mensaje == null && exc.mensaje === undefined) {
+        exc.mensaje = "";
+      }
+
+      Object.assign(this.mensaje, mensaje);
+      mensaje.severity = exc.mensaje.length > 0 ? this.const.severity[2] : this.const.severity[3];
+      mensaje.summary = exc.mensaje.length > 0 ? "ADVERTENCIA: " : "ERROR: ";
+      mensaje.detail = exc.mensaje.length > 0 ? exc.mensaje : "No se ha podido establecer la conexión con el Servidor";
+    }
+    else {
+      return { severity: this.const.severity[3], summary: 'ERROR: ', detail: 'No se ha podido establecer la conexión con el Servidor' }
+    }
 
     return mensaje;
   }

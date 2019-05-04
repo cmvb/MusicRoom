@@ -1,4 +1,4 @@
-package com.proyectos.dao;
+package com.proyectos.dao.impl;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import javax.persistence.TypedQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
+import com.proyectos.dao.AbstractDao;
+import com.proyectos.dao.IUsuarioDao;
 import com.proyectos.model.UsuarioTB;
 import com.proyectos.util.Util;
 
@@ -119,6 +121,7 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 
 	@Override
 	public void eliminar(long idUsuario) {
+		super.setClazz(UsuarioTB.class);
 		deleteById(idUsuario);
 	}
 

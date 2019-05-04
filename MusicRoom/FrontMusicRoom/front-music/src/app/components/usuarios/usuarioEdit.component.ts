@@ -1,14 +1,12 @@
+import { Component, OnInit } from '@angular/core';
+import { Headers, RequestOptions } from '@angular/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import 'rxjs/add/operator/map';
-import { Util } from '../Util';
-import { DataObjects } from '../ObjectGeneric';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { Component, OnInit, Input, forwardRef, Inject } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { format } from 'url';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { RestService } from '../../services/rest.service';
+import { DataObjects } from '../ObjectGeneric';
+import { Util } from '../Util';
+import * as $ from 'jquery';
 
 declare var $: any;
 
@@ -16,7 +14,7 @@ declare var $: any;
   selector: 'app-usuario-edit',
   templateUrl: './usuarioEdit.component.html',
   styleUrls: ['./usuarios.component.css'],
-  providers: [RestService]
+  providers: [RestService, MessageService]
 })
 
 export class UsuarioEditComponent implements OnInit {
@@ -30,8 +28,8 @@ export class UsuarioEditComponent implements OnInit {
   const: any;
   locale: any;
   ex: any;
-  msgs = [];
   maxDate = new Date();
+  isDisabled: boolean;
 
   // Objetos de Datos
   phase: any;
@@ -50,7 +48,7 @@ export class UsuarioEditComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
     this.usuarioSesion = datasObject.getDataUsuario();
     this.sesion = datasObject.getDataSesion();
     this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
@@ -70,25 +68,28 @@ export class UsuarioEditComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    if (this.util.getSesionXItem('editParam') != null) {
-      this.objeto = JSON.parse(localStorage.getItem('editParam'));
-    }
-
+    this.util.limpiarSesionXItem(['mensajeConfirmacion']);
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
     this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
     this.phase = this.util.getSesionXItem('phase');
+    this.isDisabled = this.phase !== this.const.phaseAdd;
+
+    if (this.util.getSesionXItem('editParam') != null) {
+      this.objeto = JSON.parse(localStorage.getItem('editParam'));
+      this.objeto.fechaNacimiento = new Date(this.objeto.fechaNacimiento);
+      this.inicializarCombos();
+    }
   }
 
   limpiarExcepcion() {
     this.ex = this.util.limpiarExcepcion;
-    this.msgs = [];
   }
 
   irGuardar() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'crearUsuario';
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + (this.phase === this.const.phaseAdd ? 'crearUsuario' : 'modificarUsuario');
       this.ajustarCombos();
       let obj = this.objeto;
 
@@ -96,11 +97,16 @@ export class UsuarioEditComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
+          let mensajeConfirmacion = 'El Usuario ' + this.data.usuario + ' fue ' + (this.phase === this.const.phaseAdd ? 'creado' : 'actualizado') + ' satisfactoriamente.';
+          this.util.agregarSesionXItem([{ item: 'mensajeConfirmacion', valor: mensajeConfirmacion }]);
           this.irAtras();
         },
           error => {
             this.ex = error.error;
-            this.msgs.push(this.util.mostrarNotificacion(this.ex));
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
             this.inicializarCombos();
 
             console.log(error, "error");

@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable'
+import { Injectable } from '@angular/core';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -10,7 +9,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class RestService {
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   getREST(url) {
     return this.http.get(url);
@@ -25,6 +24,12 @@ export class RestService {
   }
 
   deleteREST(url, id) {
-    return this.http.delete(url + id)
+    let idParam = '{' + id + '}';
+    //const params = new HttpParams().set('id', '1');
+
+    //return this.http.delete(url + '/&#123' + id + '&#125')
+    //const params = new HttpParams().set('id', id);
+
+    return this.http.delete(`${url}/${idParam}`);
   }
 }
