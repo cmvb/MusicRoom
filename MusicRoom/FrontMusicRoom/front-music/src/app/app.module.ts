@@ -11,6 +11,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
+import { ToastModule } from 'primeng/toast';
 
 // Imports Esenciales
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -127,7 +128,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MessagesModule,
     MessageModule,
     TableModule,
-    CalendarModule
+    CalendarModule,
+    ToastModule
   ],
   providers: [DataObjects, LoginGuard, Util, Functions],
   bootstrap: [AppComponent]

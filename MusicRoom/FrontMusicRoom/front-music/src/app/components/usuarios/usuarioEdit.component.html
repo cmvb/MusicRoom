@@ -16,7 +16,7 @@
 					<div class="ui-g">
 						<div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
 							<h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_usuario_title}} -
-								{{msg.lbl_btn_crear}}
+								{{phase === const.phaseAdd ? msg.lbl_btn_crear : msg.lbl_btn_editar}}
 							</h5>
 
 							<div class="ui-g center">
@@ -88,7 +88,7 @@
 												<label class="obligatorio"
 													for="float-input">{{msg.lbl_mtto_usuario_usuario}}</label>
 												<span class="ui-float-label">
-													<input pInputText id="txtUsuario" [disabled]="disabled"
+													<input pInputText id="txtUsuario" [disabled]="isDisabled"
 														(keydown)="guardaTeclaEnter($event)"
 														[(ngModel)]="objeto.usuario" type="text" size="10">
 												</span>
@@ -133,7 +133,7 @@
 										</div>
 
 										<div class="ui-g center">
-											<p-messages severity="const.severity[2]" [(value)]="msgs"></p-messages>
+											<p-messages class="w100"></p-messages>
 										</div>
 									</div>
 								</div>
@@ -148,3 +148,11 @@
 	<!-- Importamos el Footer -->
 	<app-footer></app-footer>
 </div>
+
+<p-toast position="top-right" styleClass="custom-toast">
+	<ng-template let-message pTemplate="message">
+		<div style="width: 100%;">
+			<p style="font-size: 12px !important" innerHtml="{{ex.mensaje}}"></p>
+		</div>
+	</ng-template>
+</p-toast>

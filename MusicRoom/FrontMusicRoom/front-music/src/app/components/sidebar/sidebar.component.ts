@@ -4,8 +4,7 @@ import 'rxjs/add/operator/map';
 import { DataObjects } from '../.././components/ObjectGeneric';
 import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
-
-declare var $: any;
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-sidebar',
@@ -53,6 +52,11 @@ export class SidebarComponent implements OnInit {
   }
 
   irMenu(menu) {
+    this.util.limpiarVariableSesion();
     this.router.navigate(['/' + menu]);
+  }
+
+  desplegarMenu(id) {
+    $('#' + id).children('ul').toggle('display');
   }
 }

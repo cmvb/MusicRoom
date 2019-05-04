@@ -4,6 +4,7 @@ import 'rxjs/add/operator/map';
 import { DataObjects } from '../.././components/ObjectGeneric';
 import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
+import * as $ from 'jquery';
 
 declare var $: any;
 

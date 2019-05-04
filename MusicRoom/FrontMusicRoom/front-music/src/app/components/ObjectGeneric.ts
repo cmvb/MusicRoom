@@ -19,8 +19,9 @@ export class DataObjects {
 
   getConst() {
     return {
-      urlRestService: 'http://localhost:9001/music-room/',
+      urlRestService: 'http://localhost:9002/music-room/',
       urlControllerUsuario: 'usuario/',
+      urlControllerTercero: 'tercero/',
       //Model rango de fechas para NGBDatePicker
       minDate: { year: 1000, month: 1, day: 1 },
       maxDate: new Date(),
@@ -88,6 +89,45 @@ export class DataObjects {
       tipoUsuario: '',
       fechaNacimiento: '',
       email: '',
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
+    }
+  };
+
+  getDataUbicacion() {
+    return {
+      idUbicacion: '',
+      codigoCiudad: '',
+      nombreCiudad: '',
+      codigoDepartamento: '',
+      nombreDepartamento: '',
+      codigoPais: '',
+      nombrePais: '',
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
+    }
+  };
+
+  getDataTercero() {
+    return {
+      //Usuario
+      idTercero: '',
+      razonSocial: '',
+      direccion: '',
+      telefono1: '',
+      telefono2: '',
+      infoAdicional: '',
+      ubicacionTb: this.getDataUbicacion(),
 
       //Abstract
       estado: '',
@@ -173,7 +213,17 @@ export class DataObjects {
       lbl_info_titulo_modal_proceso_exitoso: idioma == constant.idiomaEs ? 'PROCESO EXITOSO' : 'PROCESS COMPLETE',
 
       // Menu
+      lbl_menu_parametrizacion: idioma == constant.idiomaEs ? 'Parametrización' : 'Parameterization',
+      lbl_menu_sesion: idioma == constant.idiomaEs ? 'Sesión' : 'Session',
       lbl_menu_usuario: idioma == constant.idiomaEs ? 'Usuarios' : 'Users',
+      lbl_menu_tercero: idioma == constant.idiomaEs ? 'Empresas/Terceros' : 'Companies',
+      lbl_menu_sala: idioma == constant.idiomaEs ? 'Salas de Ensayo' : 'Rehearsal Rooms',
+      lbl_menu_ubicacion: idioma == constant.idiomaEs ? 'Ubicaciones' : 'Locations',
+      lbl_menu_banda_integrante: idioma == constant.idiomaEs ? 'Bandas/Integrantes' : 'Bands/Members',
+      lbl_menu_ensayo: idioma == constant.idiomaEs ? 'Agendar Ensayo' : 'Schedule Rehearsal',
+      lbl_menu_factura_pago: idioma == constant.idiomaEs ? 'Facturas/Pagos' : 'Bills/Payments',
+      lbl_menu_inventario: idioma == constant.idiomaEs ? 'Productos/Accesorios' : 'Products/Accesories',
+      lbl_menu_prestamo: idioma == constant.idiomaEs ? 'Alquiler' : 'Rental',
 
       // Acciones
       lbl_btn_consultar: idioma == constant.idiomaEs ? 'Consultar' : 'Query',

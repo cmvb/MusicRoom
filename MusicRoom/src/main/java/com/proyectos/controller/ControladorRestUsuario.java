@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +27,7 @@ import com.proyectos.util.Util;
 
 @RestController
 @RequestMapping("/music-room/usuario")
-public class ControladorRest {
+public class ControladorRestUsuario {
 
 	@Autowired
 	IUsuarioService usuarioService;
@@ -64,8 +63,15 @@ public class ControladorRest {
 
 					throw new ModelNotFoundException(mensaje);
 				} else {
-					if (sesion.getUsuarioTb().getEstado() == EEstado.INACTIVO.ordinal()) {
-						mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.noAccesoApp.usuarioInactivo");
+					if (!StringUtils.isBlank(sesion.getUsuarioTb().getPassword())) {
+						if (sesion.getUsuarioTb().getEstado() == EEstado.INACTIVO.ordinal()) {
+							mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.noAccesoApp.usuarioInactivo");
+
+							throw new ModelNotFoundException(mensaje);
+						}
+					} else {
+						mensaje = PropertiesUtil
+								.getProperty("musicroom.msg.validate.noAccesoApp.usuarioPendienteActivar");
 
 						throw new ModelNotFoundException(mensaje);
 					}
@@ -145,10 +151,12 @@ public class ControladorRest {
 		return new ResponseEntity<UsuarioTB>(usuarioNuevo, HttpStatus.OK);
 	}
 
-	@DeleteMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/eliminarUsuario")
-	public void eliminar(@PathVariable("id") Long idUsuario) {
-		usuarioService.eliminar(idUsuario);
+	public void eliminar(@RequestBody UsuarioTB usuario) {
+		if (usuario != null) {
+			usuarioService.eliminar(usuario.getIdUsuario());
+		}
 	}
 
 }
