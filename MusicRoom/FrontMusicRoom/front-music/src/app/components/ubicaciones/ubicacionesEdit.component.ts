@@ -102,7 +102,7 @@ export class UbicacionesEditComponent implements OnInit {
     this.phase = this.util.getSesionXItem('phase');
     this.isDisabled = this.phase !== this.const.phaseAdd;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
-    debugger;
+
     // Paises
     this.listaPaises = this.util.getSesionXItem('listaPaises');
     this.enumFiltroPaises = this.util.obtenerEnumeradoDeListaUbicacion(this.listaPaises, 0);
@@ -116,6 +116,7 @@ export class UbicacionesEditComponent implements OnInit {
     if (this.util.getSesionXItem('editParam') != null) {
       this.objeto = JSON.parse(localStorage.getItem('editParam'));
       this.inicializarCombos();
+      this.colocarValoresObjetoEdit();
     }
 
     this.tabsMenu = [
@@ -161,6 +162,13 @@ export class UbicacionesEditComponent implements OnInit {
     this.nombreCiudadC = null;
   }
 
+  colocarValoresObjetoEdit() {
+    this.objeto.estado = this.util.getValorEnumerado(this.enumSiNo, this.objeto.estado);
+    this.paisSeleccionado = this.util.obtenerUbicacionPorCodigo(this.objeto.codigoPais, this.listaPaises, 0);
+    this.departamentoSeleccionado = this.util.obtenerUbicacionPorCodigo(this.objeto.codigoDepartamento, this.listaDepartamentos, 1);
+    this.ciudadSeleccionada = this.util.obtenerUbicacionPorCodigo(this.objeto.codigoCiudad, this.listaCiudades, 2);
+  }
+
   ajustarCombos() {
     this.objeto.estado = this.objeto.estado.value;
 
@@ -175,8 +183,8 @@ export class UbicacionesEditComponent implements OnInit {
         this.objeto.tipoUbicacion = 0;
       }
       else if (this.mostrarD) {
-        this.objeto.codigoPais = this.paisSeleccionadoD.codigoPais;
-        this.objeto.nombrePais = this.paisSeleccionadoD.nombrePais;
+        this.objeto.codigoPais = this.paisSeleccionadoD.value.codigoPais;
+        this.objeto.nombrePais = this.paisSeleccionadoD.value.nombrePais;
         this.objeto.codigoDepartamento = this.codigoDepartamentoD;
         this.objeto.nombreDepartamento = this.nombreDepartamentoD;
         this.objeto.codigoCiudad = null;
@@ -184,10 +192,10 @@ export class UbicacionesEditComponent implements OnInit {
         this.objeto.tipoUbicacion = 1;
       }
       else if (this.mostrarC) {
-        this.objeto.codigoPais = this.paisSeleccionadoC.codigoPais;
-        this.objeto.nombrePais = this.paisSeleccionadoC.nombrePais;
-        this.objeto.codigoDepartamento = this.departamentoSeleccionadoC.codigoPais;
-        this.objeto.nombreDepartamento = this.departamentoSeleccionadoC.nombrePais;
+        this.objeto.codigoPais = this.paisSeleccionadoC.value.codigoPais;
+        this.objeto.nombrePais = this.paisSeleccionadoC.value.nombrePais;
+        this.objeto.codigoDepartamento = this.departamentoSeleccionadoC.value.codigoPais;
+        this.objeto.nombreDepartamento = this.departamentoSeleccionadoC.value.nombrePais;
         this.objeto.codigoCiudad = this.codigoCiudadC;
         this.objeto.nombreCiudad = this.nombreCiudadC;
         this.objeto.tipoUbicacion = 2;
@@ -243,7 +251,7 @@ export class UbicacionesEditComponent implements OnInit {
             this.messageService.clear();
             this.messageService.add(mensaje);
 
-            this.inicializarCombos();
+            this.colocarValoresObjetoEdit();
 
             console.log(error, "error");
           })

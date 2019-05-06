@@ -25,7 +25,7 @@ public class TerceroTB extends BaseEntidadTB implements Serializable {
 	private long idTercero;
 
 	@NotNull
-	@Column(name = "ter_razon_social", nullable = false, length = 10)
+	@Column(name = "ter_razon_social", nullable = false, length = 50)
 	private String razonSocial;
 
 	@NotNull
@@ -36,18 +36,20 @@ public class TerceroTB extends BaseEntidadTB implements Serializable {
 	@Column(name = "ter_telefono1", nullable = false, length = 20)
 	private String telefono1;
 
-	@NotNull
 	@Column(name = "ter_telefono2", nullable = false, length = 20)
 	private String telefono2;
 
 	@NotNull
 	@OneToOne
-	@JoinColumn(name = "ter_ubicacion", nullable = false, insertable = false)
+	@JoinColumn(name = "ter_ubicacion", nullable = false)
 	private UbicacionTB ubicacionTb;
 
-	@NotNull
 	@Column(name = "ter_info_adicional", nullable = false, length = 100)
 	private String infoAdicional;
+
+	@NotNull
+	@Column(name = "ter_nit", nullable = false, length = 20)
+	private String nit;
 
 	public long getIdTercero() {
 		return idTercero;
@@ -103,6 +105,14 @@ public class TerceroTB extends BaseEntidadTB implements Serializable {
 
 	public void setInfoAdicional(String infoAdicional) {
 		this.infoAdicional = infoAdicional;
+	}
+
+	public String getNit() {
+		return nit;
+	}
+
+	public void setNit(String nit) {
+		this.nit = nit;
 	}
 
 }

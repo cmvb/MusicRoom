@@ -10,130 +10,134 @@
 		</mdl-layout-drawer>
 
 		<mdl-layout-content>
-			<div class="body-content">
-				<!-- Aquí creamos nuestro contenido para las diferentes páginas -->
-				<div class="content-page">
-					<div class="ui-g">
-						<div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
-							<h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_usuario_title}} -
-								{{phase === const.phaseAdd ? msg.lbl_btn_crear : msg.lbl_btn_editar}}
-							</h5>
+			<p-scrollPanel [style]="{width: '100%', height: '100vh'}" styleClass="custom">
+				<div class="body-content">
+					<!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+					<div class="content-page">
+						<div class="ui-g">
+							<div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
+								<h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_usuario_title}} -
+									{{phase === const.phaseAdd ? msg.lbl_btn_crear : msg.lbl_btn_editar}}
+								</h5>
 
-							<div class="ui-g center">
-								<div class="demo-card-wide mdl-card mdl-shadow--2dp">
-									<div class="mdl-card__supporting-text">
-										<div class="ui-g center">
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_nombre}}</label>
-												<span class="ui-float-label">
-													<input pInputText id="txtNombre"
-														(keydown)="guardaTeclaEnter($event)" [(ngModel)]="objeto.nombre"
-														type="text" size="50">
-												</span>
+								<div class="ui-g center">
+									<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+										<div class="mdl-card__supporting-text">
+											<div class="ui-g center">
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_nombre}}</label>
+													<span class="ui-float-label">
+														<input pInputText id="txtNombre"
+															(keydown)="guardaTeclaEnter($event)"
+															[(ngModel)]="objeto.nombre" type="text" size="50">
+													</span>
+												</div>
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_apellido}}</label>
+													<span class="ui-float-label">
+														<input pInputText id="txtApellido"
+															(keydown)="guardaTeclaEnter($event)"
+															[(ngModel)]="objeto.apellido" type="text" size="50">
+													</span>
+												</div>
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_fecha_nacimiento}}</label>
+													<span class="ui-float-label">
+														<p-calendar id="txtFechaNacimiento" [maxDate]="maxDate"
+															[locale]="locale" dateFormat="dd/mm/yy"
+															[monthNavigator]="true" [yearNavigator]="true"
+															yearRange="1900:3000" (keydown)="guardaTeclaEnter($event)"
+															[(ngModel)]="objeto.fechaNacimiento"></p-calendar>
+													</span>
+												</div>
 											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_apellido}}</label>
-												<span class="ui-float-label">
-													<input pInputText id="txtApellido"
-														(keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.apellido" type="text" size="50">
-												</span>
+
+											<div class="ui-g center">
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_tipo_documento}}</label>
+													<span class="ui-float-label">
+														<ng-select id="txtTipoDocumento"
+															[(ngModel)]="objeto.tipoDocumento"
+															[items]="enumTipoDocumento">
+														</ng-select>
+													</span>
+												</div>
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_numero_documento}}</label>
+													<span class="ui-float-label">
+														<input pInputText id="txtNumeroDocumento"
+															(keydown)="guardaTeclaEnter($event)"
+															[(ngModel)]="objeto.numeroDocumento" type="text" size="50">
+													</span>
+												</div>
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_email}}</label>
+													<span class="ui-float-label">
+														<input pInputText id="txtEmail"
+															(keydown)="guardaTeclaEnter($event)"
+															[(ngModel)]="objeto.email" type="text" size="50">
+													</span>
+												</div>
 											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_fecha_nacimiento}}</label>
-												<span class="ui-float-label">
-													<p-calendar id="txtFechaNacimiento" [maxDate]="maxDate"
-														[locale]="locale" dateFormat="dd/mm/yy" [monthNavigator]="true"
-														[yearNavigator]="true" yearRange="1900:3000"
-														(keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.fechaNacimiento"></p-calendar>
-												</span>
+
+											<div class="ui-g center">
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_usuario}}</label>
+													<span class="ui-float-label">
+														<input pInputText id="txtUsuario" [disabled]="isDisabled"
+															(keydown)="guardaTeclaEnter($event)"
+															[(ngModel)]="objeto.usuario" type="text" size="10">
+													</span>
+												</div>
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_usuario_tipo_usuario}}</label>
+													<span class="ui-float-label">
+														<ng-select [(ngModel)]="objeto.tipoUsuario"
+															[items]="enumTipoUsuario">
+														</ng-select>
+													</span>
+												</div>
+												<div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<label class="obligatorio"
+														for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
+													<span class="ui-float-label">
+														<ng-select id="txtEstado" [(ngModel)]="objeto.estado"
+															[items]="enumSiNo">
+														</ng-select>
+													</span>
+												</div>
 											</div>
 										</div>
 
-										<div class="ui-g center">
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_tipo_documento}}</label>
-												<span class="ui-float-label">
-													<ng-select id="txtTipoDocumento" [(ngModel)]="objeto.tipoDocumento"
-														[items]="enumTipoDocumento">
-													</ng-select>
-												</span>
+										<div class="mdl-card__actions mdl-card--border">
+											<div class="ui-g center">
+												<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<button (click)="irAtras()" mdl-button mdl-tooltip-position="top"
+														mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button"
+														mdl-button-type="raised" mdl-colored="primary">
+														<i class="material-icons">arrow_back</i> {{msg.lbl_btn_atras}}
+													</button>
+												</div>
+												<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+													<button (click)="irGuardar()" mdl-button mdl-tooltip-position="top"
+														mdl-tooltip-large="{{msg.lbl_tip_guardar}}" type="button"
+														mdl-button-type="raised" mdl-colored="accent">
+														<i class="material-icons">save</i> {{msg.lbl_btn_guardar}}
+													</button>
+												</div>
 											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_numero_documento}}</label>
-												<span class="ui-float-label">
-													<input pInputText id="txtNumeroDocumento"
-														(keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.numeroDocumento" type="text" size="50">
-												</span>
-											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_email}}</label>
-												<span class="ui-float-label">
-													<input pInputText id="txtEmail" (keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.email" type="text" size="50">
-												</span>
-											</div>
-										</div>
 
-										<div class="ui-g center">
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_usuario}}</label>
-												<span class="ui-float-label">
-													<input pInputText id="txtUsuario" [disabled]="isDisabled"
-														(keydown)="guardaTeclaEnter($event)"
-														[(ngModel)]="objeto.usuario" type="text" size="10">
-												</span>
+											<div class="ui-g center">
+												<p-messages class="w100"></p-messages>
 											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_usuario_tipo_usuario}}</label>
-												<span class="ui-float-label">
-													<ng-select [(ngModel)]="objeto.tipoUsuario"
-														[items]="enumTipoUsuario">
-													</ng-select>
-												</span>
-											</div>
-											<div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<label class="obligatorio"
-													for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
-												<span class="ui-float-label">
-													<ng-select id="txtEstado" [(ngModel)]="objeto.estado"
-														[items]="enumSiNo">
-													</ng-select>
-												</span>
-											</div>
-										</div>
-									</div>
-
-									<div class="mdl-card__actions mdl-card--border">
-										<div class="ui-g center">
-											<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<button (click)="irAtras()" mdl-button mdl-tooltip-position="top"
-													mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button"
-													mdl-button-type="raised" mdl-colored="primary">
-													<i class="material-icons">arrow_back</i> {{msg.lbl_btn_atras}}
-												</button>
-											</div>
-											<div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-												<button (click)="irGuardar()" mdl-button mdl-tooltip-position="top"
-													mdl-tooltip-large="{{msg.lbl_tip_guardar}}" type="button"
-													mdl-button-type="raised" mdl-colored="accent">
-													<i class="material-icons">save</i> {{msg.lbl_btn_guardar}}
-												</button>
-											</div>
-										</div>
-
-										<div class="ui-g center">
-											<p-messages class="w100"></p-messages>
 										</div>
 									</div>
 								</div>
@@ -141,7 +145,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</p-scrollPanel>
 		</mdl-layout-content>
 	</mdl-layout>
 

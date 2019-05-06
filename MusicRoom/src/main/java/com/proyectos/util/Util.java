@@ -884,12 +884,12 @@ public class Util {
 
 		ETipoUbicacion tipoUbicacionGuardar = ETipoUbicacion.values()[ubicacion.getTipoUbicacion()];
 
-		boolean flagPais = (StringUtils.isBlank(ubicacion.getCodigoPais()))
-				&& (StringUtils.isBlank(ubicacion.getNombrePais()));
-		boolean flagDepartamento = (StringUtils.isBlank(ubicacion.getCodigoDepartamento()))
-				&& (StringUtils.isBlank(ubicacion.getNombreDepartamento()));
-		boolean flagCiudad = (StringUtils.isBlank(ubicacion.getCodigoCiudad()))
-				&& (StringUtils.isBlank(ubicacion.getNombreCiudad()));
+		boolean flagPais = (!StringUtils.isBlank(ubicacion.getCodigoPais()))
+				&& (!StringUtils.isBlank(ubicacion.getNombrePais()));
+		boolean flagDepartamento = (!StringUtils.isBlank(ubicacion.getCodigoDepartamento()))
+				&& (!StringUtils.isBlank(ubicacion.getNombreDepartamento()));
+		boolean flagCiudad = (!StringUtils.isBlank(ubicacion.getCodigoCiudad()))
+				&& (!StringUtils.isBlank(ubicacion.getNombreCiudad()));
 
 		switch (tipoUbicacionGuardar) {
 		case PAIS:
@@ -954,6 +954,22 @@ public class Util {
 	private static List<String> validarTercero(TerceroTB tercero) {
 		List<String> errores = new ArrayList<>();
 		final String VALOR_INCORRECTO = PropertiesUtil.getProperty("musicroom.msg.validate.valor.incorrecto");
+
+		if (StringUtils.isBlank(tercero.getNit())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_nit") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(tercero.getRazonSocial())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_razon_social") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(tercero.getTelefono1())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_telefono1") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(tercero.getDireccion())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_direccion") + VALOR_INCORRECTO);
+		}
+		if (tercero.getUbicacionTb() == null) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_ubicacion") + VALOR_INCORRECTO);
+		}
 
 		return errores;
 	}

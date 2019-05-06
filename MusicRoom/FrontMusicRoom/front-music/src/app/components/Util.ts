@@ -443,9 +443,15 @@ export class Util {
       return { severity: this.const.severity[3], summary: 'ERROR: ', detail: 'No se ha podido establecer la conexión con el Servidor' }
     }
 
+    let audio = new Audio();
+    audio.src = "assets/audio/guitarBad.mp3";
+    audio.load();
+    audio.play();
+
     return mensaje;
   }
 
+  // Función para obtener el objeto ubicacion de una lista con el Id que está en un combo
   obtenerUbicacionDeEnum(idUbicacionEnum, listaUbicaciones) {
     let ubicacion: any;
     for (let i in listaUbicaciones) {
@@ -456,5 +462,38 @@ export class Util {
       }
     }
     return ubicacion;
+  }
+
+  // Función para obtener el objeto ubicacion de una lista con el código
+  obtenerUbicacionPorCodigo(codigoUbicacion, listaUbicaciones, tipoUbicacion) {
+    let ubicacion: any;
+    let label = "";
+
+    for (let i in listaUbicaciones) {
+      let ubi = listaUbicaciones[i];
+
+      if (tipoUbicacion == 0) {
+        if (ubi.codigoPais == codigoUbicacion) {
+          label = ubi.nombrePais;
+          ubicacion = ubi;
+          break;
+        }
+      }
+      else if (tipoUbicacion == 1) {
+        if (ubi.codigoDepartamento == codigoUbicacion) {
+          label = ubi.nombreDepartamento;
+          ubicacion = ubi;
+          break;
+        }
+      }
+      else if (tipoUbicacion == 2) {
+        if (ubi.codigoCiudad == codigoUbicacion) {
+          label = ubi.nombreCiudad;
+          ubicacion = ubi;
+          break;
+        }
+      }
+    }
+    return { value: ubicacion, label: label };
   }
 }

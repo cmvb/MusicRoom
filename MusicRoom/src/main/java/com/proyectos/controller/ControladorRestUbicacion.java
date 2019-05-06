@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyectos.enums.ETipoUbicacion;
 import com.proyectos.exception.ModelNotFoundException;
 import com.proyectos.model.UbicacionTB;
-import com.proyectos.pojo.UbicacionPOJO;
 import com.proyectos.service.IUbicacionService;
 import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.PropertiesUtil;
@@ -65,6 +63,7 @@ public class ControladorRestUbicacion {
 	@RequestMapping("/crearUbicacion")
 	public ResponseEntity<UbicacionTB> crear(@RequestBody UbicacionTB ubicacion) {
 		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_UBICACION_TB, ubicacion);
+		
 		UbicacionTB ubicacionNuevo = new UbicacionTB();
 		if (errores.isEmpty()) {
 			List<UbicacionTB> listaUbicaciones = ubicacionService.consultarTodos();
@@ -93,28 +92,38 @@ public class ControladorRestUbicacion {
 			switch (tipoUbicacionGuardar) {
 			case PAIS:
 				if (mapaPaises.containsKey(ubicacion.getCodigoPais())) {
-					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais_repetido") + Util.VALOR_INCORRECTO);
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais_repetido"));
 				}
 
 				break;
 			case DEPARTAMENTO:
 				if (mapaDepartamentos.containsKey(ubicacion.getCodigoDepartamento())) {
-					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_departamento_repetido")
-							+ Util.VALOR_INCORRECTO);
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_departamento_repetido"));
 				}
 
 				break;
 			case CIUDAD:
 				if (mapaCiudades.containsKey(ubicacion.getCodigoCiudad())) {
-					errores.add(
-							PropertiesUtil.getProperty("lbl_mtto_ubicacion_ciudad_repetida") + Util.VALOR_INCORRECTO);
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_ciudad_repetida"));
 				}
 
 				break;
 			}
 
-			ubicacionNuevo = new UbicacionTB();
-			ubicacionNuevo = ubicacionService.crear(ubicacion);
+			if (errores.isEmpty()) {
+				ubicacionNuevo = new UbicacionTB();
+				ubicacionNuevo = ubicacionService.crear(ubicacion);
+			} else {
+				StringBuilder mensajeErrores = new StringBuilder();
+				String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+
+				for (String error : errores) {
+					mensajeErrores.append(error);
+				}
+
+				throw new ModelNotFoundException(erroresTitle + mensajeErrores);
+			}
+
 		} else {
 			StringBuilder mensajeErrores = new StringBuilder();
 			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
@@ -131,10 +140,7 @@ public class ControladorRestUbicacion {
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/modificarUbicacion")
-	public ResponseEntity<UbicacionTB> modificar(@RequestBody UbicacionPOJO ubicacionPOJO) {
-		UbicacionTB ubicacion = new UbicacionTB();
-		BeanUtils.copyProperties(ubicacionPOJO, ubicacion);
-
+	public ResponseEntity<UbicacionTB> modificar(@RequestBody UbicacionTB ubicacion) {
 		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_UBICACION_TB, ubicacion);
 
 		UbicacionTB ubicacionNuevo = new UbicacionTB();
@@ -168,28 +174,37 @@ public class ControladorRestUbicacion {
 			switch (tipoUbicacionGuardar) {
 			case PAIS:
 				if (mapaPaises.containsKey(ubicacion.getCodigoPais())) {
-					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais_repetido") + Util.VALOR_INCORRECTO);
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais_repetido"));
 				}
 
 				break;
 			case DEPARTAMENTO:
 				if (mapaDepartamentos.containsKey(ubicacion.getCodigoDepartamento())) {
-					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_departamento_repetido")
-							+ Util.VALOR_INCORRECTO);
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_departamento_repetido"));
 				}
 
 				break;
 			case CIUDAD:
 				if (mapaCiudades.containsKey(ubicacion.getCodigoCiudad())) {
-					errores.add(
-							PropertiesUtil.getProperty("lbl_mtto_ubicacion_ciudad_repetida") + Util.VALOR_INCORRECTO);
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_ciudad_repetida"));
 				}
 
 				break;
 			}
 
-			ubicacionNuevo = new UbicacionTB();
-			ubicacionNuevo = ubicacionService.modificar(ubicacion);
+			if (errores.isEmpty()) {
+				ubicacionNuevo = new UbicacionTB();
+				ubicacionNuevo = ubicacionService.modificar(ubicacion);
+			} else {
+				StringBuilder mensajeErrores = new StringBuilder();
+				String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+
+				for (String error : errores) {
+					mensajeErrores.append(error);
+				}
+
+				throw new ModelNotFoundException(erroresTitle + mensajeErrores);
+			}
 		} else {
 			StringBuilder mensajeErrores = new StringBuilder();
 			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
