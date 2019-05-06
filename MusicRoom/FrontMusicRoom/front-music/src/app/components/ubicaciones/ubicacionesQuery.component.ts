@@ -89,10 +89,6 @@ export class UbicacionesQueryComponent implements OnInit {
     this.consultarCiudades();
   }
 
-  actualizarUbicaciones() {
-    // Cuando se selecciona algun elemento de la lista de ubicaciones se deben actualizar las demas
-  }
-
   ngAfterViewInit() {
     if (this.util.getSesionXItem('mensajeConfirmacion') != null) {
       let mensajeConfirmacion = JSON.parse(localStorage.getItem('mensajeConfirmacion'));

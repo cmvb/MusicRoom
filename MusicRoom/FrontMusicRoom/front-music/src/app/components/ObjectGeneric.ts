@@ -125,11 +125,13 @@ export class DataObjects {
       //Usuario
       idTercero: '',
       razonSocial: '',
+      nit: '',
       direccion: '',
       telefono1: '',
       telefono2: '',
       infoAdicional: '',
       ubicacionTb: this.getDataUbicacion(),
+      ubicacionTabla: '',
 
       //Abstract
       estado: '',
@@ -298,12 +300,24 @@ export class DataObjects {
       lbl_mtto_usuario_tipo_usuario: idioma == constant.idiomaEs ? 'Tipo Usuario' : 'User Type',
       lbl_mtto_usuario_sw_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
 
+      // Módulo Ubicación
       lbl_mtto_ubicacion_title: idioma == constant.idiomaEs ? 'Configuración de Ubicaciones' : 'Locations Settings',
       lbl_mtto_ubicacion_pais: idioma == constant.idiomaEs ? 'País' : 'Country',
       lbl_mtto_ubicacion_departamento: idioma == constant.idiomaEs ? 'Departamento/Región' : 'Department/Region',
       lbl_mtto_ubicacion_ciudad: idioma == constant.idiomaEs ? 'Ciudad/Municipio' : 'City/Municipality',
       lbl_mtto_ubicacion_codigo: idioma == constant.idiomaEs ? 'Código' : 'Code',
       lbl_mtto_ubicacion_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
+
+      // Módulo Tercero
+      lbl_mtto_tercero_title: idioma == constant.idiomaEs ? 'Configuración de Terceros/Empresas' : 'Companies Settings',
+      lbl_mtto_tercero_nit: idioma == constant.idiomaEs ? 'NIT' : 'NIT',
+      lbl_mtto_tercero_razon_social: idioma == constant.idiomaEs ? 'Razón Social' : 'Business Name',
+      lbl_mtto_tercero_ubicacion: idioma == constant.idiomaEs ? 'Ubicación' : 'Location',
+      lbl_mtto_tercero_telefono1: idioma == constant.idiomaEs ? 'Teléfono 1' : 'Telephone 1',
+      lbl_mtto_tercero_telefono2: idioma == constant.idiomaEs ? 'Teléfono 2' : 'Telephone 2',
+      lbl_mtto_tercero_direccion: idioma == constant.idiomaEs ? 'Dirección' : 'Address',
+      lbl_mtto_tercero_info_adicional: idioma == constant.idiomaEs ? 'Información Adicional' : 'Other Info',
+
     }
   };
 }

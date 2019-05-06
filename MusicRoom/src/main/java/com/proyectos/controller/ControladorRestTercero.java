@@ -1,6 +1,10 @@
 package com.proyectos.controller;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,11 +58,40 @@ public class ControladorRestTercero {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/crearTercero")
 	public ResponseEntity<TerceroTB> crear(@RequestBody TerceroTB tercero) {
-		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_USUARIO_TB, tercero);
+		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_TERCERO_TB, tercero);
 		TerceroTB terceroNuevo = new TerceroTB();
 		if (errores.isEmpty()) {
-			terceroNuevo = new TerceroTB();
-			terceroNuevo = terceroService.crear(tercero);
+			List<TerceroTB> listaTerceros = terceroService.consultarTodos();
+			Map<String, TerceroTB> mapaTerceros = new HashMap<>();
+			Set<String> nombresTerceros = new HashSet<>();
+
+			for (TerceroTB terceroTb : listaTerceros) {
+				if (!mapaTerceros.containsKey(terceroTb.getNit())) {
+					mapaTerceros.put(terceroTb.getNit(), terceroTb);
+					nombresTerceros.add(terceroTb.getRazonSocial());
+				}
+			}
+
+			if (mapaTerceros.containsKey(tercero.getNit())) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_nit_repetido"));
+			}
+			if (nombresTerceros.contains(tercero.getRazonSocial())) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_razon_social_repetida"));
+			}
+
+			if (errores.isEmpty()) {
+				terceroNuevo = new TerceroTB();
+				terceroNuevo = terceroService.crear(tercero);
+			} else {
+				StringBuilder mensajeErrores = new StringBuilder();
+				String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+
+				for (String error : errores) {
+					mensajeErrores.append(error);
+				}
+
+				throw new ModelNotFoundException(erroresTitle + mensajeErrores);
+			}
 		} else {
 			StringBuilder mensajeErrores = new StringBuilder();
 			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
@@ -79,8 +112,38 @@ public class ControladorRestTercero {
 		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_TERCERO_TB, tercero);
 		TerceroTB terceroNuevo = new TerceroTB();
 		if (errores.isEmpty()) {
-			terceroNuevo = new TerceroTB();
-			terceroNuevo = terceroService.modificar(tercero);
+			List<TerceroTB> listaTerceros = terceroService.consultarTodos();
+			Map<String, TerceroTB> mapaTerceros = new HashMap<>();
+			Set<String> nombresTerceros = new HashSet<>();
+
+			for (TerceroTB terceroTb : listaTerceros) {
+				if (!mapaTerceros.containsKey(terceroTb.getNit())
+						&& !tercero.getNit().equalsIgnoreCase(terceroTb.getNit())) {
+					mapaTerceros.put(terceroTb.getNit(), terceroTb);
+					nombresTerceros.add(terceroTb.getRazonSocial());
+				}
+			}
+
+			if (mapaTerceros.containsKey(tercero.getNit())) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_nit_repetido"));
+			}
+			if (nombresTerceros.contains(tercero.getRazonSocial())) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_razon_social_repetida"));
+			}
+
+			if (errores.isEmpty()) {
+				terceroNuevo = new TerceroTB();
+				terceroNuevo = terceroService.modificar(tercero);
+			} else {
+				StringBuilder mensajeErrores = new StringBuilder();
+				String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+
+				for (String error : errores) {
+					mensajeErrores.append(error);
+				}
+
+				throw new ModelNotFoundException(erroresTitle + mensajeErrores);
+			}
 		} else {
 			StringBuilder mensajeErrores = new StringBuilder();
 			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");

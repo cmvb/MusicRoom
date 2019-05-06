@@ -1,16 +1,17 @@
 <p-table #dt *ngIf="lista.length > 0; else sinResultados" [responsive]="true" [paginator]="true" [rows]="rows"
 	[columns]="cols" [value]="lista">
 	<ng-template pTemplate="caption" class="ui-g">
-		<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad floatLeft hidden-sm">
+		<div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad floatLeft hidden-sm">
 			<mdl-icon class="floatLeft textLeft">list</mdl-icon>
-			<ng-select class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad comboTabla floatLeft" [(ngModel)]="rows"
-				[items]="enumRows">
+			<ng-select class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad comboTabla floatLeft"
+				[(ngModel)]="rows" [items]="enumRows">
 			</ng-select>
 		</div>
 		<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad floatRight hidden-sm">
 			<mdl-icon class="floatRight textRight">search</mdl-icon>
-			<input class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad inputTabla floatRight" type="text" pInputText size="50"
-				placeholder="Filtrar..." (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+			<input class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad inputTabla floatRight" type="text"
+				pInputText size="50" placeholder="Filtrar..." (input)="dt.filterGlobal($event.target.value, 'contains')"
+				style="width:auto">
 		</div>
 	</ng-template>
 
@@ -49,7 +50,7 @@
 <ng-template #sinResultados>
 	<div class="row align-items-center">
 		<div class="col">
-			<p class="bold">{{msg.lbl_info_sin_resultados}}</p>
+			<p class="sinResultados shiny">{{msg.lbl_info_sin_resultados}}</p>
 		</div>
 	</div>
 </ng-template>

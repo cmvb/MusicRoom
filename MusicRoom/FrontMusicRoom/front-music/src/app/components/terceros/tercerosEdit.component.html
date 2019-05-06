@@ -1,3 +1,136 @@
-<p>
-  terceros works!
-</p>
+<div class="demo-container demo-layout-transparent">
+  <!-- Importamos el Header -->
+  <app-header></app-header>
+
+  <mdl-layout>
+    <mdl-layout-drawer>
+      <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo" />
+      <!-- Importamos el Sidebar o Menú Lateral -->
+      <app-sidebar></app-sidebar>
+    </mdl-layout-drawer>
+
+
+    <mdl-layout-content>
+      <p-scrollPanel [style]="{width: '100%', height: '100vh'}" styleClass="custom">
+        <div class="body-content">
+          <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+          <div class="content-page">
+            <div class="ui-g">
+              <div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
+                <h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_tercero_title}} -
+                  {{phase === const.phaseAdd ? msg.lbl_btn_crear : msg.lbl_btn_editar}}
+                </h5>
+
+                <div class="ui-g center">
+                  <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__supporting-text">
+                      <div class="ui-g center">
+                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_tercero_nit}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtNit" (keydown)="guardaTeclaEnter($event)" [(ngModel)]="objeto.nit"
+                              type="text" size="20">
+                          </span>
+                        </div>
+                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_tercero_razon_social}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtRazonSocial" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="objeto.razonSocial" type="text" size="50">
+                          </span>
+                        </div>
+                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_tercero_ubicacion}}</label>
+                          <span class="ui-float-label">
+                            <ng-select id="txtUbicacion" [(ngModel)]="ciudadSeleccionada" [items]="enumFiltroCiudades">
+                            </ng-select>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="ui-g center">
+                        <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_tercero_telefono1}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtTelefono1" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="objeto.telefono1" type="text" size="20">
+                          </span>
+                        </div>
+                        <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_tercero_telefono2}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtTelefono2" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="objeto.telefono2" type="text" size="20">
+                          </span>
+                        </div>
+                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_tercero_direccion}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtDireccion" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="objeto.direccion" type="text" size="50">
+                          </span>
+                        </div>
+                        <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
+                          <span class="ui-float-label">
+                            <ng-select id="txtEstado" [(ngModel)]="objeto.estado" [items]="enumSiNo">
+                            </ng-select>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="ui-g center">
+                        <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_tercero_info_adicional}}</label>
+                          <span class="ui-float-label">
+                            <textarea class="w100" id="txtInfoAdicional" pInputTextarea
+                              (keydown)="guardaTeclaEnter($event)" [rows]="3"
+                              [(ngModel)]="objeto.infoAdicional"></textarea>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mdl-card__actions mdl-card--border">
+                      <div class="ui-g center">
+                        <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <button (click)="irAtras()" mdl-button mdl-tooltip-position="top"
+                            mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button" mdl-button-type="raised"
+                            mdl-colored="primary">
+                            <i class="material-icons">arrow_back</i> {{msg.lbl_btn_atras}}
+                          </button>
+                        </div>
+                        <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <button (click)="irGuardar()" mdl-button mdl-tooltip-position="top"
+                            mdl-tooltip-large="{{msg.lbl_tip_guardar}}" type="button" mdl-button-type="raised"
+                            mdl-colored="accent">
+                            <i class="material-icons">save</i> {{msg.lbl_btn_guardar}}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="ui-g center">
+                        <p-messages class="w100"></p-messages>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-scrollPanel>
+    </mdl-layout-content>
+  </mdl-layout>
+
+  <!-- Importamos el Footer -->
+  <app-footer></app-footer>
+</div>
+
+<p-toast position="top-right" styleClass="custom-toast">
+  <ng-template let-message pTemplate="message">
+    <div style="width: 100%;">
+      <p style="font-size: 12px !important" innerHtml="{{ex.mensaje}}"></p>
+    </div>
+  </ng-template>
+</p-toast>

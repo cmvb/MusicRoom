@@ -1,4 +1,18 @@
+-- TERCEROS --
+
+ALTER TABLE musicroom.mra_tercero_tb ALTER COLUMN ter_telefono2 DROP NOT NULL;
+ALTER TABLE musicroom.mra_tercero_tb ALTER COLUMN ter_info_adicional DROP NOT NULL;
+
+
+
+-- TERCEROS --
+
 -- UBICACIONES --
+
+ALTER TABLE musicroom.mra_ubicacion_tb ALTER COLUMN ubi_codigo_ciudad DROP NOT NULL;
+ALTER TABLE musicroom.mra_ubicacion_tb ALTER COLUMN ubi_codigo_departamento DROP NOT NULL;
+ALTER TABLE musicroom.mra_ubicacion_tb ALTER COLUMN ubi_nombre_ciudad DROP NOT NULL;
+ALTER TABLE musicroom.mra_ubicacion_tb ALTER COLUMN ubi_nombre_departamento DROP NOT NULL;
 
 INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(3, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', '05004', '05', '1', 'ABRIAQUI', 'ANTIOQUIA', 'COLOMBIA', 2);
 INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(4, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', '05021', '05', '1', 'ALEJANDRIA', 'ANTIOQUIA', 'COLOMBIA', 2);
@@ -400,7 +414,17 @@ INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiz
 INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(428, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', '20787', '20', '1', 'TAMALAMEQUE', 'CESAR', 'COLOMBIA', 2);
 INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(429, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', '23001', '23', '1', 'MONTERIA', 'CORDOBA', 'COLOMBIA', 2);
 INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(430, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', '23068', '23', '1', 'AYAPEL', 'CORDOBA', 'COLOMBIA', 2);
-
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(431, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '18', '1', NULL, 'CAQUETA', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(432, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '23', '1', NULL, 'CORDOBA', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(433, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '13', '1', NULL, 'BOLIVAR', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(434, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '11', '1', NULL, 'BOGOTA', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(435, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '17', '1', NULL, 'CALDAS', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(436, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '15', '1', NULL, 'BOYACA', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(437, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '19', '1', NULL, 'CAUCA', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(438, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '05', '1', NULL, 'ANTIOQUIA', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(439, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '08', '1', NULL, 'ATLANTICO', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(440, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, '20', '1', NULL, 'CESAR', 'COLOMBIA', 1);
+INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, ubi_codigo_ciudad, ubi_codigo_departamento, ubi_codigo_pais, ubi_nombre_ciudad, ubi_nombre_departamento, ubi_nombre_pais, ubi_tipo_ubicacion) VALUES(441, 1, '2019-05-05 11:06:32.220', '2019-05-05 11:06:32.000', 'SYSTEM', 'SYSTEM', NULL, NULL, '1', NULL, NULL, 'COLOMBIA', 0);
 
 -- UBICACIONES --
 
@@ -503,7 +527,7 @@ VALUES('mra_tercero_tb', 1);
 
 INSERT INTO musicroom.mra_consecutivo_tb
 (tabla, valor)
-VALUES('mra_ubicacion_tb', 1);
+VALUES('mra_ubicacion_tb', 442);
 
 INSERT INTO musicroom.mra_consecutivo_tb
 (tabla, valor)

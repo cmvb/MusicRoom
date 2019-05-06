@@ -10,19 +10,52 @@
     </mdl-layout-drawer>
 
     <mdl-layout-content>
-      <div class="body-content">
-        <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
-        <div class="content-page">
-          <div class="ui-g">
-            <div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad">
-              <h3>Bienvenido a Music Room</h3>
-              <button mdl-button (click)="mdlLayout1.toggleDrawer()" mdl-button-type="raised"
-                mdl-colored="accent">Toggle
-                Drawer</button>
+      <p-scrollPanel [style]="{width: '100%', height: '100vh'}" styleClass="custom">
+        <div class="body-content">
+          <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+          <div class="content-page">
+            <div class="ui-g">
+              <div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad">
+                <h3>Bienvenido a Music Room</h3>
+                <button mdl-button (click)="mdlLayout1.toggleDrawer()" mdl-button-type="raised"
+                  mdl-colored="accent">Toggle
+                  Drawer</button>
+
+                <h3>Drag and Drop to Table</h3>
+                <div class="ui-g">
+                  <div class="ui-g-12 ui-md-6 ui-g-nopad drag-column">
+                    <ul style="margin:0;padding:0">
+                      <li *ngFor="let car of availableCars" class="ui-helper-clearfix" pDraggable="cars"
+                        (onDragStart)="dragStart($event,car)" (onDragEnd)="dragEnd($event)">
+                        <i class="fa fa-arrows fa-2x" style="float:right;margin-top:8px"></i>
+                        <img src="{{car.srcImg}}" style="float:left" draggable="false">
+                        <div style="margin:8px 0 0 8px;float:left">{{car.label}}</div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="ui-g-12 ui-md-6 drop-column" pDroppable="cars" (onDrop)="drop($event)"
+                    [ngClass]="{'ui-highlight-car':draggedCar}">
+                    <p-table [value]="selectedCars">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th>label</th>
+                          <th></th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-car>
+                        <tr>
+                          <td>{{car.label}}</td>
+                          <td><img src="{{car.srcImg}}" style="float:left"></td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </p-scrollPanel>
     </mdl-layout-content>
   </mdl-layout>
 

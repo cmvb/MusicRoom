@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as $ from 'jquery';
 import 'rxjs/add/operator/map';
 import { DataObjects } from '../.././components/ObjectGeneric';
 import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
-import * as $ from 'jquery';
 
 declare var $: any;
 
@@ -79,6 +79,10 @@ export class HomeComponent implements OnInit {
   }
 
   irDashboard() {
+    let audio = new Audio();
+    audio.src = "assets/audio/guitarIntro.mp3";
+    audio.load();
+    audio.play();
     this.router.navigate(['/dashboard']);
   }
 }

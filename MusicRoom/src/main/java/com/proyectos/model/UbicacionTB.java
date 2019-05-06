@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import io.swagger.annotations.ApiModel;
 
@@ -21,15 +22,19 @@ public class UbicacionTB extends BaseEntidadTB implements Serializable {
 	@Column(name = "ubi_id_ubicacion", nullable = false, length = 10)
 	private long idUbicacion;
 
+	@Null
 	@Column(name = "ubi_codigo_ciudad", nullable = false, length = 20, unique = true)
 	private String codigoCiudad;
 
+	@Null
 	@Column(name = "ubi_nombre_ciudad", nullable = false, length = 50)
 	private String nombreCiudad;
 
+	@Null
 	@Column(name = "ubi_codigo_departamento", nullable = false, length = 20)
 	private String codigoDepartamento;
 
+	@Null
 	@Column(name = "ubi_nombre_departamento", nullable = false, length = 50)
 	private String nombreDepartamento;
 

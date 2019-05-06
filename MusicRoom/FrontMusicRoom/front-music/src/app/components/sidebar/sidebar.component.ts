@@ -58,5 +58,6 @@ export class SidebarComponent implements OnInit {
 
   desplegarMenu(id) {
     $('#' + id).children('ul').toggle('display');
+    $('#' + id).children('span').toggleClass('backMenuOpen');
   }
 }
