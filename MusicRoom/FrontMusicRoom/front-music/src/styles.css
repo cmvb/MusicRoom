@@ -501,7 +501,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .obligatorio::before {
-  content: '*';
+  content: '* ';
   color: red;
 }
 
@@ -519,6 +519,11 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .ng-select .ng-select-container {
   border: 1px solid #a6a6a6;
+}
+
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
+  background-color: #448aff !important;
+  border: #448aff !important;
 }
 
 .ng-select .ng-select-container:hover, .ng-select .ng-select-container .ng-value-container .ng-input>input:hover {
@@ -700,6 +705,55 @@ table.falsa {
 
 .mdl-navigation__link {
   color: #333333 !important;
+}
+
+.ng-select.ng-select-disabled>.ng-select-container {
+  background-color: #dedede;
+  cursor: not-allowed !important;
+}
+
+.ng-select.ng-select-disabled>.ng-select-container input:disabled {
+  cursor: not-allowed !important;
+}
+
+.comboTabla.ng-select.ng-select-single .ng-select-container, .comboTabla.ng-select .ng-select-container {
+  min-height: 22px !important;
+  height: 22px !important;
+}
+
+.comboTabla.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  top: 0px !important;
+}
+
+.inputTabla {
+  height: 22px;
+  margin-bottom: 6px;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.ui-table-wrapper.ng-star-inserted {
+  background: #f4f4f4;
+  border-left: 1px solid #c8c8c8;
+  border-right: 1px solid #c8c8c8;
+}
+
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-icon, .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-text {
+  margin-right: 0 !important;
 }
 
 /* ---------------------------- MediaQuery ---------------------------- */

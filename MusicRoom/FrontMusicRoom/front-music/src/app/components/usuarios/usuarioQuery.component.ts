@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
 import 'rxjs/add/operator/map';
 import { RestService } from '../../services/rest.service';
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
-import * as $ from 'jquery';
 
 declare var $: any;
 

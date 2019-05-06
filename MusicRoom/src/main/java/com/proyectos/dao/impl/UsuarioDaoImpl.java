@@ -102,6 +102,7 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 
 	@Override
 	public UsuarioTB consultarPorId(long idUsuario) {
+		super.setClazz(UsuarioTB.class);
 		return super.findOne(idUsuario);
 	}
 

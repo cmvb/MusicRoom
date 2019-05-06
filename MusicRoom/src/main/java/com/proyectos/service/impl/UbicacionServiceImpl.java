@@ -24,6 +24,11 @@ public class UbicacionServiceImpl implements IUbicacionService {
 	}
 
 	@Override
+	public List<UbicacionTB> consultaPorTipo(int tipoUbicacion) {
+		return ubicacionDAO.consultaPorTipo(tipoUbicacion);
+	}
+
+	@Override
 	public List<UbicacionTB> consultarPorFiltros(UbicacionTB ubicacionFiltro) {
 		return ubicacionDAO.consultarPorFiltros(ubicacionFiltro);
 	}

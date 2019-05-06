@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.ITerceroDao;
 import com.proyectos.model.TerceroTB;
+import com.proyectos.model.UbicacionTB;
 
 @Repository
 public class TerceroDaoImpl extends AbstractDao<TerceroTB> implements ITerceroDao {
@@ -77,6 +78,7 @@ public class TerceroDaoImpl extends AbstractDao<TerceroTB> implements ITerceroDa
 
 	@Override
 	public TerceroTB consultarPorId(long idTercero) {
+		super.setClazz(TerceroTB.class);
 		return super.findOne(idTercero);
 	}
 

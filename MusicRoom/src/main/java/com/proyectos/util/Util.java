@@ -41,7 +41,10 @@ import org.xml.sax.SAXException;
 import com.csvreader.CsvReader;
 import com.proyectos.enums.ESeveridadMensaje;
 import com.proyectos.enums.ETipoDocumento;
+import com.proyectos.enums.ETipoUbicacion;
 import com.proyectos.enums.ETipoUsuario;
+import com.proyectos.model.TerceroTB;
+import com.proyectos.model.UbicacionTB;
 import com.proyectos.model.UsuarioTB;
 
 public class Util {
@@ -822,12 +825,20 @@ public class Util {
 		return result;
 	}
 
-	public static List<String> validaDatos(String tabla, Object usuario) {
+	public static List<String> validaDatos(String tabla, Object objeto) {
 		List<String> errores = new ArrayList<>();
 
 		switch (tabla) {
 		case ConstantesTablasNombre.MRA_USUARIO_TB:
-			errores = validarUsuario((UsuarioTB) usuario);
+			errores = validarUsuario((UsuarioTB) objeto);
+
+			break;
+		case ConstantesTablasNombre.MRA_UBICACION_TB:
+			errores = validarUbicacion((UbicacionTB) objeto);
+
+			break;
+		case ConstantesTablasNombre.MRA_TERCERO_TB:
+			errores = validarTercero((TerceroTB) objeto);
 
 			break;
 		}
@@ -863,6 +874,86 @@ public class Util {
 		if (StringUtils.isBlank(usuario.getEmail()) || !esCorreoValido(usuario.getEmail())) {
 			errores.add(PropertiesUtil.getProperty("lbl_mtto_usuario_email") + VALOR_INCORRECTO);
 		}
+
+		return errores;
+	}
+
+	private static List<String> validarUbicacion(UbicacionTB ubicacion) {
+		List<String> errores = new ArrayList<>();
+		final String VALOR_INCORRECTO = PropertiesUtil.getProperty("musicroom.msg.validate.valor.incorrecto");
+
+		ETipoUbicacion tipoUbicacionGuardar = ETipoUbicacion.values()[ubicacion.getTipoUbicacion()];
+
+		boolean flagPais = (StringUtils.isBlank(ubicacion.getCodigoPais()))
+				&& (StringUtils.isBlank(ubicacion.getNombrePais()));
+		boolean flagDepartamento = (StringUtils.isBlank(ubicacion.getCodigoDepartamento()))
+				&& (StringUtils.isBlank(ubicacion.getNombreDepartamento()));
+		boolean flagCiudad = (StringUtils.isBlank(ubicacion.getCodigoCiudad()))
+				&& (StringUtils.isBlank(ubicacion.getNombreCiudad()));
+
+		switch (tipoUbicacionGuardar) {
+		case PAIS:
+			if (!flagPais) {
+				if (StringUtils.isBlank(ubicacion.getCodigoPais())) {
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_codigo") + " "
+							+ PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais") + VALOR_INCORRECTO);
+				}
+
+				if (StringUtils.isBlank(ubicacion.getNombrePais())) {
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_nombre") + " "
+							+ PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais") + VALOR_INCORRECTO);
+				}
+			}
+
+			break;
+		case DEPARTAMENTO:
+			if (!flagPais) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais_solo") + VALOR_INCORRECTO);
+			}
+
+			if (!flagDepartamento) {
+				if (StringUtils.isBlank(ubicacion.getCodigoDepartamento())) {
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_codigo") + " "
+							+ PropertiesUtil.getProperty("lbl_mtto_ubicacion_departamento") + VALOR_INCORRECTO);
+				}
+
+				if (StringUtils.isBlank(ubicacion.getNombreDepartamento())) {
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_nombre") + " "
+							+ PropertiesUtil.getProperty("lbl_mtto_ubicacion_departamento") + VALOR_INCORRECTO);
+				}
+			}
+
+			break;
+		case CIUDAD:
+			if (!flagPais) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_pais_solo") + VALOR_INCORRECTO);
+			}
+
+			if (!flagDepartamento) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_departamento_solo") + VALOR_INCORRECTO);
+			}
+
+			if (flagCiudad) {
+				if (StringUtils.isBlank(ubicacion.getCodigoCiudad())) {
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_codigo") + " "
+							+ PropertiesUtil.getProperty("lbl_mtto_ubicacion_ciudad") + VALOR_INCORRECTO);
+				}
+
+				if (StringUtils.isBlank(ubicacion.getNombreCiudad())) {
+					errores.add(PropertiesUtil.getProperty("lbl_mtto_ubicacion_nombre") + " "
+							+ PropertiesUtil.getProperty("lbl_mtto_ubicacion_ciudad") + VALOR_INCORRECTO);
+				}
+			}
+
+			break;
+		}
+
+		return errores;
+	}
+
+	private static List<String> validarTercero(TerceroTB tercero) {
+		List<String> errores = new ArrayList<>();
+		final String VALOR_INCORRECTO = PropertiesUtil.getProperty("musicroom.msg.validate.valor.incorrecto");
 
 		return errores;
 	}

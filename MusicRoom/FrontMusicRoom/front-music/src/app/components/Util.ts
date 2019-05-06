@@ -388,6 +388,19 @@ export class Util {
     $('.modal-backdrop').remove();
   }
 
+  // Función que arma el enumerado de ubicaciones desde la lista
+  obtenerEnumeradoDeListaUbicacion(lista, tipoUbicacion) {
+    let enumerado = [];
+    for (let i in lista) {
+      let ubicacion = lista[i];
+      let nombreUbicacion = tipoUbicacion == 0 ? ubicacion.nombrePais : (tipoUbicacion == 1 ? ubicacion.nombreDepartamento : ubicacion.nombreCiudad);
+      let enumObj = { value: ubicacion, label: nombreUbicacion };
+      enumerado.push(enumObj);
+    }
+
+    return enumerado;
+  }
+
   // Función que arma el model de las tablas de la aplicación
   armarTabla(cabeceras, lista) {
     let cols = [];
@@ -413,10 +426,11 @@ export class Util {
     return cols;
   }
 
+  // Funcion que muestra notificaciones de errores, advertencias o informativos
   mostrarNotificacion(exc) {
     let mensaje = { severity: '', summary: '', detail: '' };
     if (exc != null) {
-      if (exc.mensaje == null && exc.mensaje === undefined) {
+      if (exc.mensaje == null || exc.mensaje === undefined) {
         exc.mensaje = "";
       }
 
@@ -430,5 +444,17 @@ export class Util {
     }
 
     return mensaje;
+  }
+
+  obtenerUbicacionDeEnum(idUbicacionEnum, listaUbicaciones) {
+    let ubicacion: any;
+    for (let i in listaUbicaciones) {
+      let ubi = listaUbicaciones[i];
+      if (ubi.idUbicacion == idUbicacionEnum) {
+        ubicacion = ubi;
+        break;
+      }
+    }
+    return ubicacion;
   }
 }

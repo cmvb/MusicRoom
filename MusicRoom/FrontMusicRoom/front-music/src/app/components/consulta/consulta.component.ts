@@ -21,6 +21,8 @@ export class ConsultaComponent implements OnInit {
 
   cols: any[];
   p: number = 1;
+  rows: any;
+  enumRows: any;
 
   msg: any;
   const: any;
@@ -30,6 +32,8 @@ export class ConsultaComponent implements OnInit {
     this.const = datasObject.getConst();
     this.msg = datasObject.getProperties(this.const.idiomaEs);
     this.util = util;
+    this.enumRows = [5, 10, 15, 20, 50, 100];
+    this.rows = this.enumRows[0];
   }
 
   ngOnInit() {
