@@ -21,6 +21,7 @@ export class DataObjects {
     return {
       urlRestService: 'http://localhost:9002/music-room/',
       urlControllerUsuario: 'usuario/',
+      urlControllerUbicacion: 'ubicacion/',
       urlControllerTercero: 'tercero/',
       //Model rango de fechas para NGBDatePicker
       minDate: { year: 1000, month: 1, day: 1 },
@@ -108,6 +109,7 @@ export class DataObjects {
       nombreDepartamento: '',
       codigoPais: '',
       nombrePais: '',
+      tipoUbicacion: '',
 
       //Abstract
       estado: '',
@@ -295,6 +297,13 @@ export class DataObjects {
       lbl_mtto_usuario_fecha_nacimiento: idioma == constant.idiomaEs ? 'Fecha Nacimiento' : 'Birth Date',
       lbl_mtto_usuario_tipo_usuario: idioma == constant.idiomaEs ? 'Tipo Usuario' : 'User Type',
       lbl_mtto_usuario_sw_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
+
+      lbl_mtto_ubicacion_title: idioma == constant.idiomaEs ? 'Configuración de Ubicaciones' : 'Locations Settings',
+      lbl_mtto_ubicacion_pais: idioma == constant.idiomaEs ? 'País' : 'Country',
+      lbl_mtto_ubicacion_departamento: idioma == constant.idiomaEs ? 'Departamento/Región' : 'Department/Region',
+      lbl_mtto_ubicacion_ciudad: idioma == constant.idiomaEs ? 'Ciudad/Municipio' : 'City/Municipality',
+      lbl_mtto_ubicacion_codigo: idioma == constant.idiomaEs ? 'Código' : 'Code',
+      lbl_mtto_ubicacion_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
     }
   };
 }

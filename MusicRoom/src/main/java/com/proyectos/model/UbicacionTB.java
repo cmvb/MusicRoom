@@ -15,26 +15,21 @@ import io.swagger.annotations.ApiModel;
 @Entity
 @Table(name = "MRA_UBICACION_TB")
 public class UbicacionTB extends BaseEntidadTB implements Serializable {
-
-	private static final long serialVersionUID = 105993625214589782L;
+	private static final long serialVersionUID = 1512069790193136335L;
 
 	@Id
 	@Column(name = "ubi_id_ubicacion", nullable = false, length = 10)
 	private long idUbicacion;
 
-	@NotNull
 	@Column(name = "ubi_codigo_ciudad", nullable = false, length = 20, unique = true)
 	private String codigoCiudad;
 
-	@NotNull
 	@Column(name = "ubi_nombre_ciudad", nullable = false, length = 50)
 	private String nombreCiudad;
 
-	@NotNull
 	@Column(name = "ubi_codigo_departamento", nullable = false, length = 20)
 	private String codigoDepartamento;
 
-	@NotNull
 	@Column(name = "ubi_nombre_departamento", nullable = false, length = 50)
 	private String nombreDepartamento;
 
@@ -45,6 +40,10 @@ public class UbicacionTB extends BaseEntidadTB implements Serializable {
 	@NotNull
 	@Column(name = "ubi_nombre_pais", nullable = false, length = 50)
 	private String nombrePais;
+
+	@NotNull
+	@Column(name = "ubi_tipo_ubicacion", nullable = false, length = 10)
+	private int tipoUbicacion;
 
 	public long getIdUbicacion() {
 		return idUbicacion;
@@ -100,6 +99,14 @@ public class UbicacionTB extends BaseEntidadTB implements Serializable {
 
 	public void setNombrePais(String nombrePais) {
 		this.nombrePais = nombrePais;
+	}
+
+	public int getTipoUbicacion() {
+		return tipoUbicacion;
+	}
+
+	public void setTipoUbicacion(int tipoUbicacion) {
+		this.tipoUbicacion = tipoUbicacion;
 	}
 
 }

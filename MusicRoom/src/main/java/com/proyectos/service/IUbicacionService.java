@@ -12,6 +12,12 @@ public interface IUbicacionService {
 	public List<UbicacionTB> consultarTodos();
 
 	/*
+	 * Metodo para consultar los ubicaciones que cumplan con el tipo de ubicación
+	 * seleccionado (Pais, Dpto, Ciudad)
+	 */
+	public List<UbicacionTB> consultaPorTipo(int tipoUbicacion);
+
+	/*
 	 * Metodo para consultar los ubicaciones que cumplan con los filtros
 	 */
 	public List<UbicacionTB> consultarPorFiltros(UbicacionTB ubicacionFiltro);

@@ -12,6 +12,7 @@ import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 // Imports Esenciales
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -49,6 +50,10 @@ import { UsuarioQueryComponent } from './components/usuarios/usuarioQuery.compon
 import { UsuarioEditComponent } from './components/usuarios/usuarioEdit.component';
 import { ConsultaComponent } from './components/consulta/consulta.component';
 import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
+import { UbicacionesQueryComponent } from './components/ubicaciones/ubicacionesQuery.component';
+import { UbicacionesEditComponent } from './components/ubicaciones/ubicacionesEdit.component';
+import { TercerosQueryComponent } from './components/terceros/tercerosQuery.component';
+import { TercerosEditComponent } from './components/terceros/tercerosEdit.component';
 
 // Constantes
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -100,7 +105,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     DualListBoxComponent,
     ModalsComponent,
     UsuarioQueryComponent,
-    UsuarioEditComponent
+    UsuarioEditComponent,
+    UbicacionesQueryComponent,
+    UbicacionesEditComponent,
+    TercerosQueryComponent,
+    TercerosEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -129,7 +138,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MessageModule,
     TableModule,
     CalendarModule,
-    ToastModule
+    ToastModule,
+    TabMenuModule
   ],
   providers: [DataObjects, LoginGuard, Util, Functions],
   bootstrap: [AppComponent]

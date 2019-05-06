@@ -1,0 +1,216 @@
+<div class="demo-container demo-layout-transparent">
+  <!-- Importamos el Header -->
+  <app-header></app-header>
+
+  <mdl-layout>
+    <mdl-layout-drawer>
+      <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo" />
+      <!-- Importamos el Sidebar o Menú Lateral -->
+      <app-sidebar></app-sidebar>
+    </mdl-layout-drawer>
+
+    <mdl-layout-content>
+      <div class="body-content">
+        <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+        <div class="content-page">
+          <div class="ui-g">
+            <div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
+              <h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_ubicacion_title}} -
+                {{phase === const.phaseAdd ? msg.lbl_btn_crear : msg.lbl_btn_editar}}
+              </h5>
+
+              <div class="ui-g center">
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                  <div *ngIf="phase === const.phaseAdd" class="mdl-card__supporting-text">
+                    <div class="ui-g center">
+                      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad">
+                        <p-tabMenu [model]="tabsMenu" [activeItem]="activeItem">
+                          <ng-template pTemplate="item" let-item let-i="index">
+                            <div (click)="cambiarPanelMostrar(item)"
+                              style="position: relative; text-align: center; min-width: 5em">
+                              <div class="ui-menuitem-icon" *ngIf="item.icon" style="font-size:1em">
+                                <i class="material-icons">{{item.icon}}</i>
+                              </div>
+                              <div class="ui-menuitem-text">
+                                {{item.label}}
+                              </div>
+                            </div>
+                          </ng-template>
+                        </p-tabMenu>
+                      </div>
+                    </div>
+
+                    <div class="ui-g center">
+                      <!-- TAB PAIS -->
+                      <div *ngIf="mostrarP" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
+                          {{msg.lbl_mtto_ubicacion_pais}}</label>
+                        <span class="ui-float-label">
+                          <input pInputText id="txtCodigoPaisP" (keydown)="guardaTeclaEnter($event)"
+                            [(ngModel)]="codigoPaisP" type="text" size="20">
+                        </span>
+                      </div>
+                      <div *ngIf="mostrarP" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
+                          {{msg.lbl_mtto_ubicacion_pais}}</label>
+                        <span class="ui-float-label">
+                          <input pInputText id="txtNombrePaisP" (keydown)="guardaTeclaEnter($event)"
+                            [(ngModel)]="nombrePaisP" type="text" size="50">
+                        </span>
+                      </div>
+                      <!-- TAB PAIS -->
+
+                      <!-- TAB DEPARTAMENTO -->
+                      <div *ngIf="mostrarD" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_pais}}</label>
+                        <span class="ui-float-label">
+                          <ng-select id="txtPaisD" (change)="cargarDepartamentosPorPais($event)"
+                            [(ngModel)]="paisSeleccionadoD" [items]="enumFiltroPaises">
+                          </ng-select>
+                        </span>
+                      </div>
+                      <div *ngIf="mostrarD" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
+                          {{msg.lbl_mtto_ubicacion_departamento}}</label>
+                        <span class="ui-float-label">
+                          <input pInputText id="txtCodigoDepartamentoD" (keydown)="guardaTeclaEnter($event)"
+                            [(ngModel)]="codigoDepartamentoD" type="text" size="20">
+                        </span>
+                      </div>
+                      <div *ngIf="mostrarD" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
+                          {{msg.lbl_mtto_ubicacion_departamento}}</label>
+                        <span class="ui-float-label">
+                          <input pInputText id="txtNombreDepartamentoD" (keydown)="guardaTeclaEnter($event)"
+                            [(ngModel)]="nombreDepartamentoD" type="text" size="50">
+                        </span>
+                      </div>
+                      <!-- TAB DEPARTAMENTO -->
+
+                      <!-- TAB CIUDAD -->
+                      <div *ngIf="mostrarC" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_pais}}</label>
+                        <span class="ui-float-label">
+                          <ng-select id="txtPaisC" (change)="cargarDepartamentosPorPais($event)"
+                            [(ngModel)]="paisSeleccionadoC" [items]="enumFiltroPaises">
+                          </ng-select>
+                        </span>
+                      </div>
+                      <div *ngIf="mostrarC" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_departamento}}</label>
+                        <span class="ui-float-label">
+                          <ng-select id="txtDepartamentoC" (change)="cargarCiudadesPorDepartamento($event)"
+                            [disabled]="paisSeleccionadoC == null" [(ngModel)]="departamentoSeleccionadoC"
+                            [items]="enumFiltroDepartamentos">
+                          </ng-select>
+                        </span>
+                      </div>
+                      <div *ngIf="mostrarC" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
+                          {{msg.lbl_mtto_ubicacion_ciudad}}</label>
+                        <span class="ui-float-label">
+                          <input pInputText id="txtCodigoCiudadC" (keydown)="guardaTeclaEnter($event)"
+                            [(ngModel)]="codigoCiudadC" type="text" size="20">
+                        </span>
+                      </div>
+                      <div *ngIf="mostrarC" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
+                          {{msg.lbl_mtto_ubicacion_ciudad}}</label>
+                        <span class="ui-float-label">
+                          <input pInputText id="txtNombreCiudadC" (keydown)="guardaTeclaEnter($event)"
+                            [(ngModel)]="nombreCiudadC" type="text" size="50">
+                        </span>
+                      </div>
+                      <!-- TAB CIUDAD -->
+
+                      <!-- ESTADO -->
+                      <div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
+                        <span class="ui-float-label">
+                          <ng-select id="txtEstado" [(ngModel)]="objeto.estado" [items]="enumSiNo">
+                          </ng-select>
+                        </span>
+                      </div>
+                      <!-- ESTADO -->
+                    </div>
+                  </div>
+
+                  <div *ngIf="phase !== const.phaseAdd" class="mdl-card__supporting-text">
+                    <div class="ui-g center">
+                      <div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_pais}}</label>
+                        <span class="ui-float-label">
+                          <ng-select id="txtPaisEd" (change)="cargarDepartamentosPorPais($event)"
+                            [(ngModel)]="paisSeleccionado" [items]="enumFiltroPaises">
+                          </ng-select>
+                        </span>
+                      </div>
+                      <div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label for="float-input">{{msg.lbl_mtto_ubicacion_departamento}}</label>
+                        <span class="ui-float-label">
+                          <ng-select id="txtDepartamentoEd" (change)="cargarCiudadesPorDepartamento($event)"
+                            [disabled]="paisSeleccionado == null" [(ngModel)]="departamentoSeleccionado"
+                            [items]="enumFiltroDepartamentos">
+                          </ng-select>
+                        </span>
+                      </div>
+                      <div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label for="float-input">{{msg.lbl_mtto_ubicacion_ciudad}}</label>
+                        <span class="ui-float-label">
+                          <ng-select [disabled]="departamentoSeleccionado == null || paisSeleccionado == null"
+                            id="txtCiudadEd" [(ngModel)]="ciudadSeleccionada" [items]="enumFiltroCiudades">
+                          </ng-select>
+                        </span>
+                      </div>
+                      <div class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <label class="obligatorio" for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
+                        <span class="ui-float-label">
+                          <ng-select id="txtEstadoEd" [(ngModel)]="objeto.estado" [items]="enumSiNo">
+                          </ng-select>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mdl-card__actions mdl-card--border">
+                    <div class="ui-g center">
+                      <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <button (click)="irAtras()" mdl-button mdl-tooltip-position="top"
+                          mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button" mdl-button-type="raised"
+                          mdl-colored="primary">
+                          <i class="material-icons">arrow_back</i> {{msg.lbl_btn_atras}}
+                        </button>
+                      </div>
+                      <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <button (click)="irGuardar()" mdl-button mdl-tooltip-position="top"
+                          mdl-tooltip-large="{{msg.lbl_tip_guardar}}" type="button" mdl-button-type="raised"
+                          mdl-colored="accent">
+                          <i class="material-icons">save</i> {{msg.lbl_btn_guardar}}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="ui-g center">
+                      <p-messages class="w100"></p-messages>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mdl-layout-content>
+  </mdl-layout>
+
+  <!-- Importamos el Footer -->
+  <app-footer></app-footer>
+</div>
+
+<p-toast position="top-right" styleClass="custom-toast">
+  <ng-template let-message pTemplate="message">
+    <div style="width: 100%;">
+      <p style="font-size: 12px !important" innerHtml="{{ex.mensaje}}"></p>
+    </div>
+  </ng-template>
+</p-toast>

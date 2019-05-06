@@ -15,6 +15,12 @@ public interface IUbicacionDao {
 	List<UbicacionTB> consultarTodos();
 
 	/*
+	 * Metodo para consultar los ubicaciones que cumplan con el tipo de ubicación
+	 * seleccionado (Pais, Dpto, Ciudad)
+	 */
+	List<UbicacionTB> consultaPorTipo(int tipoUbicacion);
+
+	/*
 	 * Metodo para consultar los ubicaciones que cumplan con los filtros
 	 */
 	List<UbicacionTB> consultarPorFiltros(UbicacionTB ubicacionFiltro);

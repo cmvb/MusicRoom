@@ -12,6 +12,10 @@ import { DualListBoxComponent } from './dual-list-box/dual-list-box.component';
 import { ModalsComponent } from './modals/modals.component';
 import { UsuarioQueryComponent } from './usuarios/usuarioQuery.component';
 import { UsuarioEditComponent } from './usuarios/usuarioEdit.component';
+import { UbicacionesQueryComponent } from './ubicaciones/ubicacionesQuery.component';
+import { UbicacionesEditComponent } from './ubicaciones/ubicacionesEdit.component';
+import { TercerosQueryComponent } from './terceros/tercerosQuery.component';
+import { TercerosEditComponent } from './terceros/tercerosEdit.component';
 
 import { LoginGuard } from './login.guard';
 
@@ -26,6 +30,10 @@ const routes: Routes = [
   { path: 'modals', component: ModalsComponent, canActivate: [LoginGuard] },
   { path: 'usuarioQuery', component: UsuarioQueryComponent, canActivate: [LoginGuard] },
   { path: 'usuarioEdit', component: UsuarioEditComponent, canActivate: [LoginGuard] },
+  { path: 'ubicacionQuery', component: UbicacionesQueryComponent, canActivate: [LoginGuard] },
+  { path: 'ubicacionEdit', component: UbicacionesEditComponent, canActivate: [LoginGuard] },
+  { path: 'terceroQuery', component: TercerosQueryComponent, canActivate: [LoginGuard] },
+  { path: 'terceroEdit', component: TercerosEditComponent, canActivate: [LoginGuard] },
 
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }

@@ -76,7 +76,7 @@ public class ControladorRestTercero {
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/modificarTercero")
 	public ResponseEntity<TerceroTB> modificar(@RequestBody TerceroTB tercero) {
-		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_USUARIO_TB, tercero);
+		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_TERCERO_TB, tercero);
 		TerceroTB terceroNuevo = new TerceroTB();
 		if (errores.isEmpty()) {
 			terceroNuevo = new TerceroTB();
