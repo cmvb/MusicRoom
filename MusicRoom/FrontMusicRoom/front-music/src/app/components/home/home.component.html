@@ -29,11 +29,13 @@
 								<div class="ui-g center">
 									<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
 										<button mdl-button (click)="login()" mdl-button-type="raised"
-											mdl-colored="accent">Ingresar</button>
+											mdl-colored="accent">
+											<i class="material-icons">launch</i> {{msg.lbl_btn_ingresar}}</button>
 									</div>
 									<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-										<button mdl-button (click)="irDashboard()" mdl-button-type="raised"
-											mdl-colored="primary">Registrarse</button>
+										<button mdl-button (click)="irRegistrar()" mdl-button-type="raised"
+											mdl-colored="primary">
+											<i class="material-icons">portrait</i> {{msg.lbl_btn_registrarse}}</button>
 									</div>
 								</div>
 							</div>

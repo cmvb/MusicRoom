@@ -8,7 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,8 +44,16 @@ public class BandaTB extends BaseEntidadTB implements Serializable {
 	private Date fechaInicio;
 
 	@NotNull
-	@OneToMany(mappedBy = "bandaTb", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "bandaTb", fetch = FetchType.EAGER)
 	private List<IntegranteTB> listaIntegrantesTb;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ban_foto")
+	private ArchivoTB fotoTb;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ban_logo")
+	private ArchivoTB logoTb;
 
 	public long getIdBanda() {
 		return idBanda;
@@ -83,6 +93,22 @@ public class BandaTB extends BaseEntidadTB implements Serializable {
 
 	public void setListaIntegrantesTb(List<IntegranteTB> listaIntegrantesTb) {
 		this.listaIntegrantesTb = listaIntegrantesTb;
+	}
+
+	public ArchivoTB getFotoTb() {
+		return fotoTb;
+	}
+
+	public void setFotoTb(ArchivoTB fotoTb) {
+		this.fotoTb = fotoTb;
+	}
+
+	public ArchivoTB getLogoTb() {
+		return logoTb;
+	}
+
+	public void setLogoTb(ArchivoTB logoTb) {
+		this.logoTb = logoTb;
 	}
 
 }

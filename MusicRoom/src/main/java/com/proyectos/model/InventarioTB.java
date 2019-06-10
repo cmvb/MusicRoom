@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -33,6 +36,10 @@ public class InventarioTB extends BaseEntidadTB implements Serializable {
 	@NotNull
 	@Column(name = "inv_info_adicional", nullable = false, length = 100)
 	private String infoAdicional;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "inv_foto")
+	private ArchivoTB fotoTb;
 
 	public long getIdInventario() {
 		return idInventario;
@@ -64,6 +71,14 @@ public class InventarioTB extends BaseEntidadTB implements Serializable {
 
 	public void setInfoAdicional(String infoAdicional) {
 		this.infoAdicional = infoAdicional;
+	}
+
+	public ArchivoTB getFotoTb() {
+		return fotoTb;
+	}
+
+	public void setFotoTb(ArchivoTB fotoTb) {
+		this.fotoTb = fotoTb;
 	}
 
 }

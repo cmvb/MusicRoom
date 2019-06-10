@@ -32,4 +32,15 @@ export class RestService {
 
     return this.http.delete(`${url}/${idParam}`);
   }
+
+  getFileREST(url) {
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
+  postFileREST(url, data: File) {
+    let formData: FormData = new FormData();
+    formData.append('file', data);
+
+    return this.http.post(url, formData, { responseType: 'text' });
+  }
 }

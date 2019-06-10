@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +33,16 @@ public class ControladorRestUsuario {
 	@Autowired
 	IUsuarioService usuarioService;
 
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UsuarioTB>> consultarTodos() {
+		return new ResponseEntity<List<UsuarioTB>>(usuarioService.consultarTodos(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/consultarUsuariosRegister", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UsuarioTB>> consultarUsuariosRegister() {
 		return new ResponseEntity<List<UsuarioTB>>(usuarioService.consultarTodos(), HttpStatus.OK);
 	}
 
@@ -57,6 +66,7 @@ public class ControladorRestUsuario {
 
 		if (usuario != null) {
 			if (!StringUtils.isBlank(usuario.getUsuario()) && !StringUtils.isBlank(usuario.getPassword())) {
+				usuario.setPassword(bcrypt.encode(usuario.getPassword()));
 				sesion = usuarioService.login(usuario);
 				if (sesion == null) {
 					mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.noAccesoApp.usuarioNoExiste");
@@ -108,12 +118,41 @@ public class ControladorRestUsuario {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping("/enviarCodigoVerificacion")
+	public ResponseEntity<List<UsuarioTB>> enviarCodigoVerificacion(@RequestBody UsuarioTB usuario) {
+		return new ResponseEntity<List<UsuarioTB>>(usuarioService.consultarPorFiltros(usuario), HttpStatus.OK);
+	}
+
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/crearUsuario")
 	public ResponseEntity<UsuarioTB> crear(@RequestBody UsuarioTB usuario) {
 		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_USUARIO_TB, usuario);
 		UsuarioTB usuarioNuevo = new UsuarioTB();
 		if (errores.isEmpty()) {
 			usuarioNuevo = new UsuarioTB();
+			usuarioNuevo = usuarioService.crear(usuario);
+		} else {
+			StringBuilder mensajeErrores = new StringBuilder();
+			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+
+			for (String error : errores) {
+				mensajeErrores.append(error);
+			}
+
+			throw new ModelNotFoundException(erroresTitle + mensajeErrores);
+		}
+
+		return new ResponseEntity<UsuarioTB>(usuarioNuevo, HttpStatus.OK);
+	}
+
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping("/registrarse")
+	public ResponseEntity<UsuarioTB> registrarse(@RequestBody UsuarioTB usuario) {
+		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_USUARIO_TB, usuario);
+		UsuarioTB usuarioNuevo = new UsuarioTB();
+		if (errores.isEmpty()) {
+			usuarioNuevo = new UsuarioTB();
+			usuario.setPassword(bcrypt.encode(usuario.getPassword()));
 			usuarioNuevo = usuarioService.crear(usuario);
 		} else {
 			StringBuilder mensajeErrores = new StringBuilder();

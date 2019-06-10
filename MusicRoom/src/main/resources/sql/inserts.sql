@@ -1,11 +1,21 @@
+-- ROLES --
+
+INSERT INTO musicroom.mra_rol_tb (rol_id_rol, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, rol_codigo, rol_descripcion) VALUES(1, 1, '2019-05-08 15:27:45.691', '2019-05-08 15:27:45.000', 'SYSTEM', 'SYSTEM', 'MRADM', 'Rol para Administradores');
+
+INSERT INTO musicroom.mra_rol_tb (rol_id_rol, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, rol_codigo, rol_descripcion) VALUES(2, 1, '2019-05-08 15:27:45.000', '2019-05-08 15:27:45.000', 'SYSTEM', 'SYSTEM', 'MRCLI', 'Rol para Usuarios Clientes');
+
+INSERT INTO musicroom.mra_rol_tb (rol_id_rol, estado, fecha_actualiza, fecha_creacion, usuario_actualiza, usuario_creacion, rol_codigo, rol_descripcion) VALUES(3, 1, '2019-05-08 15:27:45.000', '2019-05-08 15:27:45.000', 'SYSTEM', 'SYSTEM', 'MRTER', 'Rol para Usuarios Terceros');
+
+
+-- ROLES --
+
 -- TERCEROS --
 
 ALTER TABLE musicroom.mra_tercero_tb ALTER COLUMN ter_telefono2 DROP NOT NULL;
 ALTER TABLE musicroom.mra_tercero_tb ALTER COLUMN ter_info_adicional DROP NOT NULL;
 
-
-
 -- TERCEROS --
+
 
 -- UBICACIONES --
 
@@ -428,6 +438,7 @@ INSERT INTO musicroom.mra_ubicacion_tb (ubi_id_ubicacion, estado, fecha_actualiz
 
 -- UBICACIONES --
 
+
 -- USUARIOS --
 
 INSERT INTO musicroom.mra_usuario_tb
@@ -483,6 +494,14 @@ VALUES(15, 1, '1980-03-19 08:57:39.204', '2015-07-31 18:14:15.117', 'SYSTEM', 'S
 
 INSERT INTO musicroom.mra_consecutivo_tb
 (tabla, valor)
+VALUES('mra_rol_tb', 4);
+
+INSERT INTO musicroom.mra_consecutivo_tb
+(tabla, valor)
+VALUES('mra_archivo_tb', 1);
+
+INSERT INTO musicroom.mra_consecutivo_tb
+(tabla, valor)
 VALUES('mra_banda_tb', 1);
 
 INSERT INTO musicroom.mra_consecutivo_tb
@@ -532,6 +551,5 @@ VALUES('mra_ubicacion_tb', 442);
 INSERT INTO musicroom.mra_consecutivo_tb
 (tabla, valor)
 VALUES('mra_usuario_tb', 16);
-
 
 -- CONSECUTIVO --

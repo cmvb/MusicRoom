@@ -6,6 +6,7 @@
 			<ng-select class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad comboTabla floatLeft"
 				[(ngModel)]="rows" [items]="enumRows">
 			</ng-select>
+			<button mdl-button (click)="dt.exportCSV()" mdl-button-type="raised" mdl-colored="accent">Exportar CSV</button>
 		</div>
 		<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad floatRight hidden-sm">
 			<mdl-icon class="floatRight textRight">search</mdl-icon>

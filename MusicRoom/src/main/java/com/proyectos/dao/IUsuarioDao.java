@@ -10,6 +10,11 @@ import com.proyectos.model.UsuarioTB;
 public interface IUsuarioDao {
 
 	/*
+	 * Metodo para consultar un usuario por su username
+	 */
+	UsuarioTB consultarPorUsername(String usuario);
+
+	/*
 	 * Metodo para consultar todos los usuarios
 	 */
 	List<UsuarioTB> consultarTodos();

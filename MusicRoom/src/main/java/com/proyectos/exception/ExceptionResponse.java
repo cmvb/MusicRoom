@@ -2,6 +2,9 @@ package com.proyectos.exception;
 
 import java.util.Date;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Información del las Excepciones")
 public class ExceptionResponse {
 
 	private Date fecha;

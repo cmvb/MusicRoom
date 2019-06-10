@@ -51,6 +51,28 @@
                     </p-table>
                   </div>
                 </div>
+                <div class="ui-g">
+                  <button mdl-button (click)="generarReporte()" mdl-button-type="raised" mdl-colored="accent">Generar
+                    PDF</button>
+                  <button mdl-button (click)="descargarReporte()" mdl-button-type="raised"
+                    mdl-colored="accent">Descargar
+                    PDF</button>
+                  <label>Archivo: {{nameFile}}</label>
+                  <button mdl-button (click)="util.simularClick('fileToUpload')" mdl-button-type="raised"
+                    mdl-colored="accent">Seleccionar Archivo</button>
+                  <input id="fileToUpload" type="file" class="displayNone" (change)="selectFiles($event)">
+                  <button mdl-button (click)="upload()" [disabled]="!selectFiles" mdl-button-type="raised"
+                    mdl-colored="accent">Subir Archivo</button>
+                  <button mdl-button (click)="accionImagen('M')" mdl-button-type="raised" mdl-colored="accent">Mostrar
+                    Imagen</button>
+                  <button mdl-button (click)="accionImagen('O')" mdl-button-type="raised" mdl-colored="accent">Ocultar
+                    Imagen</button>
+                  <img mat-card-image [src]="imagenData" *ngIf="imagenEstado" />
+
+
+                  <pdf-viewer [src]="pdfSrc" [render-text]="true" style="display: block;">
+                  </pdf-viewer>
+                </div>
               </div>
             </div>
           </div>

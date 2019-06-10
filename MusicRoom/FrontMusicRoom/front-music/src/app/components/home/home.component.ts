@@ -85,4 +85,12 @@ export class HomeComponent implements OnInit {
     audio.play();
     this.router.navigate(['/dashboard']);
   }
+
+  irRegistrar() {
+    let audio = new Audio();
+    audio.src = "assets/audio/crash.mp3";
+    audio.load();
+    audio.play();
+    this.router.navigate(['/register']);
+  }
 }

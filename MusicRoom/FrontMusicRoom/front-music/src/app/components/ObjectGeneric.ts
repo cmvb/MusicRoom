@@ -20,9 +20,11 @@ export class DataObjects {
   getConst() {
     return {
       urlRestService: 'http://localhost:9002/music-room/',
+      urlRestOauth: 'http://localhost:9002/music-room/oauth/token',
       urlControllerUsuario: 'usuario/',
       urlControllerUbicacion: 'ubicacion/',
       urlControllerTercero: 'tercero/',
+      urlControllerReporte: 'reporte-archivo/',
       //Model rango de fechas para NGBDatePicker
       minDate: { year: 1000, month: 1, day: 1 },
       maxDate: new Date(),
@@ -88,8 +90,10 @@ export class DataObjects {
       numeroDocumento: '',
       tipoDocumento: '',
       tipoUsuario: '',
-      fechaNacimiento: '',
       email: '',
+      fechaNacimiento: '',
+      fotoTb: this.getDataArchivo(),
+      listaRoles: [this.getDataRol()],
 
       //Abstract
       estado: '',
@@ -99,6 +103,23 @@ export class DataObjects {
       fechaActualiza: ''
     }
   };
+
+  getDataRol() {
+    return {
+      idRol: '',
+      codigo: '',
+      descripcion: ''
+    }
+  }
+
+  getDataArchivo() {
+    return {
+      idArchivo: '',
+      nombreArchivo: '',
+      tipoArchivo: '',
+      valor: '',
+    }
+  }
 
   getDataUbicacion() {
     return {
@@ -230,6 +251,9 @@ export class DataObjects {
       lbl_menu_prestamo: idioma == constant.idiomaEs ? 'Alquiler' : 'Rental',
 
       // Acciones
+      lbl_btn_ingresar: idioma == constant.idiomaEs ? 'Ingresar' : 'Sign In',
+      lbl_btn_registrarse: idioma == constant.idiomaEs ? 'Registrarse' : 'Register',
+      lbl_btn_inicio: idioma == constant.idiomaEs ? 'Inicio' : 'Login',
       lbl_btn_consultar: idioma == constant.idiomaEs ? 'Consultar' : 'Query',
       lbl_btn_crear: idioma == constant.idiomaEs ? 'Crear' : 'Create',
       lbl_btn_editar: idioma == constant.idiomaEs ? 'Editar' : 'Edit',
@@ -287,6 +311,12 @@ export class DataObjects {
 
       // Módulos Genéricos
       lbl_mtto_generico_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
+      lbl_mtto_generico_step_1_registrar_usuario: idioma == constant.idiomaEs ? 'Registre su Información Personal' : 'Register your Personal Information.',
+      lbl_mtto_generico_step_2_registrar_usuario: idioma == constant.idiomaEs ? 'Registre su Información de Identificación' : 'Register your Identification Information.',
+      lbl_mtto_generico_step_3_registrar_usuario: idioma == constant.idiomaEs ? 'Cree su nuevo Usuario' : 'Create your new user.',
+      lbl_mtto_generico_step_4_registrar_usuario: idioma == constant.idiomaEs ? 'Ingrese el código de verificación que se ha enviado a su correo para Activar la Cuenta.' : 'Enter the verification code that sent your email to activate the account.',
+      lbl_mtto_generico_step_registrar_usuario_error: idioma == constant.idiomaEs ? 'Los datos suministrados en este Paso son incorrectos. Verifique la información.' : 'The data provided in this step is incorrect. Check the information.',
+      lbl_mtto_generico_codigo_verificaicion_enviado_ok: idioma == constant.idiomaEs ? 'Se ha enviado el Código de Verificación de Cuenta correctamente.' : 'The Account Verification Code has been sent correctly.',
 
       // Módulo Usuario
       lbl_mtto_usuario_title: idioma == constant.idiomaEs ? 'Configuración de Usuarios' : 'Users Settings',
