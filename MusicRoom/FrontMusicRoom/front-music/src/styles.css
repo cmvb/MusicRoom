@@ -808,6 +808,27 @@ table.falsa {
   background-color: #135ba1;
 }
 
+.alturaImgRegister {
+  height: 100px;
+  width: auto;
+}
+
+.ui-steps .ui-steps-item .ui-menuitem-link .ui-steps-title {
+  color: #e8f0fe !important;
+}
+
+.ui-steps .ui-steps-item.ui-state-highlight .ui-steps-title {
+  color: #1976d2 !important;
+}
+
+.ui-steps ul {
+  display: inline-flex;
+}
+
+.register .ui-inputtext, .register.ng-select.ng-select-single .ng-select-container {
+  height: 44px;
+}
+
 /* ---------------------------- MediaQuery ---------------------------- */
 
 @media only screen and (max-width: 1200px) {

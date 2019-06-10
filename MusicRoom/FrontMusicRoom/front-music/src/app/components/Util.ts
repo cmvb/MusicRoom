@@ -496,4 +496,29 @@ export class Util {
     }
     return { value: ubicacion, label: label };
   }
+
+  // Función que permite validar la estructura de un Email de acuerdo a un patrón REGEX
+  validarEstructuraEmail(email) {
+    let emailRegex = new RegExp('^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$');
+
+    return emailRegex.test(email);
+  }
+
+  // Función para buscar el código de un usuario en una lista de usuarios
+  usuarioInLista(usuario, listaUsuarios) {
+    let result = true;
+    for (let i in listaUsuarios) {
+      let user = listaUsuarios[i];
+      if (user.usuario === usuario) {
+        result = false;
+        break;
+      }
+    }
+    return result;
+  }
+
+  // Función que simula un click en un componente dado su ID
+  simularClick(id) {
+    document.getElementById(id).click();
+  }
 }

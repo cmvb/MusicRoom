@@ -1,10 +1,17 @@
 package com.proyectos.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.proyectos.dao.ISesionDao;
@@ -17,7 +24,7 @@ import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.Util;
 
 @Service
-public class UsuarioServiceImpl implements IUsuarioService {
+public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
 	@Autowired
 	private IUsuarioDao usuarioDAO;
@@ -73,5 +80,22 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	@Override
 	public void eliminar(long idUsuario) {
 		usuarioDAO.eliminar(idUsuario);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UsuarioTB usuario = usuarioDAO.consultarPorUsername(username);
+		if (usuario == null) {
+			throw new UsernameNotFoundException(String.format("Usuario no Existe", username));
+		}
+
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		usuario.getListaRoles().forEach(rol -> {
+			authorities.add(new SimpleGrantedAuthority(rol.getCodigo()));
+		});
+
+		UserDetails userDetails = new User(usuario.getUsuario(), usuario.getPassword(), authorities);
+
+		return userDetails;
 	}
 }

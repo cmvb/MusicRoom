@@ -2,10 +2,16 @@ package com.proyectos.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,6 +67,14 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 	@Column(name = "usu_fecha_nacimiento", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaNacimiento;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "usu_foto")
+	private ArchivoTB fotoTb;
+
+	@ManyToMany
+	@JoinTable(name = "MRA_USUARIO_ROL_TB", joinColumns = @JoinColumn(name = "idUsuario", referencedColumnName = "usu_id_usuario"), inverseJoinColumns = @JoinColumn(name = "idRol", referencedColumnName = "rol_id_rol"))
+	private List<RolTB> listaRoles;
 
 	public long getIdUsuario() {
 		return idUsuario;
@@ -140,6 +154,22 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public ArchivoTB getFotoTb() {
+		return fotoTb;
+	}
+
+	public void setFotoTb(ArchivoTB fotoTb) {
+		this.fotoTb = fotoTb;
+	}
+
+	public List<RolTB> getListaRoles() {
+		return listaRoles;
+	}
+
+	public void setListaRoles(List<RolTB> listaRoles) {
+		this.listaRoles = listaRoles;
 	}
 
 }

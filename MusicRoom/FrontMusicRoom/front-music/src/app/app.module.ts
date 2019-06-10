@@ -15,6 +15,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxUiLoaderConfig, NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { CalendarModule } from 'primeng/calendar';
@@ -25,6 +26,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { StepsModule } from 'primeng/steps';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ToastModule } from 'primeng/toast';
@@ -44,6 +46,7 @@ import { ModalsComponent } from './components/modals/modals.component';
 import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
 // Imports Utilidades
 import { DataObjects } from './components/ObjectGeneric';
+import { PdfViewerthis } from './components/pdf-viewerthis.util/pdf-viewerthis.util.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TercerosEditComponent } from './components/terceros/tercerosEdit.component';
@@ -110,6 +113,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     UbicacionesEditComponent,
     TercerosQueryComponent,
     TercerosEditComponent,
+    PdfViewerthis,
   ],
   imports: [
     BrowserModule,
@@ -143,7 +147,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     InputTextareaModule,
     DragDropModule,
     DeferModule,
-    ScrollPanelModule
+    ScrollPanelModule,
+    StepsModule,
+    PdfViewerModule
   ],
   providers: [DataObjects, LoginGuard, Util, Functions],
   bootstrap: [AppComponent]

@@ -142,4 +142,22 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 		return entidad;
 	}
 
+	@Override
+	public UsuarioTB consultarPorUsername(String usuario) {
+		// PARAMETROS
+		Map<String, Object> pamameters = new HashMap<>();
+
+		// QUERY
+		StringBuilder JPQL = new StringBuilder("SELECT t FROM UsuarioTB t WHERE 1 = 1 ");
+		// Q. Usuario
+		JPQL.append("AND t.usuario = :USUARIO  ");
+		pamameters.put("USUARIO", usuario);
+		// END QUERY
+
+		TypedQuery<UsuarioTB> query = em.createQuery(JPQL.toString(), UsuarioTB.class);
+		pamameters.forEach((k, v) -> query.setParameter(k, v));
+
+		return query.getSingleResult();
+	}
+
 }
