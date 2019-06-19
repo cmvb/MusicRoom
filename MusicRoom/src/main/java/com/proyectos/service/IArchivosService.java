@@ -14,4 +14,9 @@ public interface IArchivosService {
 	 */
 	public byte[] leerArchivo(Long idArchivo);
 
+	/*
+	 * Método para leer un archivo
+	 */
+	public ArchivoTB consultarPorId(Long idArchivo);
+
 }

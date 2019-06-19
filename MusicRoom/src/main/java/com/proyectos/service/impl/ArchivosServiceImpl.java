@@ -28,4 +28,9 @@ public class ArchivosServiceImpl implements IArchivosService {
 		return archivoDAO.leerArchivo(idArchivo);
 	}
 
+	@Override
+	public ArchivoTB consultarPorId(Long idArchivo) {
+		return archivoDAO.consultarPorId(idArchivo);
+	}
+
 }

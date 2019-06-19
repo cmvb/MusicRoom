@@ -266,6 +266,8 @@ export class DataObjects {
       lbl_btn_guardar: idioma == constant.idiomaEs ? 'Guardar' : 'Save',
       lbl_btn_ite_remover: idioma == constant.idiomaEs ? 'Remover' : 'Remove',
       lbl_btn_ite_agregar: idioma == constant.idiomaEs ? 'Agregar' : 'Add',
+      lbl_btn_siguiente: idioma == constant.idiomaEs ? 'Siguiente' : 'Next',
+      lbl_btn_anterior: idioma == constant.idiomaEs ? 'Anterior' : 'Back',
 
       // Header
       lbl_header_usuario: idioma == constant.idiomaEs ? 'Usuario' : 'User',
