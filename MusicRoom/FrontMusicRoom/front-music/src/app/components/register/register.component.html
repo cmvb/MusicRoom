@@ -75,9 +75,9 @@
                                             <span class="ui-inputgroup-addon">
                                                 <mdl-icon>email</mdl-icon>
                                             </span>
-                                            <input class="mdl-textfield__input"
-                                                [(ngModel)]="usuario.email" type="text" pInputText placeholder="E-Mail"
-                                                (keydown)="guardaTeclaEnter($event)" size="50">
+                                            <input class="mdl-textfield__input" [(ngModel)]="usuario.email" type="text"
+                                                pInputText placeholder="E-Mail" (keydown)="guardaTeclaEnter($event)"
+                                                size="50">
                                         </div>
                                     </div>
                                 </div>
@@ -153,10 +153,14 @@
                                                 <i class="material-icons">home</i> {{msg.lbl_btn_inicio}}</button>
                                         </div>
                                         <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                                            <button [disabled]="isDisabled" mdl-button (click)="registrarse()"
-                                                mdl-button-type="raised" mdl-colored="accent">
+                                            <button *ngIf="!isDisabled" [disabled]="isDisabled" mdl-button
+                                                (click)="registrarse()" mdl-button-type="raised" mdl-colored="accent">
                                                 <i class="material-icons">group_add</i>
                                                 {{msg.lbl_btn_registrarse}}</button>
+                                            <button *ngIf="isDisabled" [disabled]="!isDisabled" mdl-button
+                                                (click)="siguientePaso()" mdl-button-type="raised" mdl-colored="accent">
+                                                <i class="material-icons">arrow_right_alt</i>
+                                                {{msg.lbl_btn_siguiente}}</button>
                                         </div>
                                     </div>
                                 </div>

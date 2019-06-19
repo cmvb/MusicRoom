@@ -16,12 +16,14 @@ export class Util {
   enums: any;
   modeloTablas: any;
   func: any;
+  usuarioEjemplo: any;
 
   headers = new Headers({ 'Content-Type': 'application/json' });
   options = new RequestOptions({ headers: this.headers });
 
   constructor(private http: Http, dataObject: DataObjects, dataFunctions: Functions) {
     this.ex = dataObject.getDataException();
+    this.usuarioEjemplo = dataObject.getDataUsuario();
     this.mensaje = dataObject.getDataMessage();
     this.const = dataObject.getConst();
     this.msg = dataObject.getProperties(this.const.idiomaEs);
@@ -520,5 +522,10 @@ export class Util {
   // Función que simula un click en un componente dado su ID
   simularClick(id) {
     document.getElementById(id).click();
+  }
+
+  // Función que copia uno y otro elemento
+  copiarElemento(source, target) {
+    return Object.assign(target, source);
   }
 }

@@ -250,12 +250,16 @@ export class RegisterComponent implements OnInit {
       debugger;
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'registrarse';
-      let obj = this.usuario;
+      let obj = this.util.copiarElemento(this.usuario, this.util.usuarioEjemplo);
+
+      obj.tipoDocumento = this.usuario.tipoDocumento.value;
+      obj.tipoUsuario = 1;
+      obj.fotoTb = null;
 
       this.restService.postREST(url, obj)
         .subscribe(resp => {
           console.log(resp, "res");
-          this.sesion = resp;
+          this.sesion.usuarioTb = resp;
 
           // Procesamiento o Lógica Específica
           this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
@@ -289,17 +293,14 @@ export class RegisterComponent implements OnInit {
 
   guardaTeclaEnter(event) {
     if (event.which === 13) {
-      if (this.step == 1) {
+      this.siguientePaso();
+    }
+  }
 
-      }
-      else if (this.step == 2) {
 
-      }
-      else if (this.step == 3) {
-
-      }
-      else if (this.step == 4) {
-      }
+  siguientePaso() {
+    if ($('.ui-steps-number')[this.step] !== undefined) {
+      $('.ui-steps-number')[this.step].click();
     }
   }
 }

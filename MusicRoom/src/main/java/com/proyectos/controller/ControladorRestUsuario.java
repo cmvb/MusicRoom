@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.proyectos.enums.EEstado;
 import com.proyectos.exception.ModelNotFoundException;
+import com.proyectos.model.ArchivoTB;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
+import com.proyectos.service.IArchivosService;
 import com.proyectos.service.IUsuarioService;
 import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.PropertiesUtil;
@@ -32,6 +34,9 @@ public class ControladorRestUsuario {
 
 	@Autowired
 	IUsuarioService usuarioService;
+
+	@Autowired
+	IArchivosService archivoService;
 
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
@@ -153,6 +158,9 @@ public class ControladorRestUsuario {
 		if (errores.isEmpty()) {
 			usuarioNuevo = new UsuarioTB();
 			usuario.setPassword(bcrypt.encode(usuario.getPassword()));
+			ArchivoTB fotoTb = archivoService.consultarPorId(1l);
+			usuario.setFotoTb(fotoTb);
+			usuario.setListaRoles(null);
 			usuarioNuevo = usuarioService.crear(usuario);
 		} else {
 			StringBuilder mensajeErrores = new StringBuilder();
