@@ -29,6 +29,14 @@ public class RolTB extends BaseEntidadTB implements Serializable {
 	@Column(name = "rol_descripcion", nullable = false, length = 100)
 	private String descripcion;
 
+	@NotNull
+	@Column(name = "rol_path", nullable = false, length = 100)
+	private String path;
+
+	@NotNull
+	@Column(name = "rol_sub_path", nullable = false, length = 100)
+	private String subPath;
+
 	public long getIdRol() {
 		return idRol;
 	}
@@ -51,6 +59,22 @@ public class RolTB extends BaseEntidadTB implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getSubPath() {
+		return subPath;
+	}
+
+	public void setSubPath(String subPath) {
+		this.subPath = subPath;
 	}
 
 }

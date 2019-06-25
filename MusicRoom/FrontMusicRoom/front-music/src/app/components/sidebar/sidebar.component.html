@@ -2,18 +2,18 @@
     <nav class="mdl-navigation noPadding">
         <div id="menu">
             <ul class="sidebar">
-                <li id="configuracion" class="nivel1" tabindex="1">
+                <li *ngIf="verMenuConfiguracion" id="configuracion" class="nivel1" tabindex="1">
                     <span class="nivel1 mdl-navigation__link" (click)="desplegarMenu('configuracion')">
                         <mdl-icon>settings</mdl-icon>Configuración
                     </span>
                     <ul class="noPaddLeft">
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMPA')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>settings_input_component</mdl-icon>
                                 {{msg.lbl_menu_parametrizacion}}
                             </a>
                         </li>
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMSE')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>vpn_key</mdl-icon>
                                 {{msg.lbl_menu_sesion}}
@@ -22,36 +22,36 @@
                     </ul>
                 </li>
 
-                <li id="administracion" class="nivel1" tabindex="2">
+                <li *ngIf="verMenuAdministracion" id="administracion" class="nivel1" tabindex="2">
                     <span class="nivel1 mdl-navigation__link" (click)="desplegarMenu('administracion')">
                         <mdl-icon>build</mdl-icon>Administración
                     </span>
                     <ul class="noPaddLeft">
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMUS')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>people</mdl-icon>
                                 {{msg.lbl_menu_usuario}}
                             </a>
                         </li>
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMUB')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('ubicacionQuery')">
                                 <mdl-icon>room</mdl-icon>
                                 {{msg.lbl_menu_ubicacion}}
                             </a>
                         </li>
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMTE')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('terceroQuery')">
                                 <mdl-icon>work</mdl-icon>
                                 {{msg.lbl_menu_tercero}}
                             </a>
                         </li>
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMSA')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>library_music</mdl-icon>
                                 {{msg.lbl_menu_sala}}
                             </a>
                         </li>
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMIN')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>album</mdl-icon>
                                 {{msg.lbl_menu_banda_integrante}}
@@ -60,18 +60,18 @@
                     </ul>
                 </li>
 
-                <li id="inventario" class="nivel1" tabindex="2">
+                <li *ngIf="verMenuInventario" id="inventario" class="nivel1" tabindex="2">
                     <span class="nivel1 mdl-navigation__link" (click)="desplegarMenu('inventario')">
                         <mdl-icon>assignment</mdl-icon>Inventario
                     </span>
                     <ul class="noPaddLeft">
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMIV')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>settings_voice</mdl-icon>
                                 {{msg.lbl_menu_inventario}}
                             </a>
                         </li>
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMPR')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>pan_tool</mdl-icon>
                                 {{msg.lbl_menu_prestamo}}
@@ -80,12 +80,12 @@
                     </ul>
                 </li>
 
-                <li id="agenda" class="nivel1" tabindex="2">
+                <li *ngIf="verMenuAgenda" id="agenda" class="nivel1" tabindex="2">
                     <span class="nivel1 mdl-navigation__link" (click)="desplegarMenu('agenda')">
                         <mdl-icon>calendar_today</mdl-icon>Agenda
                     </span>
                     <ul class="noPaddLeft">
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMEN')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>today</mdl-icon>
                                 {{msg.lbl_menu_ensayo}}
@@ -94,12 +94,12 @@
                     </ul>
                 </li>
 
-                <li id="movimientos" class="nivel1" tabindex="2">
+                <li *ngIf="verMenuMovimientos" id="movimientos" class="nivel1" tabindex="2">
                     <span class="nivel1 mdl-navigation__link" (click)="desplegarMenu('movimientos')">
                         <mdl-icon>monetization_on</mdl-icon>Movimientos
                     </span>
                     <ul class="noPaddLeft">
-                        <li class="primera mdl-navigation__link">
+                        <li *ngIf="verificarRolesMenu('RMRMFA')" class="primera mdl-navigation__link">
                             <a class="mdl-navigation__link" (click)="irMenu('usuarioQuery')">
                                 <mdl-icon>credit_card</mdl-icon>
                                 {{msg.lbl_menu_factura_pago}}

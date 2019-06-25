@@ -72,7 +72,7 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 	@JoinColumn(name = "usu_foto")
 	private ArchivoTB fotoTb;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "MRA_USUARIO_ROL_TB", joinColumns = @JoinColumn(name = "idUsuario", referencedColumnName = "usu_id_usuario"), inverseJoinColumns = @JoinColumn(name = "idRol", referencedColumnName = "rol_id_rol"))
 	private List<RolTB> listaRoles;
 

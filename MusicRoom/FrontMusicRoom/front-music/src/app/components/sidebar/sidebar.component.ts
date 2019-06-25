@@ -21,8 +21,12 @@ export class SidebarComponent implements OnInit {
   ex: any;
   usuario: any;
   msgs = [];
-
   logueado: boolean;
+  verMenuConfiguracion: boolean;
+  verMenuAdministracion: boolean;
+  verMenuInventario: boolean;
+  verMenuAgenda: boolean;
+  verMenuMovimientos: boolean;
 
   // Utilidades
   util: any;
@@ -53,11 +57,27 @@ export class SidebarComponent implements OnInit {
 
   irMenu(menu) {
     this.util.limpiarVariableSesion();
-    this.router.navigate(['/' + menu]);
+    this.router.navigate(['/music-room' + menu]);
   }
 
   desplegarMenu(id) {
     $('#' + id).children('ul').toggle('display');
     $('#' + id).children('span').toggleClass('backMenuOpen');
+  }
+
+  verificarRolesMenu(rol) {
+    let result = false;
+    let usuarioSesion = localStorage.getItem('usuarioSesion') === null ? null : JSON.parse(localStorage.getItem('usuarioSesion').toString());
+
+    if (usuarioSesion !== undefined && usuarioSesion !== null && usuarioSesion.listaRoles !== undefined && usuarioSesion.listaRoles !== null){
+      for (let i in usuarioSesion.listaRoles) {
+        let rolUsuario = usuarioSesion.listaRoles[i];
+        if (rolUsuario.codigo === rol || rolUsuario.codigo === this.const.codigoADMIN) {
+          result = true;
+          break;
+        }
+      }
+    }
+    return result;
   }
 }

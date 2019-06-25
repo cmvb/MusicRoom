@@ -152,13 +152,13 @@ export class TercerosQueryComponent implements OnInit {
 
   editar(objetoEdit) {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }, { item: 'listaCiudades', valor: this.listaCiudades }]);
-    this.router.navigate(['/terceroEdit']);
+    this.router.navigate(['/music-room/terceroEdit']);
     return true;
   }
 
   irCrear() {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }, { item: 'listaCiudades', valor: this.listaCiudades }]);
-    this.router.navigate(['/terceroEdit']);
+    this.router.navigate(['/music-room/terceroEdit']);
     return true;
   }
 

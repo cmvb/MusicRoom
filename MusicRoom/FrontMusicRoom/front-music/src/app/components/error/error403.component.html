@@ -1,0 +1,21 @@
+<div id="notfound">
+  <div class="notfound-bg"></div>
+  <div class="notfound">
+    <div class="notfound-404">
+      <h1>{{msg.lbl_error_403}}</h1>
+    </div>
+    <h2>{{msg.lbl_oops}} {{mensajeError}}</h2>
+    <p>{{msg.lbl_vencimiento_token_sesion}} {{expirationDate}}</p>
+    <form class="notfound-search">
+      <input type="text" placeholder="Ir a...">
+      <button type="button">{{msg.lbl_ir_a}}</button>
+    </form>
+    <div class="notfound-social">
+      <a><i class="fa fa-facebook"></i></a>
+      <a><i class="fa fa-twitter"></i></a>
+      <a><i class="fa fa-pinterest"></i></a>
+      <a><i class="fa fa-google-plus"></i></a>
+    </div>
+    <a (click)="irHome()">{{msg.lbl_ir_inicio}}</a>
+  </div>
+</div>

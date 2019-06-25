@@ -237,13 +237,13 @@ export class UbicacionesQueryComponent implements OnInit {
 
   editar(objetoEdit) {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }, { item: 'listaCiudades', valor: this.listaCiudades }, { item: 'listaDepartamentos', valor: this.listaDepartamentos }, { item: 'listaPaises', valor: this.listaPaises }]);
-    this.router.navigate(['/ubicacionEdit']);
+    this.router.navigate(['/music-room/ubicacionEdit']);
     return true;
   }
 
   irCrear() {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }, { item: 'listaCiudades', valor: this.listaCiudades }, { item: 'listaDepartamentos', valor: this.listaDepartamentos }, { item: 'listaPaises', valor: this.listaPaises }]);
-    this.router.navigate(['/ubicacionEdit']);
+    this.router.navigate(['/music-room/ubicacionEdit']);
     return true;
   }
 
