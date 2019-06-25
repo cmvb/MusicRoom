@@ -18,6 +18,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+	@Value("${security.token.time-expired}")
+	private int TIEMPO_EXPIRA_TOKEN;
+
 	@Value("${security.jwt.client-id}")
 	private String clientId;
 
@@ -48,7 +51,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
 		configurer.inMemory().withClient(clientId).secret(clientSecret).authorizedGrantTypes(grantType)
-				.scopes(scopeRead, scopeWrite).resourceIds(resourceIds).accessTokenValiditySeconds(20)
+				.scopes(scopeRead, scopeWrite).resourceIds(resourceIds).accessTokenValiditySeconds(TIEMPO_EXPIRA_TOKEN)
 				.refreshTokenValiditySeconds(0);
 	}
 

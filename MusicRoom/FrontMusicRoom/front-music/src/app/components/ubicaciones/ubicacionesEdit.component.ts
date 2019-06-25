@@ -262,7 +262,7 @@ export class UbicacionesEditComponent implements OnInit {
 
   irAtras() {
     this.util.limpiarSesionXItem(['listaConsulta']);
-    this.router.navigate(['/ubicacionQuery']);
+    this.router.navigate(['/music-room/ubicacionQuery']);
   }
 
   guardaTeclaEnter(event) {

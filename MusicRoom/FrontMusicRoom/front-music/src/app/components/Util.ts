@@ -90,6 +90,7 @@ export class Util {
 
   limpiarSesion() {
     localStorage.clear();
+    sessionStorage.clear();
     return true;
   }
 
@@ -453,6 +454,24 @@ export class Util {
     return mensaje;
   }
 
+  // Reproducir sonido error
+  playError() {
+    let audio = new Audio();
+    audio.src = "assets/audio/guitarBad.mp3";
+    fetch('assets/audio/guitarBad.mp3')
+      .then(response => response.blob())
+      .then(blob => {
+        audio.load();
+        return audio.play();
+      })
+      .then(_ => {
+        console.log('Video playback started');
+      })
+      .catch(e => {
+        console.log('Video playback failed');
+      });
+  }
+
   // Función para obtener el objeto ubicacion de una lista con el Id que está en un combo
   obtenerUbicacionDeEnum(idUbicacionEnum, listaUbicaciones) {
     let ubicacion: any;
@@ -508,11 +527,37 @@ export class Util {
 
   // Función para buscar el código de un usuario en una lista de usuarios
   usuarioInLista(usuario, listaUsuarios) {
-    let result = true;
+    let result = false;
     for (let i in listaUsuarios) {
       let user = listaUsuarios[i];
       if (user.usuario === usuario) {
-        result = false;
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
+  // Función para buscar el email de un usuario en una lista de usuarios
+  emailInLista(email, listaUsuarios) {
+    let result = false;
+    for (let i in listaUsuarios) {
+      let user = listaUsuarios[i];
+      if (user.email === email) {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
+  // Función para buscar el numero de documento y tipo de documento de un usuario en una lista de usuarios
+  documentoInLista(tipoDocumento, numeroDocumento, listaUsuarios) {
+    let result = false;
+    for (let i in listaUsuarios) {
+      let user = listaUsuarios[i];
+      if (user.tipoDocumento === tipoDocumento && user.numeroDocumento === numeroDocumento) {
+        result = true;
         break;
       }
     }

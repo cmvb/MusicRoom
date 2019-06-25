@@ -23,6 +23,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "@auth0/angular-jwt": "^2.1.0",
     "@ng-select/ng-select": "^2.18.0",
     "core-js": "^2.5.4",
     "jquery": "^3.4.1",
@@ -34,6 +35,7 @@
     "primeng": "^7.1.1",
     "rxjs": "~6.3.3",
     "rxjs-compat": "^6.4.0",
+    "save": "^2.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
   },

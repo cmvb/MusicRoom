@@ -217,8 +217,10 @@ export class RegisterComponent implements OnInit {
       if (flagEmail) {
         flagEmail = this.util.validarEstructuraEmail(this.usuario.email);
       }
+      let flagEmailNoRepetido = !this.util.emailInLista(this.usuario.email, this.listaUsuarios);
+      let flagDocumentoNoRepetido = !this.util.documentoInLista(this.usuario.tipoDocumento, this.usuario.numeroDocumento, this.listaUsuarios);
 
-      if (flagTipoDoc && flagNumDoc && flagEmail) {
+      if (flagTipoDoc && flagNumDoc && flagEmail && flagEmailNoRepetido && flagDocumentoNoRepetido) {
         result = true;
       }
     }
@@ -227,7 +229,7 @@ export class RegisterComponent implements OnInit {
       let flagPassword = (this.usuario.password !== undefined && this.usuario.password !== null && this.usuario.password.length > 0);
       let flagNuevaPassword = (this.nuevaPassword !== undefined && this.nuevaPassword !== null && this.nuevaPassword.length > 0);
       let flagPasswordIguales = this.nuevaPassword === this.usuario.password;
-      let flagUsuarioNoRepetido = this.util.usuarioInLista(this.usuario.usuario, this.listaUsuarios);
+      let flagUsuarioNoRepetido = !this.util.usuarioInLista(this.usuario.usuario, this.listaUsuarios);
 
       if (flagUsuario && flagPassword && flagNuevaPassword && flagPasswordIguales && flagUsuarioNoRepetido) {
         result = true;
@@ -280,7 +282,7 @@ export class RegisterComponent implements OnInit {
     audio.src = "assets/audio/guitarIntro.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/music-room/dashboard']);
   }
 
   irLogin() {
@@ -288,7 +290,7 @@ export class RegisterComponent implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/music-room/home']);
   }
 
   guardaTeclaEnter(event) {

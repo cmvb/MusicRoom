@@ -19,6 +19,7 @@ declare var $: any;
 
 export class UsuarioEditComponent implements OnInit {
   // Objetos de Sesion
+  ACCESS_TOKEN: any;
   usuarioSesion: any;
   sesion: any;
 
@@ -60,6 +61,7 @@ export class UsuarioEditComponent implements OnInit {
     this.objeto.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.enums = datasObject.getEnumerados();
     this.locale = datasObject.getLocaleESForCalendar();
+    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -93,7 +95,7 @@ export class UsuarioEditComponent implements OnInit {
       this.ajustarCombos();
       let obj = this.objeto;
 
-      this.restService.postREST(url, obj)
+      this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
@@ -130,7 +132,7 @@ export class UsuarioEditComponent implements OnInit {
 
   irAtras() {
     this.util.limpiarSesionXItem(['listaConsulta']);
-    this.router.navigate(['/usuarioQuery']);
+    this.router.navigate(['/music-room/usuarioQuery']);
   }
 
   guardaTeclaEnter(event) {

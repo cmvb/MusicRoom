@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
+    this.util.limpiarSesion();
   }
 
   limpiarExcepcion() {
@@ -58,6 +59,13 @@ export class HomeComponent implements OnInit {
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'login';
       let obj = this.usuario;
+      
+      this.restService.postOauthREST(url, this.usuario.usuario, this.usuario.password).subscribe(resp => {
+        if (resp) {
+          let token = JSON.stringify(resp);
+          sessionStorage.setItem(this.const.tokenNameAUTH, token);
+        }
+      });
 
       this.restService.postREST(url, obj)
         .subscribe(resp => {
@@ -72,7 +80,7 @@ export class HomeComponent implements OnInit {
             this.ex = error.error;
             this.msgs.push(this.util.mostrarNotificacion(this.ex));
             console.log(error, "error");
-          })
+          });
     } catch (e) {
       console.log(e);
     }
@@ -83,7 +91,7 @@ export class HomeComponent implements OnInit {
     audio.src = "assets/audio/guitarIntro.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/music-room/dashboard']);
   }
 
   irRegistrar() {
@@ -91,6 +99,6 @@ export class HomeComponent implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/register']);
+    this.router.navigate(['/music-room/register']);
   }
 }

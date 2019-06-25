@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-export var url = 'http://localhost:8080/';
+export var HOST = 'http://localhost:9002';
+
+
 
 @Injectable()
 export class DataObjects {
@@ -19,12 +21,19 @@ export class DataObjects {
 
   getConst() {
     return {
-      urlRestService: 'http://localhost:9002/music-room/',
-      urlRestOauth: 'http://localhost:9002/music-room/oauth/token',
+      // URL'S + Info del Sistema
+      urlDomain: 'http://localhost:4200',
+      urlRestService: `${HOST}/music-room/`,
+      urlRestOauth: `${HOST}/music-room/oauth/token`,
       urlControllerUsuario: 'usuario/',
       urlControllerUbicacion: 'ubicacion/',
       urlControllerTercero: 'tercero/',
       urlControllerReporte: 'reporte-archivo/',
+      tokenUsernameAUTH: 'musicroomapp',
+      tokenPasswordAUTH: 'musicroom19codex',
+      tokenNameAUTH: 'access_token',
+      codigoADMIN: 'RMRADM',
+
       //Model rango de fechas para NGBDatePicker
       minDate: { year: 1000, month: 1, day: 1 },
       maxDate: new Date(),
@@ -79,6 +88,16 @@ export class DataObjects {
     }
   };
 
+  getDataUsuarioDTO() {
+    return {
+      //UsuarioDTO
+      usuario: '',
+      numeroDocumento: '',
+      tipoDocumento: '',
+      email: ''
+    }
+  };
+
   getDataUsuario() {
     return {
       //Usuario
@@ -108,7 +127,9 @@ export class DataObjects {
     return {
       idRol: '',
       codigo: '',
-      descripcion: ''
+      descripcion: '',
+      path: '',
+      subPath: ''
     }
   }
 
@@ -230,6 +251,14 @@ export class DataObjects {
       lbl_info_fallo_conectar_base_datos: idioma == constant.idiomaEs ? 'No hay Conexión a la Base de Datos' : 'Without Conection to Data Base',
       lbl_info_cargando_resultados: idioma == constant.idiomaEs ? 'Cargando Resultados' : 'Loading Results',
       lbl_info_proceso_completo: idioma == constant.idiomaEs ? 'Proceso realizado Satisfactoriamente' : 'Process Complete',
+      lbl_error_403: idioma == constant.idiomaEs ? '403' : '403',
+      lbl_error_404: idioma == constant.idiomaEs ? '404' : '404',
+      lbl_error_500: idioma == constant.idiomaEs ? '500' : '500',
+      lbl_mensaje_error_404: idioma == constant.idiomaEs ? 'La página que busca no ha sido encontrada.' : 'Page Not Found.',
+      lbl_oops: idioma == constant.idiomaEs ? '¡Oops!' : 'Oops!',
+      lbl_vencimiento_token_sesion: idioma == constant.idiomaEs ? 'Fecha de Vencimiento del Token: ' : 'Token Expiration Date',
+      lbl_ir_a: idioma == constant.idiomaEs ? 'Ir a: ' : 'Go to: ',
+      lbl_ir_inicio: idioma == constant.idiomaEs ? 'Ir al Login' : 'Go to Login',
 
       // Modales
       lbl_info_titulo_modal_error: idioma == constant.idiomaEs ? 'ERROR' : 'ERROR',

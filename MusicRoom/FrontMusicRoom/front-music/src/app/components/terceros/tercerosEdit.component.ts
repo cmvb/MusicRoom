@@ -130,7 +130,7 @@ export class TercerosEditComponent implements OnInit {
 
   irAtras() {
     this.util.limpiarSesionXItem(['listaConsulta']);
-    this.router.navigate(['/terceroQuery']);
+    this.router.navigate(['/music-room/terceroQuery']);
   }
 
   guardaTeclaEnter(event) {

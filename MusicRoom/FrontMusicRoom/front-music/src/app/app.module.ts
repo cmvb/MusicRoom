@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserModule } from '@angular/platform-browser';
 // Imports Esenciales
+import { AppRoutingModule } from './components/app.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -30,34 +31,35 @@ import { StepsModule } from 'primeng/steps';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ToastModule } from 'primeng/toast';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './components/app.routing';
-import { ConsultaComponent } from './components/consulta/consulta.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { Functions } from './components/Functions';
+// Imports Componentes Internos
 import { HeaderComponent } from './components/header/header.component';
-// Imports Componentes
-import { HomeComponent } from './components/home/home.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ConsultaComponent } from './components/consulta/consulta.component';
 import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
-import { LoginGuard } from './components/login.guard';
+import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
 import { ModalsComponent } from './components/modals/modals.component';
 import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
+// Imports Componentes
+import { AppComponent } from './app.component';
+import { LoginGuard } from './components/login.guard';
+import { Error403Component } from './components/error/error403.component';
+import { Error404Component } from './components/error/error404.component';
+import { Error500Component } from './components/error/error500.component';
+import { HomeComponent } from './components/home/home.component';
+import { RegisterComponent } from './components/register/register.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsuarioEditComponent } from './components/usuarios/usuarioEdit.component';
+import { UsuarioQueryComponent } from './components/usuarios/usuarioQuery.component';
+import { UbicacionesEditComponent } from './components/ubicaciones/ubicacionesEdit.component';
+import { UbicacionesQueryComponent } from './components/ubicaciones/ubicacionesQuery.component';
+import { TercerosEditComponent } from './components/terceros/tercerosEdit.component';
+import { TercerosQueryComponent } from './components/terceros/tercerosQuery.component';
 // Imports Utilidades
 import { DataObjects } from './components/ObjectGeneric';
 import { PdfViewerthis } from './components/pdf-viewerthis.util/pdf-viewerthis.util.component';
-import { RegisterComponent } from './components/register/register.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { TercerosEditComponent } from './components/terceros/tercerosEdit.component';
-import { TercerosQueryComponent } from './components/terceros/tercerosQuery.component';
-import { UbicacionesEditComponent } from './components/ubicaciones/ubicacionesEdit.component';
-import { UbicacionesQueryComponent } from './components/ubicaciones/ubicacionesQuery.component';
-import { UsuarioEditComponent } from './components/usuarios/usuarioEdit.component';
-import { UsuarioQueryComponent } from './components/usuarios/usuarioQuery.component';
+import { Functions } from './components/Functions';
 import { Util } from './components/Util';
-
-
 
 
 // Constantes
@@ -114,6 +116,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     TercerosQueryComponent,
     TercerosEditComponent,
     PdfViewerthis,
+    Error403Component,
+    Error404Component,
+    Error500Component,
   ],
   imports: [
     BrowserModule,
