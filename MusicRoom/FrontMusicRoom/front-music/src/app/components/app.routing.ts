@@ -26,9 +26,9 @@ const routes: Routes = [
   { path: 'music-room/error404', component: Error404Component, canActivate: [LoginGuard] },
   { path: 'music-room/error500', component: Error500Component, canActivate: [LoginGuard] },
 
-  { path: 'multi-upload', component: MultiUploadComponent, canActivate: [LoginGuard] },
-  { path: 'dual-list-box', component: DualListBoxComponent, canActivate: [LoginGuard] },
-  { path: 'modals', component: ModalsComponent, canActivate: [LoginGuard] },
+  { path: 'music-room/multi-upload', component: MultiUploadComponent},
+  { path: 'music-room/dual-list-box', component: DualListBoxComponent},
+  { path: 'music-room/modals', component: ModalsComponent},
   { path: 'music-room/home', component: HomeComponent, canActivate: [LoginGuard] },
   { path: 'music-room/register', component: RegisterComponent, canActivate: [LoginGuard] },
   { path: 'music-room/dashboard', component: DashboardComponent, canActivate: [LoginGuard] },

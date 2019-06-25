@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
   // Objetos de Datos
   ex: any;
   usuario: any;
+  codigoVerificacion: any;
   nuevaPassword: any;
   msgs = [];
   logueado: boolean;
@@ -80,6 +81,7 @@ export class RegisterComponent implements OnInit {
         command: (event: any) => {
           this.activeIndex = 0;
           this.step = 1;
+          this.isDisabled = true;
           this.messageService.clear();
           this.messageService.add({ severity: this.const.severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
         }
@@ -93,6 +95,7 @@ export class RegisterComponent implements OnInit {
             this.indexTemp = 1;
             this.activeIndex = 1;
             this.step = 2;
+            this.isDisabled = true;
             this.messageService.clear();
             this.messageService.add({ severity: this.const.severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_2_registrar_usuario });
           }
@@ -112,6 +115,7 @@ export class RegisterComponent implements OnInit {
             this.indexTemp = 2;
             this.activeIndex = 2;
             this.step = 3;
+            this.isDisabled = true;
             this.messageService.clear();
             this.messageService.add({ severity: this.const.severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_3_registrar_usuario });
           }
@@ -128,7 +132,8 @@ export class RegisterComponent implements OnInit {
           let nowActiveIndex = this.activeIndex;
 
           if (this.validarStep(3)) {
-            //this.enviarCorreoCodVerificacionReg();
+            // Enviar Correo con el Código de Verificación
+            this.enviarCorreoCodVerificacionReg();
             this.indexTemp = 3;
             this.activeIndex = 3;
             this.step = 4;
@@ -178,22 +183,13 @@ export class RegisterComponent implements OnInit {
   enviarCorreoCodVerificacionReg() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion';
-      let obj = this.usuario;
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email;
 
-      this.restService.postREST(url, obj)
+      this.restService.getREST(url)
         .subscribe(resp => {
-          console.log(resp, "res");
           this.messageService.add({ severity: this.const.severity[0], summary: "INFORMACIÓN: ", detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
-        },
-          error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
-            this.messageService.clear();
-            this.messageService.add(mensaje);
+        });
 
-            console.log(error, "error");
-          })
     } catch (e) {
       console.log(e);
     }
@@ -211,6 +207,7 @@ export class RegisterComponent implements OnInit {
       }
     }
     else if (paso == 2) {
+      this.usuario.email = this.usuario.email.toLowerCase();
       let flagTipoDoc = (this.usuario.tipoDocumento !== undefined && this.usuario.tipoDocumento !== null);
       let flagNumDoc = (this.usuario.numeroDocumento !== undefined && this.usuario.numeroDocumento !== null && this.usuario.numeroDocumento.length > 0);
       let flagEmail = (this.usuario.email !== undefined && this.usuario.email !== null && this.usuario.email.length > 0);
@@ -235,9 +232,6 @@ export class RegisterComponent implements OnInit {
         result = true;
       }
     }
-    else if (paso == 4) {
-
-    }
 
     return result;
   }
@@ -249,7 +243,6 @@ export class RegisterComponent implements OnInit {
 
   registrarse() {
     try {
-      debugger;
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'registrarse';
       let obj = this.util.copiarElemento(this.usuario, this.util.usuarioEjemplo);

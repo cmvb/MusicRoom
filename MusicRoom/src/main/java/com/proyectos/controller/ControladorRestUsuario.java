@@ -1,14 +1,21 @@
 package com.proyectos.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,14 +27,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyectos.enums.EEstado;
 import com.proyectos.exception.ModelNotFoundException;
 import com.proyectos.model.ArchivoTB;
+import com.proyectos.model.ResetTokenTB;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
+import com.proyectos.model.dto.MailDTO;
 import com.proyectos.model.dto.UsuarioDTO;
 import com.proyectos.service.IArchivosService;
+import com.proyectos.service.IResetTokenService;
 import com.proyectos.service.IUsuarioService;
 import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.PropertiesUtil;
 import com.proyectos.util.Util;
+import com.proyectos.util.UtilMail;
 
 @RestController
 @RequestMapping("/music-room/usuario")
@@ -35,11 +46,26 @@ public class ControladorRestUsuario {
 
 	private final String PERMISO_ADMINISTRADOR = "@restAuthService.hasAccess('/music-room', '/')";
 
+	@Value("${email.servidor}")
+	private String EMAIL_SERVIDOR;
+
+	@Value("${ruta.verificar.cuenta.nueva}")
+	private String URL_VERIFICAR_CUENTA_NUEVA;
+
 	@Autowired
 	IUsuarioService usuarioService;
 
 	@Autowired
 	IArchivosService archivoService;
+
+	@Autowired
+	IResetTokenService resetTokenService;
+
+	@Autowired
+	UtilMail mailUtil;
+
+	@Resource(name = "tokenServices")
+	private ConsumerTokenServices tokenServices;
 
 	@GetMapping(value = "/consultarUsuariosRegister", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UsuarioDTO>> consultarUsuariosRegister() {
@@ -57,6 +83,53 @@ public class ControladorRestUsuario {
 		}
 
 		return new ResponseEntity<List<UsuarioDTO>>(listaUsuariosDTO, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/anular/{tokenId:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public void revocarToken(@PathVariable("tokenId") String token) {
+		tokenServices.revokeToken(token);
+	}
+
+	@GetMapping(value = "/enviarCodigoVerificacion/{vCode:.*}/{email:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public void enviarCodigoVerificacion(@PathVariable("vCode") String codigoVerificacion,
+			@PathVariable("email") String email) {
+		try {
+			if (Util.esCorreoValido(email)) {
+				UsuarioTB usuarioFiltro = new UsuarioTB();
+				usuarioFiltro.setEmail(email);
+				List<UsuarioTB> listaUsuarios = usuarioService.consultarPorFiltros(usuarioFiltro);
+
+				if (listaUsuarios.isEmpty()) {
+					ResetTokenTB resetTokenTb = new ResetTokenTB();
+					resetTokenTb.setToken(UUID.randomUUID().toString());
+					resetTokenTb.setEmail(email);
+					resetTokenTb.setExpiracion(2);
+//					resetTokenService.crear(resetTokenTb);
+
+					MailDTO mailDto = new MailDTO();
+					mailDto.setFrom(EMAIL_SERVIDOR);
+					mailDto.setTo(email);
+					mailDto.setSubject("ENVÍO CÓDIGO DE VERIFICACIÓN DE CUENTA - MUSIC ROOM");
+
+					Map<String, Object> model = new HashMap<>();
+					model.put("user", email);
+					model.put("token", resetTokenTb.getToken());
+					model.put("resetUrl", URL_VERIFICAR_CUENTA_NUEVA + resetTokenTb.getToken());
+					mailDto.setModel(model);
+
+					mailUtil.sendMail(mailDto);
+				} else {
+					String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.existeCorreoUsuario");
+					throw new ModelNotFoundException(mensaje);
+				}
+			} else {
+				String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.correoInvalido");
+				throw new ModelNotFoundException(mensaje);
+			}
+		} catch (Exception e) {
+			String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.envioVCodeIncorrecto");
+			throw new ModelNotFoundException(mensaje);
+		}
 	}
 
 	// @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
@@ -110,12 +183,6 @@ public class ControladorRestUsuario {
 		}
 
 		return new ResponseEntity<SesionTB>(sesion, HttpStatus.OK);
-	}
-
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RequestMapping("/enviarCodigoVerificacion")
-	public ResponseEntity<List<UsuarioTB>> enviarCodigoVerificacion(@RequestBody UsuarioTB usuario) {
-		return new ResponseEntity<List<UsuarioTB>>(usuarioService.consultarPorFiltros(usuario), HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

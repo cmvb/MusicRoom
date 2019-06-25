@@ -20,9 +20,9 @@ export class LoginGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     let URLactual = window.location.href;
     const helper = new JwtHelperService();
-
+    
     let sesionOK = true;
-    if (!URLactual.includes("music-room/home") && !URLactual.includes("music-room/error") && URLactual !== this.const.urlDomain) {
+    if (!URLactual.includes("music-room/register") && !URLactual.includes("music-room/home") && !URLactual.includes("music-room/error") && URLactual !== (this.const.urlDomain) + "/") {
       let usuarioSesion = localStorage.getItem('usuarioSesion') === null ? null : JSON.parse(localStorage.getItem('usuarioSesion').toString());
       let ACCESS_TOKEN = sessionStorage.getItem(this.const.tokenNameAUTH) === null ? null : JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH));
 
@@ -44,7 +44,7 @@ export class LoginGuard implements CanActivate {
               }
             }
           }
-          
+
           if (!tienePermisos) {
             localStorage.setItem('decodedToken', JSON.stringify(decodedToken));
             localStorage.setItem('expirationDate', JSON.stringify(expirationDate));

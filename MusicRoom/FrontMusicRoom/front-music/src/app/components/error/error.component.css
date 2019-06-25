@@ -1,0 +1,55 @@
+#wrapper {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h1 {
+    animation: text-shadow 1.5s infinite;
+    font-size: 5em;
+    font-weight: 900;
+    line-height: 1;
+}
+
+a {
+    color: #024794;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+@keyframes text-shadow {
+    0% {
+        transform: translateY(0);
+        text-shadow: 0 0 0 #0d0e21d4, 0 0 0 #448aff, 0 0 0 rgb(96,125,139), 0 0 0 #b0bec5;
+    }
+    20% {
+        transform: translateY(-10px);
+        text-shadow: 0 0.125em 0 #0d0e21d4, 0 0.25em 0 #448aff, 0 -0.125em 0 rgb(96,125,139), 0 -0.25em 0 #b0bec5;
+    }
+    40% {
+        transform: translateY(5px);
+        text-shadow: 0 -0.0625em 0 #0d0e21d4, 0 -0.125em 0 #448aff, 0 0.0625em 0 rgb(96,125,139), 0 0.125em 0 #b0bec5;
+    }
+    60% {
+        transform: translateY(-2px);
+        text-shadow: 0 0.03125em 0 #0d0e21d4, 0 0.0625em 0 #448aff, 0 -0.03125em 0 rgb(96,125,139), 0 -0.0625em 0 #b0bec5;
+    }
+    80% {
+        transform: translateY(0);
+        text-shadow: 0 0 0 #0d0e21d4, 0 0 0 #448aff, 0 0 0 rgb(96,125,139), 0 0 0 #b0bec5;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}

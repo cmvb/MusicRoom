@@ -17,5 +17,5 @@ public final class ConstantesTablasNombre {
 	public static final String MRA_UBICACION_TB = "mra_ubicacion_tb";
 	public static final String MRA_USUARIO_TB = "mra_usuario_tb";
 	public static final String MRA_ROL_TB = "mra_rol_tb";
-
+	public static final String MRA_RESET_TOKEN_TB = "mra_reset_token_tb";
 }

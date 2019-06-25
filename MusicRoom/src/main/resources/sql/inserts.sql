@@ -1,5 +1,6 @@
 -- CONSECUTIVO --
 --
+INSERT INTO musicroom.mra_consecutivo_tb (tabla, valor) VALUES('mra_reset_token_tb', 1);
 INSERT INTO musicroom.mra_consecutivo_tb (tabla, valor) VALUES('mra_archivo_tb', 1);
 INSERT INTO musicroom.mra_consecutivo_tb (tabla, valor) VALUES('mra_banda_tb', 1);
 INSERT INTO musicroom.mra_consecutivo_tb (tabla, valor) VALUES('mra_bloque_tb', 1);

@@ -535,6 +535,22 @@ _:-ms-input-placeholder, :root .demo-graph {
   cursor: pointer;
 }
 
+.cursorPointer {
+  cursor: pointer;
+}
+
+.titleToken {
+  font-family: 'New Rocker', cursive;
+  font-size: 18px;
+  text-align: center;
+  background: rgba(255, 255, 255, .7);
+  text-shadow: 0px 0px 5px #007ad9;
+}
+
+.lowerCase {
+  text-transform: lowercase;
+}
+
 .ng-select .ng-select-container {
   border-radius: 3px;
   min-height: 33px;
@@ -838,7 +854,7 @@ table.falsa {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-image: url('assets/images/fondoMoto.png');
+  background-image: url('assets/images/fondoMusicRoom.png');
   background-size: cover;
 }
 
@@ -889,21 +905,17 @@ table.falsa {
 }
 
 .notfound .notfound-404 h1 {
-  font-family: 'Passion One', cursive;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  font-family: 'New Rocker', cursive;
+  /*font-family: 'Passion One', cursive;*/
+  position: inherit;
   font-size: 220px;
-  margin: 0px;
   color: #222225;
   text-transform: uppercase;
 }
 
 .notfound h2 {
-  font-family: 'Muli', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  ;
   font-size: 26px;
   font-weight: 400;
   text-transform: uppercase;
@@ -921,7 +933,8 @@ table.falsa {
 }
 
 .notfound-search input {
-  font-family: 'Muli', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  ;
   width: 100%;
   height: 40px;
   padding: 3px 15px;
@@ -933,7 +946,8 @@ table.falsa {
 }
 
 .notfound-search button {
-  font-family: 'Muli', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  ;
   position: absolute;
   right: 0px;
   top: 0px;
@@ -951,7 +965,8 @@ table.falsa {
 }
 
 .notfound a {
-  font-family: 'Muli', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  ;
   display: inline-block;
   font-weight: 400;
   text-decoration: none;

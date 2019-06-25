@@ -16,13 +16,17 @@ export class HeaderComponent implements OnInit {
   util: any;
   data: any = [];
   msg: any;
+  const: any;
   usuarioTb: any;
   usuarioSesion: any;
+  ACCESS_TOKEN: any;
 
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
     this.util = util;
     this.usuarioSesion = localStorage.getItem('usuarioSesion') === null ? null : JSON.parse(localStorage.getItem('usuarioSesion').toString());
     this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
+    this.const = datasObject.getConst();
+    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
   ngOnInit() {
@@ -35,7 +39,16 @@ export class HeaderComponent implements OnInit {
   }
 
   cerrarSesion() {
-    this.util.limpiarSesion();
-    location.reload();
+    try {
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'anular/' + this.ACCESS_TOKEN;
+      this.restService.getREST(url)
+        .subscribe(resp => {
+          localStorage.clear();
+          sessionStorage.clear();
+          location.reload();
+        });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
