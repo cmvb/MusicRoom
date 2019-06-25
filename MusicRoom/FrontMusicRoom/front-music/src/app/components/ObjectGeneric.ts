@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 export var HOST = 'http://localhost:9002';
 
-
-
 @Injectable()
 export class DataObjects {
 
