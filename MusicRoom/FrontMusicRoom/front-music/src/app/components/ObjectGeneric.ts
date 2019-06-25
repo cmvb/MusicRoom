@@ -98,6 +98,16 @@ export class DataObjects {
     }
   };
 
+  getDataMailDTO() {
+    return {
+      //UsuarioDTO
+      from: '',
+      to: '',
+      subject: '',
+      model: {}
+    }
+  };
+
   getDataUsuario() {
     return {
       //Usuario
@@ -259,6 +269,8 @@ export class DataObjects {
       lbl_vencimiento_token_sesion: idioma == constant.idiomaEs ? 'Fecha de Vencimiento del Token: ' : 'Token Expiration Date',
       lbl_ir_a: idioma == constant.idiomaEs ? 'Ir a: ' : 'Go to: ',
       lbl_ir_inicio: idioma == constant.idiomaEs ? 'Ir al Login' : 'Go to Login',
+      lbl_btn_olvidaste_tu_clave: idioma == constant.idiomaEs ? '¿Olvidaste tu Clave?' : 'Do You forget your Password?',
+      lbl_btn_no_ha_llegado_correo_vcode: idioma == constant.idiomaEs ? '¿No ha llegado ningún Correo? Presiona para Reintentar.' : 'No mail has arrived? Press to Retry.',
 
       // Modales
       lbl_info_titulo_modal_error: idioma == constant.idiomaEs ? 'ERROR' : 'ERROR',

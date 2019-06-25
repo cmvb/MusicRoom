@@ -52,6 +52,11 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 			JPQL.append("AND LOWER(t.usuario) = LOWER(:USUARIO) ");
 			pamameters.put("USUARIO", usuarioFiltro.getUsuario());
 		}
+		// Q. E-Mail
+		if (StringUtils.isNotBlank(usuarioFiltro.getEmail())) {
+			JPQL.append("AND LOWER(t.email) = LOWER(:EMAIL) ");
+			pamameters.put("EMAIL", usuarioFiltro.getEmail());
+		}
 		// Q. Nombre
 		if (StringUtils.isNotBlank(usuarioFiltro.getNombre())) {
 			JPQL.append(" AND LOWER(t.nombre) LIKE LOWER(:NOMBRE) ");

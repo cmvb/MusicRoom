@@ -1,20 +1,16 @@
 <div id="notfound">
   <div class="notfound-bg"></div>
-  <div class="notfound">
-    <div class="notfound-404">
+  <div id="wrapper" class="notfound">
+    <div id="container" class="notfound-404">
       <h1>{{msg.lbl_error_404}}</h1>
     </div>
     <h2>{{msg.lbl_oops}} {{mensajeError}}</h2>
-    <form class="notfound-search">
-      <input type="text" placeholder="Ir a...">
-      <button type="button">{{msg.lbl_ir_a}}</button>
-    </form>
-    <div class="notfound-social">
-      <a><i class="fa fa-facebook"></i></a>
-      <a><i class="fa fa-twitter"></i></a>
-      <a><i class="fa fa-pinterest"></i></a>
-      <a><i class="fa fa-google-plus"></i></a>
+
+    <div class="ui-g center">
+      <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+        <button class="cursorPointer" mdl-button (click)="irHome()" mdl-button-type="raised" mdl-colored="accent">
+          <i class="material-icons">home</i> {{msg.lbl_ir_inicio}}</button>
+      </div>
     </div>
-    <a (click)="irHome()">{{msg.lbl_ir_inicio}}</a>
   </div>
 </div>

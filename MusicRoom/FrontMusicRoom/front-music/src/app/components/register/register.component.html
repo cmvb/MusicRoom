@@ -75,9 +75,9 @@
                                             <span class="ui-inputgroup-addon">
                                                 <mdl-icon>email</mdl-icon>
                                             </span>
-                                            <input class="mdl-textfield__input" [(ngModel)]="usuario.email" type="text"
-                                                pInputText placeholder="E-Mail" (keydown)="guardaTeclaEnter($event)"
-                                                size="50">
+                                            <input class="mdl-textfield__input lowerCase" [(ngModel)]="usuario.email"
+                                                type="text" pInputText placeholder="E-Mail"
+                                                (keydown)="guardaTeclaEnter($event)" size="50">
                                         </div>
                                     </div>
                                 </div>
@@ -116,30 +116,14 @@
 
                                 <!-- STEP 4 -->
                                 <div *ngIf="step == 4" class="ui-g center">
-                                    <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad center">
+                                    <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad center">
                                         <div
                                             class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                             <span class="ui-inputgroup-addon">
-                                                <mdl-icon>people</mdl-icon>
+                                                <mdl-icon style="vertical-align: middle;">send</mdl-icon>
                                             </span>
-                                            <input class="mdl-textfield__input" [(ngModel)]="usuario.usuario"
-                                                type="text" pInputText placeholder="Usuario">
-                                        </div>
-                                        <div
-                                            class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <span class="ui-inputgroup-addon">
-                                                <mdl-icon>lock</mdl-icon>
-                                            </span>
-                                            <input class="mdl-textfield__input" [(ngModel)]="usuario.password"
-                                                type="password" pInputText placeholder="Clave">
-                                        </div>
-                                        <div
-                                            class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <span class="ui-inputgroup-addon">
-                                                <mdl-icon>lock</mdl-icon>
-                                            </span>
-                                            <input class="mdl-textfield__input" [(ngModel)]="nuevaPassword"
-                                                type="password" pInputText placeholder="Clave">
+                                            <input class="mdl-textfield__input titleToken" [(ngModel)]="codigoVerificacion"
+                                                type="text" pInputText placeholder="Código Verificación">
                                         </div>
                                     </div>
                                 </div>
@@ -164,6 +148,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="ui-g center">
+                                    <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad center">
+                                        <a class="cursorPointer" (click)="enviarCorreoCodVerificacionReg()">{{msg.lbl_btn_no_ha_llegado_correo_vcode}}</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="ui-g">
@@ -183,6 +172,6 @@
 
 <style>
     .mdl-layout__content {
-        background-image: url('assets/images/fondoMusicRoom.png') !important;
+        background-image: url('assets/images/bg.jpg') !important;
     }
 </style>

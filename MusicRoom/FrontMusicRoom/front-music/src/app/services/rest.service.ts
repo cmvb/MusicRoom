@@ -64,6 +64,12 @@ export class RestService {
     });
   }
 
+  getSecureREST(url, token) {
+    return this.http.get(url, {
+      headers: new HttpHeaders().set('Authorization', 'bearer ' + token).set('Content-Type', 'application/json')
+    });
+  }
+
   postSecureREST(url, data, token) {
     return this.http.post(url, data, {
       headers: new HttpHeaders().set('Authorization', 'bearer ' + token).set('Content-Type', 'application/json')
