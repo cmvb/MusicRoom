@@ -27,13 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyectos.enums.EEstado;
 import com.proyectos.exception.ModelNotFoundException;
 import com.proyectos.model.ArchivoTB;
-import com.proyectos.model.ResetTokenTB;
+import com.proyectos.model.CodigoVerificacionTB;
+import com.proyectos.model.RolTB;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
 import com.proyectos.model.dto.MailDTO;
 import com.proyectos.model.dto.UsuarioDTO;
 import com.proyectos.service.IArchivosService;
-import com.proyectos.service.IResetTokenService;
 import com.proyectos.service.IUsuarioService;
 import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.PropertiesUtil;
@@ -52,14 +52,17 @@ public class ControladorRestUsuario {
 	@Value("${ruta.verificar.cuenta.nueva}")
 	private String URL_VERIFICAR_CUENTA_NUEVA;
 
+	@Value("${tiempo.expiracion.vcode.minutos}")
+	private int TIEMPO_EXPIRACION_VCODE_MINUTOS;
+
 	@Autowired
 	IUsuarioService usuarioService;
 
-	@Autowired
-	IArchivosService archivoService;
+//	@Autowired
+//	IRolService rolService;
 
 	@Autowired
-	IResetTokenService resetTokenService;
+	IArchivosService archivoService;
 
 	@Autowired
 	UtilMail mailUtil;
@@ -100,11 +103,11 @@ public class ControladorRestUsuario {
 				List<UsuarioTB> listaUsuarios = usuarioService.consultarPorFiltros(usuarioFiltro);
 
 				if (listaUsuarios.isEmpty()) {
-					ResetTokenTB resetTokenTb = new ResetTokenTB();
-					resetTokenTb.setToken(UUID.randomUUID().toString());
-					resetTokenTb.setEmail(email);
-					resetTokenTb.setExpiracion(2);
-//					resetTokenService.crear(resetTokenTb);
+					CodigoVerificacionTB vCodeTB = new CodigoVerificacionTB();
+					vCodeTB.setToken(UUID.randomUUID().toString());
+					vCodeTB.setEmail(email);
+					vCodeTB.setExpiracion(TIEMPO_EXPIRACION_VCODE_MINUTOS);
+					usuarioService.crearVCode(vCodeTB);
 
 					MailDTO mailDto = new MailDTO();
 					mailDto.setFrom(EMAIL_SERVIDOR);
@@ -112,9 +115,9 @@ public class ControladorRestUsuario {
 					mailDto.setSubject("ENVÍO CÓDIGO DE VERIFICACIÓN DE CUENTA - MUSIC ROOM");
 
 					Map<String, Object> model = new HashMap<>();
-					model.put("user", email);
-					model.put("token", resetTokenTb.getToken());
-					model.put("resetUrl", URL_VERIFICAR_CUENTA_NUEVA + resetTokenTb.getToken());
+					model.put("email", email);
+					model.put("token", vCodeTB.getToken());
+					model.put("resetUrl", URL_VERIFICAR_CUENTA_NUEVA + vCodeTB.getToken());
 					mailDto.setModel(model);
 
 					mailUtil.sendMail(mailDto);
@@ -191,12 +194,26 @@ public class ControladorRestUsuario {
 		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_USUARIO_TB, usuario);
 		UsuarioTB usuarioNuevo = new UsuarioTB();
 		if (errores.isEmpty()) {
-			usuarioNuevo = new UsuarioTB();
-			usuario.setPassword(Util.encriptar(usuario.getPassword(), usuario.getUsuario()));
-			ArchivoTB fotoTb = archivoService.consultarPorId(1l);
-			usuario.setFotoTb(fotoTb);
-			usuario.setListaRoles(null);
-			usuarioNuevo = usuarioService.crear(usuario);
+			CodigoVerificacionTB vCodeTB = usuarioService.consultarVCodePorCorreo(usuario.getEmail());
+
+			if (vCodeTB != null && StringUtils.isNotBlank(vCodeTB.getToken()) && !vCodeTB.isExpirado()
+					&& StringUtils.isNotBlank(usuario.getCodigoVerificacion())
+					&& usuario.getCodigoVerificacion().equalsIgnoreCase(vCodeTB.getToken())) {
+				usuarioNuevo = new UsuarioTB();
+				usuario.setPassword(Util.encriptar(usuario.getPassword(), usuario.getUsuario()));
+				ArchivoTB fotoTb = archivoService.consultarPorId(1l);
+				usuario.setFotoTb(fotoTb);
+
+				List<String> listaRoles = new ArrayList<>();
+				listaRoles = Util.cargarRolesUsuarioCliente();
+
+				List<RolTB> listaRolesTB = usuarioService.consultarRolesListaCodigosRol(listaRoles);
+				usuario.setListaRoles((listaRolesTB != null && !listaRolesTB.isEmpty()) ? null : listaRolesTB);
+				usuarioNuevo = usuarioService.crear(usuario);
+			} else {
+				String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.errorVCodeRegistrar");
+				throw new ModelNotFoundException(mensaje);
+			}
 		} else {
 			StringBuilder mensajeErrores = new StringBuilder();
 			String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");

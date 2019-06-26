@@ -973,4 +973,20 @@ public class Util {
 
 		return errores;
 	}
+
+	public static List<String> cargarRolesUsuarioCliente() {
+		List<String> listaRoles = new ArrayList<>();
+
+		listaRoles.add("RMRMSE");
+		listaRoles.add("RMRMSA");
+		listaRoles.add("RMRMIN");
+		listaRoles.add("RMRMPR");
+		listaRoles.add("RMRMEN");
+		listaRoles.add("RMRUSG");
+		listaRoles.add("RMRUSI");
+		listaRoles.add("RMRUSF");
+
+		return listaRoles;
+
+	}
 }

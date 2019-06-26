@@ -18,7 +18,8 @@ import { TercerosQueryComponent } from './terceros/tercerosQuery.component';
 import { MultiUploadComponent } from './multi-upload/multi-upload.component';
 import { DualListBoxComponent } from './dual-list-box/dual-list-box.component';
 import { ModalsComponent } from './modals/modals.component';
-
+import { VCodeComponent } from './v-code/v-code.component';
+import { TokenComponent } from './v-code/token/token.component';
 
 
 const routes: Routes = [
@@ -26,9 +27,11 @@ const routes: Routes = [
   { path: 'music-room/error404', component: Error404Component, canActivate: [LoginGuard] },
   { path: 'music-room/error500', component: Error500Component, canActivate: [LoginGuard] },
 
-  { path: 'music-room/multi-upload', component: MultiUploadComponent},
-  { path: 'music-room/dual-list-box', component: DualListBoxComponent},
-  { path: 'music-room/modals', component: ModalsComponent},
+  { path: 'music-room/vCode', component: VCodeComponent, children: [{ path: ':token', component: TokenComponent }] },
+
+  { path: 'music-room/multi-upload', component: MultiUploadComponent },
+  { path: 'music-room/dual-list-box', component: DualListBoxComponent },
+  { path: 'music-room/modals', component: ModalsComponent },
   { path: 'music-room/home', component: HomeComponent, canActivate: [LoginGuard] },
   { path: 'music-room/register', component: RegisterComponent, canActivate: [LoginGuard] },
   { path: 'music-room/dashboard', component: DashboardComponent, canActivate: [LoginGuard] },

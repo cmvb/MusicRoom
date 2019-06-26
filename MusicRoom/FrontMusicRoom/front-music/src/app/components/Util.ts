@@ -569,7 +569,7 @@ export class Util {
     document.getElementById(id).click();
   }
 
-  // Función que copia uno y otro elemento
+  // Función que copia de uno a otro elemento
   copiarElemento(source, target) {
     return Object.assign(target, source);
   }

@@ -48,4 +48,9 @@ public interface IRolDao {
 	 * Metodo para obtener el rol de un path/subpath especifico
 	 */
 	String obtenerRolPorPathSubPath(String path, String subPath);
+
+	/*
+	 * Metodo para consultar una lista de roles dados sus codigos
+	 */
+	List<RolTB> consultarRolesListaCodigosRol(List<String> listaRoles);
 }

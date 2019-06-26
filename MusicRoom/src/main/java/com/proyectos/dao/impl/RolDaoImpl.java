@@ -1,5 +1,6 @@
 package com.proyectos.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -140,6 +141,34 @@ public class RolDaoImpl extends AbstractDao<RolTB> implements IRolDao {
 		}
 
 		return rol;
+	}
+
+	@Override
+	public List<RolTB> consultarRolesListaCodigosRol(List<String> listaCodigosRol) {
+		List<RolTB> listaRolesTB = new ArrayList<>();
+
+		if (listaCodigosRol != null && !listaCodigosRol.isEmpty()) {
+			// PARAMETROS
+			Map<String, Object> pamameters = new HashMap<>();
+
+			// QUERY
+			StringBuilder JPQL = new StringBuilder("SELECT t FROM RolTB t WHERE 1 = 1 ");
+
+			// Q. Codigo
+			JPQL.append("AND t.codigo IN :CODIGO_ROL ");
+			pamameters.put("CODIGO_ROL", listaCodigosRol);
+
+			// Q. Order By
+			JPQL.append(" ORDER BY t.idRol");
+			// END QUERY
+
+			TypedQuery<RolTB> query = em.createQuery(JPQL.toString(), RolTB.class);
+			pamameters.forEach((k, v) -> query.setParameter(k, v));
+
+			listaRolesTB = query.getResultList();
+		}
+
+		return listaRolesTB;
 	}
 
 	private RolTB colocarValoresDefecto(RolTB entidad) {
