@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
@@ -75,6 +76,9 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "MRA_USUARIO_ROL_TB", joinColumns = @JoinColumn(name = "idUsuario", referencedColumnName = "usu_id_usuario"), inverseJoinColumns = @JoinColumn(name = "idRol", referencedColumnName = "rol_id_rol"))
 	private List<RolTB> listaRoles;
+
+	@Transient
+	private String codigoVerificacion;
 
 	public long getIdUsuario() {
 		return idUsuario;
@@ -170,6 +174,14 @@ public class UsuarioTB extends BaseEntidadTB implements Serializable {
 
 	public void setListaRoles(List<RolTB> listaRoles) {
 		this.listaRoles = listaRoles;
+	}
+
+	public String getCodigoVerificacion() {
+		return codigoVerificacion;
+	}
+
+	public void setCodigoVerificacion(String codigoVerificacion) {
+		this.codigoVerificacion = codigoVerificacion;
 	}
 
 }

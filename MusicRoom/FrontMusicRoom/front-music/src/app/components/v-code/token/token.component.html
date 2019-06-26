@@ -1,0 +1,177 @@
+<div class="demo-container demo-layout-transparent">
+  <mdl-layout>
+      <mdl-layout-content>
+          <p-scrollPanel [style]="{width: '100%', height: '100vh'}" styleClass="custom">
+              <div class="body-content">
+                  <div class="content-page-login">
+                      <div class="ui-g">
+                          <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad center hidden-sm">
+                              <img class="alturaImgRegister" src="/assets/images/MusicRoomLogoLarge.png"
+                                  alt="imagenLogin" />
+                          </div>
+
+                          <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad center">
+                              <p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
+
+                              <!-- STEP 1 -->
+                              <div *ngIf="step == 1" class="ui-g center">
+                                  <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad center">
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>perm_identity</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input" [(ngModel)]="usuario.nombre" type="text"
+                                              pInputText placeholder="Nombre" (keydown)="guardaTeclaEnter($event)"
+                                              size="50">
+                                      </div>
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>perm_identity</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input" [(ngModel)]="usuario.apellido"
+                                              type="text" pInputText placeholder="Apellido"
+                                              (keydown)="guardaTeclaEnter($event)" size="50">
+                                      </div>
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>calendar_today</mdl-icon>
+                                          </span>
+                                          <p-calendar placeholder="Fecha Nacimiento" class="w100 register"
+                                              [maxDate]="maxDate" [locale]="locale" dateFormat="dd/mm/yy"
+                                              [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:3000"
+                                              (keydown)="guardaTeclaEnter($event)"
+                                              [(ngModel)]="usuario.fechaNacimiento"></p-calendar>
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- STEP 1 -->
+
+                              <!-- STEP 2 -->
+                              <div *ngIf="step == 2" class="ui-g center">
+                                  <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad center">
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>credit_card</mdl-icon>
+                                          </span>
+                                          <ng-select class="w100 register" [(ngModel)]="usuario.tipoDocumento"
+                                              [items]="enumTipoDocumento">
+                                          </ng-select>
+                                      </div>
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>fingerprint</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input" [(ngModel)]="usuario.numeroDocumento"
+                                              type="text" pInputText placeholder="No. Documento"
+                                              (keydown)="guardaTeclaEnter($event)" size="50">
+                                      </div>
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>email</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input lowerCase" [(ngModel)]="usuario.email"
+                                              type="text" pInputText placeholder="E-Mail"
+                                              (keydown)="guardaTeclaEnter($event)" size="50">
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- STEP 2 -->
+
+                              <!-- STEP 3 -->
+                              <div *ngIf="step == 3" class="ui-g center">
+                                  <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad center">
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>people</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input" [(ngModel)]="usuario.usuario"
+                                              type="text" pInputText placeholder="Usuario">
+                                      </div>
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>lock</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input" [(ngModel)]="usuario.password"
+                                              type="password" pInputText placeholder="Clave">
+                                      </div>
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon>lock</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input" [(ngModel)]="nuevaPassword"
+                                              type="password" pInputText placeholder="Nueva Clave">
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- STEP 3 -->
+
+                              <!-- STEP 4 -->
+                              <div *ngIf="step == 4" class="ui-g center">
+                                  <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad center">
+                                      <div
+                                          class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                          <span class="ui-inputgroup-addon">
+                                              <mdl-icon style="vertical-align: middle;">send</mdl-icon>
+                                          </span>
+                                          <input class="mdl-textfield__input titleToken" [(ngModel)]="codigoVerificacion"
+                                              type="text" pInputText placeholder="Código Verificación">
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- STEP 4 -->
+
+                              <div class="ui-g center">
+                                  <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad center">
+                                      <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                                          <button mdl-button (click)="irLogin()" mdl-button-type="raised"
+                                              mdl-colored="primary">
+                                              <i class="material-icons">home</i> {{msg.lbl_btn_inicio}}</button>
+                                      </div>
+                                      <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                                          <button *ngIf="!isDisabled" [disabled]="isDisabled" mdl-button
+                                              (click)="registrarse()" mdl-button-type="raised" mdl-colored="accent">
+                                              <i class="material-icons">group_add</i>
+                                              {{msg.lbl_btn_registrarse}}</button>
+                                          <button *ngIf="isDisabled" [disabled]="!isDisabled" mdl-button
+                                              (click)="siguientePaso()" mdl-button-type="raised" mdl-colored="accent">
+                                              <i class="material-icons">arrow_right_alt</i>
+                                              {{msg.lbl_btn_siguiente}}</button>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div *ngIf="!isDisabled" class="ui-g center">
+                                  <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad center">
+                                      <a class="cursorPointer" (click)="enviarCorreoCodVerificacionReg()">{{msg.lbl_btn_no_ha_llegado_correo_vcode}}</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="ui-g">
+                          <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad fontWhite center">
+                              <p-messages class="w100" severity="const.severity[2]" [(value)]="msgs"></p-messages>
+                              <p>Template by <a href="https://www.linkedin.com/in/carlos-baene/">CMVB Projects</a>.
+                              </p>
+                              <p>Copyright © 2019 CMVB All rights reserved. Dev: Carlos Baene</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </p-scrollPanel>
+      </mdl-layout-content>
+  </mdl-layout>
+</div>
+
+<style>
+  .mdl-layout__content {
+      background-image: url('assets/images/bg.jpg') !important;
+  }
+</style>

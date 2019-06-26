@@ -2,6 +2,8 @@ package com.proyectos.service;
 
 import java.util.List;
 
+import com.proyectos.model.CodigoVerificacionTB;
+import com.proyectos.model.RolTB;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
 
@@ -41,5 +43,20 @@ public interface IUsuarioService {
 	 * Metodo para eliminar un usuario por su ID
 	 */
 	public void eliminar(long idUsuario);
+
+	/*
+	 * Metodo para crear un Codigo de Verificacion del Usuario
+	 */
+	public CodigoVerificacionTB crearVCode(CodigoVerificacionTB vCodeTB);
+
+	/*
+	 * Metodo para consultar un Codigo de Verificacion del Usuario por su email
+	 */
+	public CodigoVerificacionTB consultarVCodePorCorreo(String email);
+
+	/*
+	 * Metodo para consultar una lista de roles dados sus codigos
+	 */
+	public List<RolTB> consultarRolesListaCodigosRol(List<String> listaRoles);
 
 }

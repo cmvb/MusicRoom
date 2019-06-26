@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 export var HOST = 'http://localhost:9002';
+export var SYSTEM = 'http://localhost:4200';
 
 @Injectable()
 export class DataObjects {
@@ -20,9 +21,10 @@ export class DataObjects {
   getConst() {
     return {
       // URL'S + Info del Sistema
-      urlDomain: 'http://localhost:4200',
+      urlDomain: `${SYSTEM}/`,
       urlRestService: `${HOST}/music-room/`,
       urlRestOauth: `${HOST}/music-room/oauth/token`,
+      urlVCode: `${SYSTEM}/music-room/vCode/`,
       urlControllerUsuario: 'usuario/',
       urlControllerUbicacion: 'ubicacion/',
       urlControllerTercero: 'tercero/',
@@ -121,6 +123,7 @@ export class DataObjects {
       fechaNacimiento: '',
       fotoTb: this.getDataArchivo(),
       listaRoles: [this.getDataRol()],
+      codigoVerificacion: '',
 
       //Abstract
       estado: '',

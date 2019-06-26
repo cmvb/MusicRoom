@@ -14,9 +14,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.proyectos.dao.ICodigoVerificacionDao;
+import com.proyectos.dao.IRolDao;
 import com.proyectos.dao.ISesionDao;
 import com.proyectos.dao.IUsuarioDao;
 import com.proyectos.enums.EEstado;
+import com.proyectos.model.CodigoVerificacionTB;
+import com.proyectos.model.RolTB;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
 import com.proyectos.service.IUsuarioService;
@@ -27,10 +31,16 @@ import com.proyectos.util.Util;
 public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
 	@Autowired
+	private ISesionDao sesionDAO;
+
+	@Autowired
 	private IUsuarioDao usuarioDAO;
 
 	@Autowired
-	private ISesionDao sesionDAO;
+	private IRolDao rolDAO;
+
+	@Autowired
+	private ICodigoVerificacionDao vCodeDAO;
 
 	@Transactional
 	@Override
@@ -72,6 +82,13 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
 	@Transactional
 	@Override
+	public CodigoVerificacionTB crearVCode(CodigoVerificacionTB vCodeTB) {
+		vCodeTB.setIdCodigoVerificacion(vCodeDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_CODIGO_VERIFICACION_TB));
+		return vCodeDAO.crear(vCodeTB);
+	}
+
+	@Transactional
+	@Override
 	public UsuarioTB modificar(UsuarioTB usuario) {
 		return usuarioDAO.modificar(usuario);
 	}
@@ -97,5 +114,15 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 		UserDetails userDetails = new User(usuario.getUsuario(), usuario.getPassword(), authorities);
 
 		return userDetails;
+	}
+
+	@Override
+	public CodigoVerificacionTB consultarVCodePorCorreo(String email) {
+		return vCodeDAO.consultarVCodePorCorreo(email);
+	}
+
+	@Override
+	public List<RolTB> consultarRolesListaCodigosRol(List<String> listaRoles) {
+		return rolDAO.consultarRolesListaCodigosRol(listaRoles);
 	}
 }

@@ -10,37 +10,37 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Null;
 
 import io.swagger.annotations.ApiModel;
 
+//@XmlRootElement
 @ApiModel(description = "Información del Código de Verificación de Usuario")
 @Entity
-@Table(name = "MRA_RESET_TOKEN_TB")
-public class ResetTokenTB extends BaseEntidadTB implements Serializable {
-	private static final long serialVersionUID = -1152750201354814302L;
+@Table(name = "MRA_CODIGO_VERIFICACION_TB")
+public class CodigoVerificacionTB extends BaseEntidadTB implements Serializable {
+
+	private static final long serialVersionUID = -2399765333846057062L;
 
 	@Id
-	@Column(name = "tok_id_token", nullable = false, length = 10)
-	private Long idToken;
+	@Column(name = "vco_id_codigo_verificacion", nullable = false, length = 10)
+	private long idCodigoVerificacion;
 
-	@Null
-	@Column(name = "tok_token", nullable = false, unique = true, length = 1000)
+	@Column(name = "vco_token", nullable = false, length = 500)
 	private String token;
 
-	@Column(name = "tok_email", nullable = false, unique = true, length = 50)
+	@Column(name = "vco_email", nullable = false, length = 50)
 	private String email;
 
-	@Column(name = "tok_expiracion", nullable = false)
+	@Column(name = "voc_expiracion", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expiracion;
 
-	public Long getIdToken() {
-		return idToken;
+	public long getIdCodigoVerificacion() {
+		return idCodigoVerificacion;
 	}
 
-	public void setIdToken(Long idToken) {
-		this.idToken = idToken;
+	public void setIdCodigoVerificacion(Long idCodigoVerificacion) {
+		this.idCodigoVerificacion = idCodigoVerificacion;
 	}
 
 	public String getToken() {
@@ -76,4 +76,5 @@ public class ResetTokenTB extends BaseEntidadTB implements Serializable {
 	public boolean isExpirado() {
 		return new Date().after(this.expiracion);
 	}
+
 }

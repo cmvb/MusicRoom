@@ -30,7 +30,7 @@ public class UtilMail {
 
 			Context context = new Context();
 			context.setVariables(mail.getModel());
-			String html = templateEngine.process("html5/email-template", context);
+			String html = templateEngine.process("html5/email-template-2", context);
 
 			helper.setTo(mail.getTo());
 			helper.setText(html, true);

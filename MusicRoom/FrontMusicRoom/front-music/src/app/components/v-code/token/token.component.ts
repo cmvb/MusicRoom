@@ -3,20 +3,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MenuItem, MessageService } from 'primeng/api';
 import 'rxjs/add/operator/map';
-import { DataObjects } from '../.././components/ObjectGeneric';
-import { Util } from '../.././components/Util';
-import { RestService } from '../.././services/rest.service';
+import { DataObjects } from '../../.././components/ObjectGeneric';
+import { Util } from '../../.././components/Util';
+import { RestService } from '../../.././services/rest.service';
 import { debug } from 'util';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  selector: 'app-token',
+  templateUrl: './token.component.html',
+  styleUrls: ['./token.component.css'],
   providers: [RestService, MessageService]
 })
-export class RegisterComponent implements OnInit {
+export class TokenComponent implements OnInit {
   // Objetos de Sesion
   usuarioSesion: any;
   sesion: any;
@@ -74,6 +74,23 @@ export class RegisterComponent implements OnInit {
     this.consultarTodosUsuarios();
     this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
+
+    if (this.util.getSesionXItem('usuarioRegister') != null) {
+      this.usuario = JSON.parse(localStorage.getItem('usuarioRegister'));
+      this.usuario.fechaNacimiento = new Date(this.usuario.fechaNacimiento);
+      this.nuevaPassword = this.usuario.password;
+    }
+
+    let URLactual = window.location.href;
+    this.codigoVerificacion = URLactual.replace(this.const.urlVCode, '');
+
+    // Validar si el VCODE ya expiró. Si es así, redirigir a la pantalla de error con un mensaje informativo
+    let vCodeValido = this.validarVCODE();
+    if (!vCodeValido) {
+      localStorage.setItem('mensajeError500', 'El Código de Verificación ya expiró.');
+      window.location.replace(this.const.urlDomain + 'music-room/error500');
+      //this.router.navigate(['/music-room/error500']);
+    }
 
     this.items = [
       {
@@ -151,9 +168,20 @@ export class RegisterComponent implements OnInit {
     ];
   }
 
+  validarVCODE() {
+    // Falta validar y crear esta funcionalidad en el back
+    //this.codigoVerificacion
+    return true;
+  }
+
   ngAfterViewInit() {
     this.messageService.clear();
     this.messageService.add({ severity: this.const.severity[0], summary: "Personal", detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
+
+    // Ubicar al usuario en el paso 3 donde envía el código de confirmación
+    if ($('.ui-steps-number')[2] !== undefined) {
+      $('.ui-steps-number')[2].click();
+    }
   }
 
   consultarTodosUsuarios() {
@@ -184,8 +212,6 @@ export class RegisterComponent implements OnInit {
     try {
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email;
-
-      this.util.agregarSesionXItem([{ item: 'usuarioRegister', valor: this.usuario }]);
 
       this.restService.getREST(url)
         .subscribe(resp => {
@@ -301,3 +327,4 @@ export class RegisterComponent implements OnInit {
     }
   }
 }
+

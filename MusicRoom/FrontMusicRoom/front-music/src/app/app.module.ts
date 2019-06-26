@@ -40,9 +40,15 @@ import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.co
 import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
 import { ModalsComponent } from './components/modals/modals.component';
 import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
+// Imports Utilidades
+import { DataObjects } from './components/ObjectGeneric';
+import { PdfViewerthis } from './components/pdf-viewerthis.util/pdf-viewerthis.util.component';
+import { Functions } from './components/Functions';
+import { Util } from './components/Util';
 // Imports Componentes
 import { AppComponent } from './app.component';
 import { LoginGuard } from './components/login.guard';
+import { VCodeComponent } from './components/v-code/v-code.component';
 import { Error403Component } from './components/error/error403.component';
 import { Error404Component } from './components/error/error404.component';
 import { Error500Component } from './components/error/error500.component';
@@ -55,11 +61,7 @@ import { UbicacionesEditComponent } from './components/ubicaciones/ubicacionesEd
 import { UbicacionesQueryComponent } from './components/ubicaciones/ubicacionesQuery.component';
 import { TercerosEditComponent } from './components/terceros/tercerosEdit.component';
 import { TercerosQueryComponent } from './components/terceros/tercerosQuery.component';
-// Imports Utilidades
-import { DataObjects } from './components/ObjectGeneric';
-import { PdfViewerthis } from './components/pdf-viewerthis.util/pdf-viewerthis.util.component';
-import { Functions } from './components/Functions';
-import { Util } from './components/Util';
+import { TokenComponent } from './components/v-code/token/token.component';
 
 
 // Constantes
@@ -119,6 +121,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     Error403Component,
     Error404Component,
     Error500Component,
+    VCodeComponent,
+    TokenComponent,
   ],
   imports: [
     BrowserModule,

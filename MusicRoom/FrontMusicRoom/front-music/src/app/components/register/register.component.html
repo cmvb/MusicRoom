@@ -148,7 +148,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="ui-g center">
+                                <div *ngIf="!isDisabled" class="ui-g center">
                                     <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad center">
                                         <a class="cursorPointer" (click)="enviarCorreoCodVerificacionReg()">{{msg.lbl_btn_no_ha_llegado_correo_vcode}}</a>
                                     </div>
