@@ -149,12 +149,12 @@ export class RegisterComponent implements OnInit {
         }
       }
     ];
-  }
 
-  ngAfterViewInit() {
+    console.clear();
     this.messageService.clear();
     this.messageService.add({ severity: this.const.severity[0], summary: "Personal", detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
   }
+
 
   consultarTodosUsuarios() {
     try {
@@ -183,7 +183,8 @@ export class RegisterComponent implements OnInit {
   enviarCorreoCodVerificacionReg() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email;
+      let nombreCompleto = this.usuario.nombre + ' ' + this.usuario.apellido;
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email + '/' + this.usuario.usuario + '/' + nombreCompleto;
 
       this.util.agregarSesionXItem([{ item: 'usuarioRegister', valor: this.usuario }]);
 
@@ -239,6 +240,7 @@ export class RegisterComponent implements OnInit {
   }
 
   limpiarExcepcion() {
+    console.clear();
     this.ex = this.util.limpiarExcepcion;
     this.msgs = [];
   }
@@ -261,7 +263,7 @@ export class RegisterComponent implements OnInit {
 
           // Procesamiento o Lógica Específica
           this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
-          this.irDashboard();
+          this.irLogin();
         },
           error => {
             this.ex = error.error;

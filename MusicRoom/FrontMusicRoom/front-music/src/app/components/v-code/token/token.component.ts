@@ -78,7 +78,6 @@ export class TokenComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    debugger;
     this.consultarTodosUsuarios();
     this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);

@@ -46,10 +46,12 @@ export class HomeComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
+    console.clear();
     this.util.limpiarSesion();
   }
 
   limpiarExcepcion() {
+    console.clear();
     this.ex = this.util.limpiarExcepcion;
     this.msgs = [];
   }
@@ -84,6 +86,7 @@ export class HomeComponent implements OnInit {
           this.irDashboard();
         }, 
           error => {
+            this.msgs = [];
             this.ex = error.error;
             this.msgs.push(this.util.mostrarNotificacion(this.ex));
             console.log(error, "error");

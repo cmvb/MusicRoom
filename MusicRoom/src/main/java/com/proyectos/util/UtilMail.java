@@ -22,7 +22,7 @@ public class UtilMail {
 	@Autowired
 	private SpringTemplateEngine templateEngine;
 
-	public void sendMail(MailDTO mail) {
+	public void sendMail(MailDTO mail, String nombreArchivo) {
 		try {
 			MimeMessage message = emailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -30,7 +30,7 @@ public class UtilMail {
 
 			Context context = new Context();
 			context.setVariables(mail.getModel());
-			String html = templateEngine.process("html5/email-template-2", context);
+			String html = templateEngine.process("html5/" + nombreArchivo, context);
 
 			helper.setTo(mail.getTo());
 			helper.setText(html, true);

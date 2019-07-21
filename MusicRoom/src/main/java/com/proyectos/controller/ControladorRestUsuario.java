@@ -56,6 +56,9 @@ public class ControladorRestUsuario {
 	@Value("${tiempo.expiracion.vcode.minutos}")
 	private int TIEMPO_EXPIRACION_VCODE_MINUTOS;
 
+	@Value("${template.mail.vCode}")
+	private String TEMPLATE_MAIL_V_CODE;
+
 	@Autowired
 	IUsuarioService usuarioService;
 
@@ -95,9 +98,10 @@ public class ControladorRestUsuario {
 		tokenServices.revokeToken(token);
 	}
 
-	@GetMapping(value = "/enviarCodigoVerificacion/{vCode:.*}/{email:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/enviarCodigoVerificacion/{vCode:.*}/{email:.*}/{user:.*}/{nombreCompleto:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void enviarCodigoVerificacion(@PathVariable("vCode") String codigoVerificacion,
-			@PathVariable("email") String email) {
+			@PathVariable("email") String email, @PathVariable("user") String user,
+			@PathVariable("nombreCompleto") String nombreCompleto) {
 		try {
 			if (Util.esCorreoValido(email)) {
 				UsuarioTB usuarioFiltro = new UsuarioTB();
@@ -117,12 +121,14 @@ public class ControladorRestUsuario {
 					mailDto.setSubject("ENVÍO CÓDIGO DE VERIFICACIÓN DE CUENTA - MUSIC ROOM");
 
 					Map<String, Object> model = new HashMap<>();
+					model.put("user", user);
+					model.put("nombreCompleto", nombreCompleto);
 					model.put("email", email);
 					model.put("token", vCodeTB.getToken());
 					model.put("resetUrl", URL_VERIFICAR_CUENTA_NUEVA + vCodeTB.getToken());
 					mailDto.setModel(model);
 
-					mailUtil.sendMail(mailDto);
+					mailUtil.sendMail(mailDto, TEMPLATE_MAIL_V_CODE);
 				} else {
 					String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.existeCorreoUsuario");
 					throw new ModelNotFoundException(mensaje);
@@ -212,7 +218,8 @@ public class ControladorRestUsuario {
 				listaRoles = Util.cargarRolesUsuarioCliente();
 
 				List<RolTB> listaRolesTB = usuarioService.consultarRolesListaCodigosRol(listaRoles);
-				usuario.setListaRoles((listaRolesTB != null && !listaRolesTB.isEmpty()) ? null : listaRolesTB);
+				usuario.setListaRoles((listaRolesTB != null && !listaRolesTB.isEmpty()) ? listaRolesTB : null);
+				usuario.setEstado((short) EEstado.ACTIVO.ordinal());
 				usuarioNuevo = usuarioService.crear(usuario);
 			} else {
 				String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.errorVCodeRegistrar");

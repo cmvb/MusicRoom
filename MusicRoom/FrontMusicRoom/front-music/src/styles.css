@@ -407,6 +407,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .ui-messages ul>li {
   margin-right: 20px;
+  display: inherit;
 }
 
 .ui-messages .ui-messages-close {

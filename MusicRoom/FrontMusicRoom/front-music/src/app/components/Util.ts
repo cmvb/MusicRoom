@@ -33,6 +33,7 @@ export class Util {
   }
 
   limpiarExcepcion() {
+    console.clear;
     return this.ex;
   }
 
@@ -91,6 +92,7 @@ export class Util {
   limpiarSesion() {
     localStorage.clear();
     sessionStorage.clear();
+    console.clear();
     return true;
   }
 
