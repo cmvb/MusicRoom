@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,9 +59,6 @@ public class ControladorRestUsuario {
 	@Autowired
 	IUsuarioService usuarioService;
 
-//	@Autowired
-//	IRolService rolService;
-
 	@Autowired
 	IArchivosService archivoService;
 
@@ -90,6 +88,10 @@ public class ControladorRestUsuario {
 
 	@GetMapping(value = "/anular/{tokenId:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void revocarToken(@PathVariable("tokenId") String token) {
+		SesionTB sesionActual = usuarioService.consultarSesionPorToken(token);
+		sesionActual.setUsuarioTb(null);
+		sesionActual.setEstado((short) EEstado.ACTIVO.ordinal());
+		usuarioService.modificarSesion(sesionActual);
 		tokenServices.revokeToken(token);
 	}
 
@@ -200,7 +202,9 @@ public class ControladorRestUsuario {
 					&& StringUtils.isNotBlank(usuario.getCodigoVerificacion())
 					&& usuario.getCodigoVerificacion().equalsIgnoreCase(vCodeTB.getToken())) {
 				usuarioNuevo = new UsuarioTB();
-				usuario.setPassword(Util.encriptar(usuario.getPassword(), usuario.getUsuario()));
+
+				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 				ArchivoTB fotoTb = archivoService.consultarPorId(1l);
 				usuario.setFotoTb(fotoTb);
 
@@ -226,6 +230,14 @@ public class ControladorRestUsuario {
 		}
 
 		return new ResponseEntity<UsuarioTB>(usuarioNuevo, HttpStatus.OK);
+	}
+
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping("/consultarVCodePorCodigoVerificacion")
+	public ResponseEntity<CodigoVerificacionTB> consultarVCodePorCodigoVerificacion(
+			@RequestBody CodigoVerificacionTB vCode) {
+		return new ResponseEntity<CodigoVerificacionTB>(usuarioService.consultarVCodePorCodigoVerificacion(vCode),
+				HttpStatus.OK);
 	}
 
 	// Métodos que requieren autorización de roles

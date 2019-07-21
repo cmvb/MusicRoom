@@ -32,6 +32,8 @@ export class TokenComponent implements OnInit {
   isDisabled: any;
   dataUsuarios: any;
   listaUsuarios = [];
+  verificacionTB: any;
+  objetoVCODE: any;
 
   // Steps
   items: MenuItem[];
@@ -63,6 +65,11 @@ export class TokenComponent implements OnInit {
     this.usuario.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.enums = datasObject.getEnumerados();
     this.isDisabled = true;
+    this.verificacionTB = datasObject.getDataVCode();
+    this.objetoVCODE = datasObject.getDataVCode();
+
+    let URLactual = window.location.href;
+    this.codigoVerificacion = URLactual.replace(this.const.urlVCode, '');
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -71,25 +78,16 @@ export class TokenComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
+    debugger;
     this.consultarTodosUsuarios();
     this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
+    this.consultarVCODE();
 
     if (this.util.getSesionXItem('usuarioRegister') != null) {
       this.usuario = JSON.parse(localStorage.getItem('usuarioRegister'));
       this.usuario.fechaNacimiento = new Date(this.usuario.fechaNacimiento);
       this.nuevaPassword = this.usuario.password;
-    }
-
-    let URLactual = window.location.href;
-    this.codigoVerificacion = URLactual.replace(this.const.urlVCode, '');
-
-    // Validar si el VCODE ya expiró. Si es así, redirigir a la pantalla de error con un mensaje informativo
-    let vCodeValido = this.validarVCODE();
-    if (!vCodeValido) {
-      localStorage.setItem('mensajeError500', 'El Código de Verificación ya expiró.');
-      window.location.replace(this.const.urlDomain + 'music-room/error500');
-      //this.router.navigate(['/music-room/error500']);
     }
 
     this.items = [
@@ -168,10 +166,38 @@ export class TokenComponent implements OnInit {
     ];
   }
 
-  validarVCODE() {
-    // Falta validar y crear esta funcionalidad en el back
-    //this.codigoVerificacion
-    return true;
+  consultarVCODE() {
+    try {
+      this.limpiarExcepcion();
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'consultarVCodePorCodigoVerificacion';
+      let obj = this.objetoVCODE;
+      obj.token = this.codigoVerificacion;
+      obj.estado = "1";
+
+      this.restService.postREST(url, obj)
+        .subscribe(resp => {
+          console.log(resp, "res");
+          this.verificacionTB = resp;
+          
+          // Validar si el VCODE ya expiró. Si es así, redirigir a la pantalla de error con un mensaje informativo
+          let vCodeValido = this.verificacionTB.token === this.codigoVerificacion;
+          if (!vCodeValido) {
+            localStorage.setItem('mensajeError500', 'El Código de Verificación ya expiró.');
+            window.location.replace(this.const.urlDomain + 'music-room/error500');
+            //this.router.navigate(['/music-room/error500']);
+          }
+        },
+          error => {
+            this.ex = error.error;
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
+            console.log(error, "error");
+          })
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   ngAfterViewInit() {

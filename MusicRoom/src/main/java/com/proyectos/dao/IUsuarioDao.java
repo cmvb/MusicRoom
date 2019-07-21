@@ -53,4 +53,5 @@ public interface IUsuarioDao {
 	 * Metodo para obtener el ID de una tabla
 	 */
 	long obtenerConsecutivo(String tabla);
+
 }

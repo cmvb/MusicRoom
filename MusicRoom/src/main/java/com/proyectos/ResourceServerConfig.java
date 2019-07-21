@@ -34,7 +34,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.antMatchers("/music-room/usuario/crearUsuario/**").authenticated()
 				.antMatchers("/music-room/usuario/modificarUsuario/**").authenticated()
 				.antMatchers("/music-room/usuario/eliminarUsuario/**").authenticated()
-				.antMatchers("/music-room/ubicacion/**").authenticated().antMatchers("/music-room/tercero/**")
-				.authenticated();
+				.antMatchers("/music-room/ubicacion/**").authenticated()
+				.antMatchers("/music-room/tercero/**").authenticated();
 	}
 }

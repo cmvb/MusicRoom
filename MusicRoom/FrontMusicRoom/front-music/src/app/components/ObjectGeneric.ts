@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-export var HOST = 'http://localhost:9002';
-export var SYSTEM = 'http://localhost:4200';
+//export var HOST = 'http://localhost:9002';
+//export var HOST = 'http://10.176.147.19:9002';
+export var HOST = 'http://192.168.1.54:9002';
+
+//export var SYSTEM = 'http://localhost:4200';
+//export var SYSTEM = 'http://10.176.147.19:4200';
+export var SYSTEM = 'http://192.168.1.54:4200';
 
 @Injectable()
 export class DataObjects {
@@ -23,14 +28,14 @@ export class DataObjects {
       // URL'S + Info del Sistema
       urlDomain: `${SYSTEM}/`,
       urlRestService: `${HOST}/music-room/`,
-      urlRestOauth: `${HOST}/music-room/oauth/token`,
+      urlRestOauth: `${HOST}/oauth/token`,
       urlVCode: `${SYSTEM}/music-room/vCode/`,
       urlControllerUsuario: 'usuario/',
       urlControllerUbicacion: 'ubicacion/',
       urlControllerTercero: 'tercero/',
       urlControllerReporte: 'reporte-archivo/',
-      tokenUsernameAUTH: 'musicroomapp',
-      tokenPasswordAUTH: 'musicroom19codex',
+      tokenUsernameAUTH: 'MusicRoomApp',
+      tokenPasswordAUTH: 'musicroom2019codex',
       tokenNameAUTH: 'access_token',
       codigoADMIN: 'RMRADM',
 
@@ -124,6 +129,22 @@ export class DataObjects {
       fotoTb: this.getDataArchivo(),
       listaRoles: [this.getDataRol()],
       codigoVerificacion: '',
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
+    }
+  };
+
+  getDataVCode() {
+    return {
+      idCodigoVerificacion: '',
+      token: '',
+      email: '',
+      expiracion: '',
 
       //Abstract
       estado: '',

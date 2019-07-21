@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.proyectos.dao.AbstractDao;
@@ -40,28 +41,59 @@ public class CodigoVerificacionDaoImpl extends AbstractDao<CodigoVerificacionTB>
 
 	@Override
 	public CodigoVerificacionTB consultarVCodePorCorreo(String email) {
-		// PARAMETROS
-		Map<String, Object> pamameters = new HashMap<>();
-
-		// QUERY
-		StringBuilder JPQL = new StringBuilder("SELECT t FROM CodigoVerificacionTB t WHERE 1 = 1 ");
-		// Q. Usuario
-		JPQL.append(" AND LOWER(t.email) = LOWER(:EMAIL) ");
-		pamameters.put("EMAIL", email);
-		// Q. Order By
-		JPQL.append(" ORDER BY t.idCodigoVerificacion DESC ");
-		// END QUERY
-
-		TypedQuery<CodigoVerificacionTB> query = em.createQuery(JPQL.toString(), CodigoVerificacionTB.class);
-		pamameters.forEach((k, v) -> query.setParameter(k, v));
-
-		List<CodigoVerificacionTB> listResult = query.getResultList();
 		CodigoVerificacionTB vCodeTB = new CodigoVerificacionTB();
-		if (listResult != null && !listResult.isEmpty()) {
-			vCodeTB = listResult.get(0);
+		if (StringUtils.isNotBlank(email)) {
+			// PARAMETROS
+			Map<String, Object> pamameters = new HashMap<>();
+
+			// QUERY
+			StringBuilder JPQL = new StringBuilder("SELECT t FROM CodigoVerificacionTB t WHERE 1 = 1 ");
+			// Q. Usuario
+			JPQL.append(" AND LOWER(t.email) = LOWER(:EMAIL) ");
+			pamameters.put("EMAIL", email);
+			// Q. Order By
+			JPQL.append(" ORDER BY t.idCodigoVerificacion DESC ");
+			// END QUERY
+
+			TypedQuery<CodigoVerificacionTB> query = em.createQuery(JPQL.toString(), CodigoVerificacionTB.class);
+			pamameters.forEach((k, v) -> query.setParameter(k, v));
+
+			List<CodigoVerificacionTB> listResult = query.getResultList();
+			if (listResult != null && !listResult.isEmpty()) {
+				vCodeTB = listResult.get(0);
+			}
 		}
 
 		return vCodeTB;
+	}
+
+	@Override
+	public CodigoVerificacionTB consultarVCodePorCodigoVerificacion(CodigoVerificacionTB codigoVerificacionTB) {
+		CodigoVerificacionTB vCodeResultTB = new CodigoVerificacionTB();
+
+		if (StringUtils.isNotBlank(codigoVerificacionTB.getToken())) {
+			// PARAMETROS
+			Map<String, Object> pamameters = new HashMap<>();
+
+			// QUERY
+			StringBuilder JPQL = new StringBuilder("SELECT t FROM CodigoVerificacionTB t WHERE 1 = 1 ");
+			// Q. Usuario
+			JPQL.append(" AND LOWER(t.token) = LOWER(:VCODE) ");
+			pamameters.put("VCODE", codigoVerificacionTB.getToken());
+			// Q. Order By
+			JPQL.append(" ORDER BY t.idCodigoVerificacion DESC ");
+			// END QUERY
+
+			TypedQuery<CodigoVerificacionTB> query = em.createQuery(JPQL.toString(), CodigoVerificacionTB.class);
+			pamameters.forEach((k, v) -> query.setParameter(k, v));
+
+			List<CodigoVerificacionTB> listResult = query.getResultList();
+			if (listResult != null && !listResult.isEmpty()) {
+				vCodeResultTB = listResult.get(0);
+			}
+		}
+
+		return vCodeResultTB;
 	}
 
 	@Override

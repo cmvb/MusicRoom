@@ -45,7 +45,8 @@ export class HeaderComponent implements OnInit {
         .subscribe(resp => {
           localStorage.clear();
           sessionStorage.clear();
-          location.reload();
+          localStorage.setItem('mensajeError500', 'No tiene una Sesión Iniciada.');
+          this.router.navigate(['/music-room/error500']);
         });
     } catch (e) {
       console.log(e);

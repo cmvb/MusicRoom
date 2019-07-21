@@ -15,6 +15,16 @@ public interface IUsuarioService {
 	public SesionTB login(UsuarioTB usuarioFiltro);
 
 	/*
+	 * Metodo para consultar una Sesión por su Token
+	 */
+	public SesionTB consultarSesionPorToken(String tokenSesion);
+
+	/*
+	 * Metodo para modificar sesiones
+	 */
+	public SesionTB modificarSesion(SesionTB sesion);
+
+	/*
 	 * Metodo para consultar todos los usuarios
 	 */
 	public List<UsuarioTB> consultarTodos();
@@ -58,5 +68,10 @@ public interface IUsuarioService {
 	 * Metodo para consultar una lista de roles dados sus codigos
 	 */
 	public List<RolTB> consultarRolesListaCodigosRol(List<String> listaRoles);
+
+	/*
+	 * Metodo para consultar un registro de verificacion dado su codigo
+	 */
+	public CodigoVerificacionTB consultarVCodePorCodigoVerificacion(CodigoVerificacionTB vCode);
 
 }

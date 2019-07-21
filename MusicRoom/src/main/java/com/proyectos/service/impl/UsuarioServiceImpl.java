@@ -58,6 +58,18 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 		return sesion;
 	}
 
+	@Transactional
+	@Override
+	public SesionTB consultarSesionPorToken(String tokenSesion) {
+		return sesionDAO.consultarPorToken(tokenSesion);
+	}
+
+	@Transactional
+	@Override
+	public SesionTB modificarSesion(SesionTB sesion) {
+		return sesionDAO.modificar(sesion);
+	}
+
 	@Override
 	public List<UsuarioTB> consultarTodos() {
 		return usuarioDAO.consultarTodos();
@@ -124,5 +136,10 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 	@Override
 	public List<RolTB> consultarRolesListaCodigosRol(List<String> listaRoles) {
 		return rolDAO.consultarRolesListaCodigosRol(listaRoles);
+	}
+
+	@Override
+	public CodigoVerificacionTB consultarVCodePorCodigoVerificacion(CodigoVerificacionTB vCode) {
+		return vCodeDAO.consultarVCodePorCodigoVerificacion(vCode);
 	}
 }

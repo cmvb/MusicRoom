@@ -32,4 +32,9 @@ public interface ICodigoVerificacionDao {
 	 */
 	long obtenerConsecutivo(String tabla);
 
+	/*
+	 * Metodo para consultar un registro de verificacion dado su codigo
+	 */
+	CodigoVerificacionTB consultarVCodePorCodigoVerificacion(CodigoVerificacionTB vCode);
+
 }

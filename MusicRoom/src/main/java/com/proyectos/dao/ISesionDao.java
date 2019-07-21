@@ -15,6 +15,12 @@ public interface ISesionDao {
 	SesionTB login(String usuario, String password);
 
 	/*
+	 * Metodo para consultar una sesión por su token
+	 */
+	@Query
+	SesionTB consultarPorToken(String token);
+
+	/*
 	 * Metodo para crear sesiones
 	 */
 	SesionTB crear(SesionTB sesion);
