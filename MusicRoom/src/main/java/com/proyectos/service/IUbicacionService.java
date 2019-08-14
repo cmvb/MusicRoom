@@ -15,7 +15,7 @@ public interface IUbicacionService {
 	 * Metodo para consultar los ubicaciones que cumplan con el tipo de ubicación
 	 * seleccionado (Pais, Dpto, Ciudad)
 	 */
-	public List<UbicacionTB> consultaPorTipo(int tipoUbicacion);
+	public List<UbicacionTB> consultarPorTipo(int tipoUbicacion);
 
 	/*
 	 * Metodo para consultar los ubicaciones que cumplan con los filtros

@@ -42,7 +42,7 @@ public class UbicacionDaoImpl extends AbstractDao<UbicacionTB> implements IUbica
 	}
 
 	@Override
-	public List<UbicacionTB> consultaPorTipo(int tipoUbicacion) {
+	public List<UbicacionTB> consultarPorTipo(int tipoUbicacion) {
 		// QUERY
 		StringBuilder JPQL = new StringBuilder("SELECT t FROM UbicacionTB t WHERE 1 = 1 ");
 		if (tipoUbicacion == ETipoUbicacion.PAIS.ordinal()) {

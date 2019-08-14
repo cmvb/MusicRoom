@@ -182,8 +182,8 @@ export class TokenComponent implements OnInit {
           let vCodeValido = this.verificacionTB.token === this.codigoVerificacion;
           if (!vCodeValido) {
             localStorage.setItem('mensajeError500', 'El Código de Verificación ya expiró.');
-            window.location.replace(this.const.urlDomain + 'music-room/error500');
-            //this.router.navigate(['/music-room/error500']);
+            window.location.replace(this.const.urlDomain + 'error500');
+            //this.router.navigate(['/error500']);
           }
         },
           error => {
@@ -329,7 +329,7 @@ export class TokenComponent implements OnInit {
     audio.src = "assets/audio/guitarIntro.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
   irLogin() {
@@ -337,7 +337,7 @@ export class TokenComponent implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/home']);
+    this.router.navigate(['/home']);
   }
 
   guardaTeclaEnter(event) {

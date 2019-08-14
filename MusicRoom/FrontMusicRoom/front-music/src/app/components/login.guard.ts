@@ -18,11 +18,14 @@ export class LoginGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    let LOCALHOST = 'http://localhost:4200/';
+
     let URLactual = window.location.href;
     const helper = new JwtHelperService();
-    
+
     let sesionOK = true;
-    if (!URLactual.includes("music-room/register") && !URLactual.includes("music-room/home") && !URLactual.includes("music-room/error") && URLactual !== (this.const.urlDomain) + "/") {
+    
+    if (!URLactual.includes("register") && !URLactual.includes("home") && !URLactual.includes("error") && URLactual.toString() !== (this.const.urlDomain) && URLactual.toString() !== (LOCALHOST)) {
       let usuarioSesion = localStorage.getItem('usuarioSesion') === null ? null : JSON.parse(localStorage.getItem('usuarioSesion').toString());
       let ACCESS_TOKEN = sessionStorage.getItem(this.const.tokenNameAUTH) === null ? null : JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH));
 
@@ -33,12 +36,18 @@ export class LoginGuard implements CanActivate {
 
         if (!isExpired) {
           let tienePermisos = false;
+          
+          if (usuarioSesion.usuarioTb !== undefined && usuarioSesion.usuarioTb !== null && usuarioSesion.usuarioTb.listaRoles !== undefined && usuarioSesion.usuarioTb.listaRoles !== null) {
+            for (let i in usuarioSesion.usuarioTb.listaRoles) {
+              let rolUsuario = usuarioSesion.usuarioTb.listaRoles[i];
 
-          if (usuarioSesion.listaRoles !== undefined && usuarioSesion.listaRoles !== null) {
-            for (let i in usuarioSesion.listaRoles) {
-              let rolUsuario = usuarioSesion.listaRoles[i];
-
-              if (URLactual.includes(rolUsuario.path) || rolUsuario.codigo === this.const.codigoADMIN) {
+              if (!URLactual.includes("dashboard")) {
+                if (URLactual.includes(rolUsuario.path) || rolUsuario.codigo === this.const.codigoADMIN) {
+                  tienePermisos = true;
+                  break;
+                }
+              }
+              else {
                 tienePermisos = true;
                 break;
               }
@@ -49,19 +58,19 @@ export class LoginGuard implements CanActivate {
             localStorage.setItem('decodedToken', JSON.stringify(decodedToken));
             localStorage.setItem('expirationDate', JSON.stringify(expirationDate));
             localStorage.setItem('mensajeError403', 'Está intentando ingresar a la ruta: ' + URLactual + '. No cuenta con permisos para visualizar su contenido.');
-            this.router.navigate(['/music-room/error403']);
+            this.router.navigate(['/error403']);
           }
         }
         else {
           localStorage.setItem('decodedToken', JSON.stringify(decodedToken));
           localStorage.setItem('expirationDate', JSON.stringify(expirationDate));
           localStorage.setItem('mensajeError403', 'Su sesión ha expirado. Debe ingresar de nuevo a la aplicación.');
-          this.router.navigate(['/music-room/error403']);
+          this.router.navigate(['/error403']);
         }
       }
       else {
         localStorage.setItem('mensajeError500', 'No tiene una Sesión Iniciada.');
-        this.router.navigate(['/music-room/error500']);
+        this.router.navigate(['/error500']);
       }
     }
 

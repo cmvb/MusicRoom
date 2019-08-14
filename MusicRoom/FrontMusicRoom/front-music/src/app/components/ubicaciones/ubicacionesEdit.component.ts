@@ -18,6 +18,7 @@ declare var $: any;
 })
 export class UbicacionesEditComponent implements OnInit {
   // Objetos de Sesion
+  ACCESS_TOKEN: any;
   usuarioSesion: any;
   sesion: any;
 
@@ -90,6 +91,7 @@ export class UbicacionesEditComponent implements OnInit {
     this.nombreDepartamentoD = null;
     this.codigoCiudadC = null;
     this.nombreCiudadC = null;
+    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -236,8 +238,8 @@ export class UbicacionesEditComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerUbicacion + (this.phase === this.const.phaseAdd ? 'crearUbicacion' : 'modificarUbicacion');
       this.ajustarCombos();
       let obj = this.objeto;
-      debugger;
-      this.restService.postREST(url, obj)
+
+      this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
@@ -262,7 +264,7 @@ export class UbicacionesEditComponent implements OnInit {
 
   irAtras() {
     this.util.limpiarSesionXItem(['listaConsulta']);
-    this.router.navigate(['/music-room/ubicacionQuery']);
+    this.router.navigate(['/ubicacionQuery']);
   }
 
   guardaTeclaEnter(event) {

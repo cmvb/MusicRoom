@@ -49,6 +49,9 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
 		if (sesion != null && sesion.getUsuarioTb() != null) {
 			if (sesion.getUsuarioTb().getEstado() == EEstado.ACTIVO.ordinal()) {
+				// Se inactivan las sesiones anteriores
+				sesionDAO.inactivarRegistrosToken();
+
 				sesion.setTokenSesion(Util.generarToken(usuario.getUsuario()));
 				sesion.setIdSesion(sesionDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_SESION_TB));
 				sesion = sesionDAO.crear(sesion);

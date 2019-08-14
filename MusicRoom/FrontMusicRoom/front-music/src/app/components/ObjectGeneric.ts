@@ -27,24 +27,25 @@ export class DataObjects {
     return {
       // URL'S + Info del Sistema
       urlDomain: `${SYSTEM}/`,
-      urlRestService: `${HOST}/music-room/`,
+      urlRestService: `${HOST}/`,
       urlRestOauth: `${HOST}/oauth/token`,
-      urlVCode: `${SYSTEM}/music-room/vCode/`,
-      urlControllerUsuario: 'usuario/',
-      urlControllerUbicacion: 'ubicacion/',
-      urlControllerTercero: 'tercero/',
-      urlControllerReporte: 'reporte-archivo/',
+      urlVCode: `${SYSTEM}/vCode/`,
+      urlControllerUsuario: 'music-room/usuario/',
+      urlControllerUbicacion: 'music-room/ubicacion/',
+      urlControllerTercero: 'music-room/tercero/',
+      urlControllerReporte: 'music-room/reporte-archivo/',
       tokenUsernameAUTH: 'MusicRoomApp',
       tokenPasswordAUTH: 'musicroom2019codex',
       tokenNameAUTH: 'access_token',
       codigoADMIN: 'RMRADM',
 
-      //Model rango de fechas para NGBDatePicker
+      // Model rango de fechas para NGBDatePicker
       minDate: { year: 1000, month: 1, day: 1 },
       maxDate: new Date(),
       formatoFecha: 'dd/mm/yy',
       rangoYears: '1900:3000',
 
+      // Otras Variables
       idiomaEs: 1,
       idiomaEn: 2,
       phaseAdd: 'add',
@@ -62,6 +63,11 @@ export class DataObjects {
       maxSize: 1,
       rotate: true,
       pageSize: 1,
+      menuConfiguracion: "C",
+      menuAdministracion: "A",
+      menuInventario: "I",
+      menuAgenda: "G",
+      menuMovimientos: "M",
     }
   };
 
@@ -350,6 +356,7 @@ export class DataObjects {
       lbl_tip_anterior: idioma == constant.idiomaEs ? '[Clic] para Regresar' : 'Click to go back',
       lbl_tip_actualizar: idioma == constant.idiomaEs ? '[Clic] para Actualizar' : 'Click to update',
       lbl_tip_guardar: idioma == constant.idiomaEs ? '[Clic] para Guardar' : 'Click to save',
+      lbl_tip_exportar_datos: idioma == constant.idiomaEs ? '[Clic] para Exportar' : 'Click to export',
 
       //Enums
       lbl_enum_generico_valor_vacio: idioma == constant.idiomaEs ? 'Selecciona una opción' : 'Select a Item',

@@ -18,6 +18,7 @@ declare var $: any;
 })
 export class TercerosQueryComponent implements OnInit {
   // Objetos de Sesion
+  ACCESS_TOKEN: any;
   usuarioSesion: any;
   sesion: any;
 
@@ -61,6 +62,7 @@ export class TercerosQueryComponent implements OnInit {
     this.const = datasObject.getConst();
     this.util = util;
     this.objetoFiltro = datasObject.getDataTercero();
+    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -95,7 +97,7 @@ export class TercerosQueryComponent implements OnInit {
       let obj = this.objetoFiltro;
       obj.estado = "1";
 
-      this.restService.postREST(url, obj)
+      this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
@@ -121,9 +123,9 @@ export class TercerosQueryComponent implements OnInit {
   consultarCiudades() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultaPorTipo/2';
+      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultarPorTipo/2';
 
-      this.restService.getREST(url)
+      this.restService.getSecureREST(url, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.dataC = resp;
@@ -152,13 +154,13 @@ export class TercerosQueryComponent implements OnInit {
 
   editar(objetoEdit) {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }, { item: 'listaCiudades', valor: this.listaCiudades }]);
-    this.router.navigate(['/music-room/terceroEdit']);
+    this.router.navigate(['/terceroEdit']);
     return true;
   }
 
   irCrear() {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }, { item: 'listaCiudades', valor: this.listaCiudades }]);
-    this.router.navigate(['/music-room/terceroEdit']);
+    this.router.navigate(['/terceroEdit']);
     return true;
   }
 
@@ -167,7 +169,7 @@ export class TercerosQueryComponent implements OnInit {
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerTercero + 'eliminarTercero';
 
-      this.restService.postREST(url, objetoEdit)
+      this.restService.postSecureREST(url, objetoEdit, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;

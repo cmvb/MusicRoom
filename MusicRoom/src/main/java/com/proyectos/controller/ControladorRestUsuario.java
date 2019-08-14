@@ -91,11 +91,15 @@ public class ControladorRestUsuario {
 
 	@GetMapping(value = "/anular/{tokenId:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void revocarToken(@PathVariable("tokenId") String token) {
-		SesionTB sesionActual = usuarioService.consultarSesionPorToken(token);
-		sesionActual.setUsuarioTb(null);
-		sesionActual.setEstado((short) EEstado.ACTIVO.ordinal());
-		usuarioService.modificarSesion(sesionActual);
-		tokenServices.revokeToken(token);
+		try {
+			SesionTB sesionActual = usuarioService.consultarSesionPorToken(token);
+			sesionActual.setEstado((short) EEstado.INACTIVO.ordinal());
+			usuarioService.modificarSesion(sesionActual);
+			//tokenServices.revokeToken(token);
+		} catch (Exception e) {
+			String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.error.revocar.token");
+			throw new ModelNotFoundException(mensaje);
+		}
 	}
 
 	@GetMapping(value = "/enviarCodigoVerificacion/{vCode:.*}/{email:.*}/{user:.*}/{nombreCompleto:.*}", produces = MediaType.APPLICATION_JSON_VALUE)

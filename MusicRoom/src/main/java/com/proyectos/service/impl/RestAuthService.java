@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.proyectos.dao.IRolDao;
+import com.proyectos.util.ConstantesRoles;
 
 @Service
 public class RestAuthService {
@@ -24,12 +25,10 @@ public class RestAuthService {
 		if (!StringUtils.isBlank(rolValido)) {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (!(authentication instanceof AnonymousAuthenticationToken)) {
-				System.out.println(authentication.getName());
 
 				for (GrantedAuthority auth : authentication.getAuthorities()) {
 					String rolUser = auth.getAuthority();
-					System.out.println(rolUser);
-					if (rolValido.equalsIgnoreCase(rolUser)) {
+					if (ConstantesRoles.ROL_ADMINISTRADOR.equalsIgnoreCase(rolUser) || rolValido.equalsIgnoreCase(rolUser)) {
 						acceso = true;
 						break;
 					}

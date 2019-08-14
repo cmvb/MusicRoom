@@ -18,6 +18,7 @@ declare var $: any;
 })
 export class TercerosEditComponent implements OnInit {
   // Objetos de Sesion
+  ACCESS_TOKEN: any;
   usuarioSesion: any;
   sesion: any;
 
@@ -56,6 +57,7 @@ export class TercerosEditComponent implements OnInit {
     this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
     this.objeto.ubicacionTb = datasObject.getDataUbicacion();
     this.enums = datasObject.getEnumerados();
+    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -89,7 +91,7 @@ export class TercerosEditComponent implements OnInit {
       this.ajustarCombos();
       let obj = this.objeto;
 
-      this.restService.postREST(url, obj)
+      this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
@@ -130,7 +132,7 @@ export class TercerosEditComponent implements OnInit {
 
   irAtras() {
     this.util.limpiarSesionXItem(['listaConsulta']);
-    this.router.navigate(['/music-room/terceroQuery']);
+    this.router.navigate(['/terceroQuery']);
   }
 
   guardaTeclaEnter(event) {

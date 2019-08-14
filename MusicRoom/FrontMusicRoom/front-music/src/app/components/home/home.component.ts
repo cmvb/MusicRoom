@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     audio.src = "assets/audio/guitarIntro.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
   irRegistrar() {
@@ -109,6 +109,6 @@ export class HomeComponent implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/register']);
+    this.router.navigate(['/register']);
   }
 }

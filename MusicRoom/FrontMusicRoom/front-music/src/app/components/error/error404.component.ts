@@ -50,6 +50,6 @@ export class Error404Component implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/home']);
+    this.router.navigate(['/home']);
   }
 }

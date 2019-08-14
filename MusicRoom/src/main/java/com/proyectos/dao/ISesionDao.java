@@ -29,6 +29,11 @@ public interface ISesionDao {
 	 * Metodo para modificar sesiones
 	 */
 	SesionTB modificar(SesionTB sesion);
+	
+	/*
+	 * Metodo para inactivar todas las sesiones
+	 */
+	void inactivarRegistrosToken();
 
 	/*
 	 * Metodo para eliminar una sesion por su ID

@@ -2,7 +2,9 @@ package com.proyectos.dao.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.ISesionDao;
 import com.proyectos.dao.IUsuarioDao;
+import com.proyectos.enums.EEstado;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
 
@@ -42,6 +45,8 @@ public class SesionDaoImpl extends AbstractDao<SesionTB> implements ISesionDao {
 
 	@Override
 	public SesionTB consultarPorToken(String token) {
+		SesionTB result = null;
+
 		// PARAMETROS
 		Map<String, Object> pamameters = new HashMap<>();
 
@@ -55,7 +60,14 @@ public class SesionDaoImpl extends AbstractDao<SesionTB> implements ISesionDao {
 		TypedQuery<SesionTB> query = em.createQuery(JPQL.toString(), SesionTB.class);
 		pamameters.forEach((k, v) -> query.setParameter(k, v));
 
-		return query.getSingleResult();
+		Optional<SesionTB> optionalSesionTb = Optional.of(query.getSingleResult());
+
+		if (optionalSesionTb.isPresent()) {
+			SesionTB sesionTb = optionalSesionTb.get();
+			result = sesionTb;
+		}
+
+		return result;
 	}
 
 	@Override
@@ -70,6 +82,27 @@ public class SesionDaoImpl extends AbstractDao<SesionTB> implements ISesionDao {
 		sesion = colocarValoresDefecto(sesion);
 		super.update(sesion);
 		return sesion;
+	}
+
+	@Override
+	public void inactivarRegistrosToken() {
+		// PARAMETROS
+		Map<String, Object> pamameters = new HashMap<>();
+
+		// QUERY
+		StringBuilder JPQL = new StringBuilder("SELECT t FROM SesionTB t WHERE 1 = 1 ");
+		// END QUERY
+
+		TypedQuery<SesionTB> query = em.createQuery(JPQL.toString(), SesionTB.class);
+		pamameters.forEach((k, v) -> query.setParameter(k, v));
+
+		List<SesionTB> listaSesiones = query.getResultList();
+		if (listaSesiones != null) {
+			for (SesionTB sesionTb : listaSesiones) {
+				sesionTb.setEstado((short) EEstado.INACTIVO.ordinal());
+				this.modificar(sesionTb);
+			}
+		}
 	}
 
 	@Override

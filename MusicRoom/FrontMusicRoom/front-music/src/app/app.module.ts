@@ -42,6 +42,7 @@ import { ModalsComponent } from './components/modals/modals.component';
 import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
 // Imports Utilidades
 import { DataObjects } from './components/ObjectGeneric';
+import { DropZoneComponent } from './components/dropZone/dropZone.component';
 import { PdfViewerthis } from './components/pdf-viewerthis.util/pdf-viewerthis.util.component';
 import { Functions } from './components/Functions';
 import { Util } from './components/Util';
@@ -123,6 +124,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     Error500Component,
     VCodeComponent,
     TokenComponent,
+    DropZoneComponent
   ],
   imports: [
     BrowserModule,

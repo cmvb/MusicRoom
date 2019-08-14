@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,15 +28,19 @@ import com.proyectos.util.Util;
 @RestController
 @RequestMapping("/music-room/ubicacion")
 public class ControladorRestUbicacion {
+	
+	private final String PERMISO_ADMINISTRADOR = "@restAuthService.hasAccess('/music-room', '/')";
 
 	@Autowired
 	IUbicacionService ubicacionService;
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarTodos') or " + PERMISO_ADMINISTRADOR)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UbicacionTB>> consultarTodos() {
 		return new ResponseEntity<List<UbicacionTB>>(ubicacionService.consultarTodos(), HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarPorId') or " + PERMISO_ADMINISTRADOR)
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UbicacionTB> consultarPorId(@PathVariable("id") Long idUbicacion) {
 		UbicacionTB ubicacion = ubicacionService.consultarPorId(idUbicacion);
@@ -48,17 +53,20 @@ public class ControladorRestUbicacion {
 		return new ResponseEntity<UbicacionTB>(ubicacion, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/consultaPorTipo/{tipo}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UbicacionTB>> consultaPorTipo(@PathVariable("tipo") Integer tipoUbicacion) {
-		return new ResponseEntity<List<UbicacionTB>>(ubicacionService.consultaPorTipo(tipoUbicacion), HttpStatus.OK);
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarPorTipo') or " + PERMISO_ADMINISTRADOR)
+	@GetMapping(value = "/consultarPorTipo/{tipo}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UbicacionTB>> consultarPorTipo(@PathVariable("tipo") Integer tipoUbicacion) {
+		return new ResponseEntity<List<UbicacionTB>>(ubicacionService.consultarPorTipo(tipoUbicacion), HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarPorFiltros') or " + PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/consultarPorFiltros")
 	public ResponseEntity<List<UbicacionTB>> consultarPorFiltros(@RequestBody UbicacionTB ubicacion) {
 		return new ResponseEntity<List<UbicacionTB>>(ubicacionService.consultarPorFiltros(ubicacion), HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/crearUbicacion') or " + PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/crearUbicacion")
 	public ResponseEntity<UbicacionTB> crear(@RequestBody UbicacionTB ubicacion) {
@@ -138,6 +146,7 @@ public class ControladorRestUbicacion {
 		return new ResponseEntity<UbicacionTB>(ubicacionNuevo, HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/modificarUbicacion') or " + PERMISO_ADMINISTRADOR)
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/modificarUbicacion")
 	public ResponseEntity<UbicacionTB> modificar(@RequestBody UbicacionTB ubicacion) {
@@ -219,6 +228,7 @@ public class ControladorRestUbicacion {
 		return new ResponseEntity<UbicacionTB>(ubicacionNuevo, HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/eliminarUbicacion') or " + PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/eliminarUbicacion")
 	public void eliminar(@RequestBody UbicacionTB ubicacion) {

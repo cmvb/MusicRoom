@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,15 +29,19 @@ import com.proyectos.util.Util;
 @RestController
 @RequestMapping("/music-room/tercero")
 public class ControladorRestTercero {
+	
+	private final String PERMISO_ADMINISTRADOR = "@restAuthService.hasAccess('/music-room', '/')";
 
 	@Autowired
 	ITerceroService terceroService;
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/consultarTodos') or " + PERMISO_ADMINISTRADOR)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TerceroTB>> consultarTodos() {
 		return new ResponseEntity<List<TerceroTB>>(terceroService.consultarTodos(), HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/consultarPorId') or " + PERMISO_ADMINISTRADOR)
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TerceroTB> consultarPorId(@PathVariable("id") Long idTercero) {
 		TerceroTB tercero = terceroService.consultarPorId(idTercero);
@@ -49,12 +54,14 @@ public class ControladorRestTercero {
 		return new ResponseEntity<TerceroTB>(tercero, HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/consultarPorFiltros') or " + PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/consultarPorFiltros")
 	public ResponseEntity<List<TerceroTB>> consultarPorFiltros(@RequestBody TerceroTB tercero) {
 		return new ResponseEntity<List<TerceroTB>>(terceroService.consultarPorFiltros(tercero), HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/crearTercero') or " + PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/crearTercero")
 	public ResponseEntity<TerceroTB> crear(@RequestBody TerceroTB tercero) {
@@ -106,6 +113,7 @@ public class ControladorRestTercero {
 		return new ResponseEntity<TerceroTB>(terceroNuevo, HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/modificarTercero') or " + PERMISO_ADMINISTRADOR)
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/modificarTercero")
 	public ResponseEntity<TerceroTB> modificar(@RequestBody TerceroTB tercero) {
@@ -158,6 +166,7 @@ public class ControladorRestTercero {
 		return new ResponseEntity<TerceroTB>(terceroNuevo, HttpStatus.OK);
 	}
 
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/eliminarTercero') or " + PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/eliminarTercero")
 	public void eliminar(@RequestBody TerceroTB tercero) {

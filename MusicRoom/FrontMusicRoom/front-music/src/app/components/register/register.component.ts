@@ -191,7 +191,15 @@ export class RegisterComponent implements OnInit {
       this.restService.getREST(url)
         .subscribe(resp => {
           this.messageService.add({ severity: this.const.severity[0], summary: "INFORMACIÓN: ", detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
-        });
+        },
+          error => {
+            this.ex = error.error;
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
+            console.log(error, "error");
+          });
 
     } catch (e) {
       console.log(e);
@@ -280,7 +288,7 @@ export class RegisterComponent implements OnInit {
     audio.src = "assets/audio/guitarIntro.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
   irLogin() {
@@ -288,7 +296,7 @@ export class RegisterComponent implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/home']);
+    this.router.navigate(['/home']);
   }
 
   guardaTeclaEnter(event) {
