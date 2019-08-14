@@ -15,6 +15,12 @@ public interface ISesionDao {
 	SesionTB login(String usuario, String password);
 
 	/*
+	 * Metodo para consultar una sesión por su token
+	 */
+	@Query
+	SesionTB consultarPorToken(String token);
+
+	/*
 	 * Metodo para crear sesiones
 	 */
 	SesionTB crear(SesionTB sesion);
@@ -23,6 +29,11 @@ public interface ISesionDao {
 	 * Metodo para modificar sesiones
 	 */
 	SesionTB modificar(SesionTB sesion);
+	
+	/*
+	 * Metodo para inactivar todas las sesiones
+	 */
+	void inactivarRegistrosToken();
 
 	/*
 	 * Metodo para eliminar una sesion por su ID

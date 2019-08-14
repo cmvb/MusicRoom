@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,11 +56,11 @@ public class ControladorRestUsuario {
 	@Value("${tiempo.expiracion.vcode.minutos}")
 	private int TIEMPO_EXPIRACION_VCODE_MINUTOS;
 
+	@Value("${template.mail.vCode}")
+	private String TEMPLATE_MAIL_V_CODE;
+
 	@Autowired
 	IUsuarioService usuarioService;
-
-//	@Autowired
-//	IRolService rolService;
 
 	@Autowired
 	IArchivosService archivoService;
@@ -90,12 +91,21 @@ public class ControladorRestUsuario {
 
 	@GetMapping(value = "/anular/{tokenId:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void revocarToken(@PathVariable("tokenId") String token) {
-		tokenServices.revokeToken(token);
+		try {
+			SesionTB sesionActual = usuarioService.consultarSesionPorToken(token);
+			sesionActual.setEstado((short) EEstado.INACTIVO.ordinal());
+			usuarioService.modificarSesion(sesionActual);
+			//tokenServices.revokeToken(token);
+		} catch (Exception e) {
+			String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.error.revocar.token");
+			throw new ModelNotFoundException(mensaje);
+		}
 	}
 
-	@GetMapping(value = "/enviarCodigoVerificacion/{vCode:.*}/{email:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/enviarCodigoVerificacion/{vCode:.*}/{email:.*}/{user:.*}/{nombreCompleto:.*}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void enviarCodigoVerificacion(@PathVariable("vCode") String codigoVerificacion,
-			@PathVariable("email") String email) {
+			@PathVariable("email") String email, @PathVariable("user") String user,
+			@PathVariable("nombreCompleto") String nombreCompleto) {
 		try {
 			if (Util.esCorreoValido(email)) {
 				UsuarioTB usuarioFiltro = new UsuarioTB();
@@ -115,12 +125,14 @@ public class ControladorRestUsuario {
 					mailDto.setSubject("ENVÍO CÓDIGO DE VERIFICACIÓN DE CUENTA - MUSIC ROOM");
 
 					Map<String, Object> model = new HashMap<>();
+					model.put("user", user);
+					model.put("nombreCompleto", nombreCompleto);
 					model.put("email", email);
 					model.put("token", vCodeTB.getToken());
 					model.put("resetUrl", URL_VERIFICAR_CUENTA_NUEVA + vCodeTB.getToken());
 					mailDto.setModel(model);
 
-					mailUtil.sendMail(mailDto);
+					mailUtil.sendMail(mailDto, TEMPLATE_MAIL_V_CODE);
 				} else {
 					String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.existeCorreoUsuario");
 					throw new ModelNotFoundException(mensaje);
@@ -200,7 +212,9 @@ public class ControladorRestUsuario {
 					&& StringUtils.isNotBlank(usuario.getCodigoVerificacion())
 					&& usuario.getCodigoVerificacion().equalsIgnoreCase(vCodeTB.getToken())) {
 				usuarioNuevo = new UsuarioTB();
-				usuario.setPassword(Util.encriptar(usuario.getPassword(), usuario.getUsuario()));
+
+				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 				ArchivoTB fotoTb = archivoService.consultarPorId(1l);
 				usuario.setFotoTb(fotoTb);
 
@@ -208,7 +222,8 @@ public class ControladorRestUsuario {
 				listaRoles = Util.cargarRolesUsuarioCliente();
 
 				List<RolTB> listaRolesTB = usuarioService.consultarRolesListaCodigosRol(listaRoles);
-				usuario.setListaRoles((listaRolesTB != null && !listaRolesTB.isEmpty()) ? null : listaRolesTB);
+				usuario.setListaRoles((listaRolesTB != null && !listaRolesTB.isEmpty()) ? listaRolesTB : null);
+				usuario.setEstado((short) EEstado.ACTIVO.ordinal());
 				usuarioNuevo = usuarioService.crear(usuario);
 			} else {
 				String mensaje = PropertiesUtil.getProperty("musicroom.msg.validate.errorVCodeRegistrar");
@@ -226,6 +241,14 @@ public class ControladorRestUsuario {
 		}
 
 		return new ResponseEntity<UsuarioTB>(usuarioNuevo, HttpStatus.OK);
+	}
+
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping("/consultarVCodePorCodigoVerificacion")
+	public ResponseEntity<CodigoVerificacionTB> consultarVCodePorCodigoVerificacion(
+			@RequestBody CodigoVerificacionTB vCode) {
+		return new ResponseEntity<CodigoVerificacionTB>(usuarioService.consultarVCodePorCodigoVerificacion(vCode),
+				HttpStatus.OK);
 	}
 
 	// Métodos que requieren autorización de roles

@@ -70,6 +70,10 @@ p {
 
 /* END iOS Safari specific workaround */
 
+#menu{
+  cursor: pointer;
+}
+
 .demo-drawer .mdl-menu .mdl-menu__item {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -407,6 +411,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .ui-messages ul>li {
   margin-right: 20px;
+  display: inherit;
 }
 
 .ui-messages .ui-messages-close {
@@ -627,6 +632,7 @@ _:-ms-input-placeholder, :root .demo-graph {
   margin: 5px;
   height: -webkit-fill-available;
   max-height: 500px;
+  cursor: pointer;
 }
 
 #menu ul li.primera {
@@ -1011,6 +1017,9 @@ table.falsa {
 @media only screen and (max-width: 640px) {
   .hidden-sm {
     display: none;
+  }
+  .ajustarBtnTable {
+    display: contents !important;
   }
 }
 

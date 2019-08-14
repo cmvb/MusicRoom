@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -113,7 +114,7 @@ public class RolDaoImpl extends AbstractDao<RolTB> implements IRolDao {
 	public String obtenerRolPorPathSubPath(String path, String subPath) {
 		String rol = null;
 
-		if (!StringUtils.isBlank(path) && !StringUtils.isBlank(path)) {
+		if (!StringUtils.isBlank(path) && !StringUtils.isBlank(subPath)) {
 			// PARAMETROS
 			Map<String, Object> pamameters = new HashMap<>();
 
@@ -134,8 +135,10 @@ public class RolDaoImpl extends AbstractDao<RolTB> implements IRolDao {
 			TypedQuery<RolTB> query = em.createQuery(JPQL.toString(), RolTB.class);
 			pamameters.forEach((k, v) -> query.setParameter(k, v));
 
-			RolTB rolTb = query.getSingleResult();
-			if (rolTb != null) {
+			Optional<RolTB> optionalRolTb = Optional.of(query.getSingleResult());
+
+			if (optionalRolTb.isPresent()) {
+				RolTB rolTb = optionalRolTb.get();
 				rol = rolTb.getCodigo();
 			}
 		}

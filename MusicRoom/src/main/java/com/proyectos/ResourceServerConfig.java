@@ -34,7 +34,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.antMatchers("/music-room/usuario/crearUsuario/**").authenticated()
 				.antMatchers("/music-room/usuario/modificarUsuario/**").authenticated()
 				.antMatchers("/music-room/usuario/eliminarUsuario/**").authenticated()
-				.antMatchers("/music-room/ubicacion/**").authenticated().antMatchers("/music-room/tercero/**")
-				.authenticated();
+				.antMatchers("/music-room/ubicacion/").authenticated()
+				.antMatchers("/music-room/ubicacion/consultarPorFiltros/**").authenticated()
+				.antMatchers("/music-room/ubicacion/consultarPorTipo/**").authenticated()
+				.antMatchers("/music-room/ubicacion/crearUbicacion/**").authenticated()
+				.antMatchers("/music-room/ubicacion/modificarUbicacion/**").authenticated()
+				.antMatchers("/music-room/ubicacion/eliminarUbicacion/**").authenticated()
+				.antMatchers("/music-room/tercero/").authenticated()
+				.antMatchers("/music-room/tercero/consultarPorFiltros/**").authenticated()
+				.antMatchers("/music-room/tercero/crearTercero/**").authenticated()
+				.antMatchers("/music-room/tercero/modificarTercero/**").authenticated()
+				.antMatchers("/music-room/tercero/eliminarTercero/**").authenticated();
 	}
 }

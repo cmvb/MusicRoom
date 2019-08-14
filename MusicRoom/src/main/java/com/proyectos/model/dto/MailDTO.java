@@ -3,11 +3,13 @@ package com.proyectos.model.dto;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "Información DTO del E-MAIL")
 public class MailDTO implements Serializable {
-	
+
 	private static final long serialVersionUID = -6776972366550263000L;
 
 	private String from;
@@ -48,6 +50,16 @@ public class MailDTO implements Serializable {
 
 	public void setModel(Map<String, Object> model) {
 		this.model = model;
+	}
+
+	public String getHtmlReemplazado(String html) {
+		if (StringUtils.isNotBlank(html) && this.model != null && !this.model.isEmpty()) {
+			for (String key : this.model.keySet()) {
+				html = html.replace("@" + key, this.model.get(key).toString());
+			}
+		}
+
+		return html;
 	}
 
 }

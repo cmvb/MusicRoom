@@ -49,6 +49,9 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
 		if (sesion != null && sesion.getUsuarioTb() != null) {
 			if (sesion.getUsuarioTb().getEstado() == EEstado.ACTIVO.ordinal()) {
+				// Se inactivan las sesiones anteriores
+				sesionDAO.inactivarRegistrosToken();
+
 				sesion.setTokenSesion(Util.generarToken(usuario.getUsuario()));
 				sesion.setIdSesion(sesionDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_SESION_TB));
 				sesion = sesionDAO.crear(sesion);
@@ -56,6 +59,18 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 		}
 
 		return sesion;
+	}
+
+	@Transactional
+	@Override
+	public SesionTB consultarSesionPorToken(String tokenSesion) {
+		return sesionDAO.consultarPorToken(tokenSesion);
+	}
+
+	@Transactional
+	@Override
+	public SesionTB modificarSesion(SesionTB sesion) {
+		return sesionDAO.modificar(sesion);
 	}
 
 	@Override
@@ -124,5 +139,10 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 	@Override
 	public List<RolTB> consultarRolesListaCodigosRol(List<String> listaRoles) {
 		return rolDAO.consultarRolesListaCodigosRol(listaRoles);
+	}
+
+	@Override
+	public CodigoVerificacionTB consultarVCodePorCodigoVerificacion(CodigoVerificacionTB vCode) {
+		return vCodeDAO.consultarVCodePorCodigoVerificacion(vCode);
 	}
 }

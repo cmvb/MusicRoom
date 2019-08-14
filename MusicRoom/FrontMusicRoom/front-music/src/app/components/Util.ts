@@ -33,6 +33,7 @@ export class Util {
   }
 
   limpiarExcepcion() {
+    console.clear;
     return this.ex;
   }
 
@@ -91,6 +92,7 @@ export class Util {
   limpiarSesion() {
     localStorage.clear();
     sessionStorage.clear();
+    console.clear();
     return true;
   }
 
@@ -396,7 +398,7 @@ export class Util {
     let enumerado = [];
     for (let i in lista) {
       let ubicacion = lista[i];
-      let nombreUbicacion = tipoUbicacion == 0 ? ubicacion.nombrePais : (tipoUbicacion == 1 ? ubicacion.nombreDepartamento : ubicacion.nombreCiudad);
+      let nombreUbicacion = tipoUbicacion == 0 ? ubicacion.nombrePais : (tipoUbicacion == 1 ? ubicacion.nombreDepartamento + ' - (' + ubicacion.nombrePais + ')' : ubicacion.nombreCiudad + ' - (' + ubicacion.nombreDepartamento + ')');
       let enumObj = { value: ubicacion, label: nombreUbicacion };
       enumerado.push(enumObj);
     }

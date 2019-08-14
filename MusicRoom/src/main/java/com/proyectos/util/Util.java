@@ -47,7 +47,7 @@ import com.proyectos.model.TerceroTB;
 import com.proyectos.model.UbicacionTB;
 import com.proyectos.model.UsuarioTB;
 
-public class Util {
+public abstract class Util {
 
 	private static final Logger LOG = Logger.getLogger(Util.class.getName());
 	public static final String NOMBRE_LLAVE_TOKEN = "app.bean.sesion";
@@ -977,14 +977,49 @@ public class Util {
 	public static List<String> cargarRolesUsuarioCliente() {
 		List<String> listaRoles = new ArrayList<>();
 
-		listaRoles.add("RMRMSE");
-		listaRoles.add("RMRMSA");
-		listaRoles.add("RMRMIN");
-		listaRoles.add("RMRMPR");
-		listaRoles.add("RMRMEN");
-		listaRoles.add("RMRUSG");
-		listaRoles.add("RMRUSI");
-		listaRoles.add("RMRUSF");
+		listaRoles.add(ConstantesRoles.ROL_MENU_SESION);
+		listaRoles.add(ConstantesRoles.ROL_MENU_SALAS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_INTEGRANTES);
+		listaRoles.add(ConstantesRoles.ROL_MENU_PRESTAMOS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_ENSAYOS);
+
+		return listaRoles;
+	}
+
+	public static List<String> cargarRolesUsuarioEstablecimiento() {
+		List<String> listaRoles = new ArrayList<>();
+
+		listaRoles.add(ConstantesRoles.ROL_MENU_SESION);
+		listaRoles.add(ConstantesRoles.ROL_MENU_SALAS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_INVENTARIO);
+		listaRoles.add(ConstantesRoles.ROL_MENU_FACTURACION);
+
+		return listaRoles;
+	}
+
+	public static List<String> cargarRolesUsuarioAdministrador() {
+		List<String> listaRoles = new ArrayList<>();
+
+		listaRoles.add(ConstantesRoles.ROL_ADMINISTRADOR);
+
+		listaRoles.add(ConstantesRoles.ROL_MENU_PARAMETRIZACION);
+		listaRoles.add(ConstantesRoles.ROL_MENU_SESION);
+		listaRoles.add(ConstantesRoles.ROL_MENU_USUARIOS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_UBICACIONES);
+		listaRoles.add(ConstantesRoles.ROL_MENU_TERCEROS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_SALAS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_INTEGRANTES);
+		listaRoles.add(ConstantesRoles.ROL_MENU_INVENTARIO);
+		listaRoles.add(ConstantesRoles.ROL_MENU_PRESTAMOS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_ENSAYOS);
+		listaRoles.add(ConstantesRoles.ROL_MENU_FACTURACION);
+
+		listaRoles.add(ConstantesRoles.ROL_CONSULTA_USUARIOS);
+		listaRoles.add(ConstantesRoles.ROL_CONSULTA_ID_USUARIOS);
+		listaRoles.add(ConstantesRoles.ROL_CONSULTA_FILTRO_USUARIOS);
+		listaRoles.add(ConstantesRoles.ROL_CREACION_USUARIOS);
+		listaRoles.add(ConstantesRoles.ROL_ACTUALIZA_USUARIOS);
+		listaRoles.add(ConstantesRoles.ROL_ELIMINACION_USUARIOS);
 
 		return listaRoles;
 

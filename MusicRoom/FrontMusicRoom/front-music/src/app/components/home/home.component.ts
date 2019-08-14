@@ -46,10 +46,12 @@ export class HomeComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
+    console.clear();
     this.util.limpiarSesion();
   }
 
   limpiarExcepcion() {
+    console.clear();
     this.ex = this.util.limpiarExcepcion;
     this.msgs = [];
   }
@@ -58,13 +60,20 @@ export class HomeComponent implements OnInit {
     try {
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'login';
+      let urlAuth = this.const.urlRestOauth;
       let obj = this.usuario;
       
-      this.restService.postOauthREST(url, this.usuario.usuario, this.usuario.password).subscribe(resp => {
+      this.restService.postOauthREST(urlAuth, this.usuario.usuario, this.usuario.password)
+      .subscribe(resp => {
         if (resp) {
           let token = JSON.stringify(resp);
           sessionStorage.setItem(this.const.tokenNameAUTH, token);
         }
+      }, 
+      error => {
+        this.ex = error.error;
+        this.msgs.push(this.util.mostrarNotificacion(this.ex));
+        console.log(error, "error");
       });
 
       this.restService.postREST(url, obj)
@@ -75,8 +84,9 @@ export class HomeComponent implements OnInit {
           // Procesamiento o Lógica Específica
           this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
           this.irDashboard();
-        },
+        }, 
           error => {
+            this.msgs = [];
             this.ex = error.error;
             this.msgs.push(this.util.mostrarNotificacion(this.ex));
             console.log(error, "error");
@@ -91,7 +101,7 @@ export class HomeComponent implements OnInit {
     audio.src = "assets/audio/guitarIntro.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
   irRegistrar() {
@@ -99,6 +109,6 @@ export class HomeComponent implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/register']);
+    this.router.navigate(['/register']);
   }
 }

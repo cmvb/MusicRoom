@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -149,6 +150,8 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 
 	@Override
 	public UsuarioTB consultarPorUsername(String usuario) {
+		UsuarioTB result = null;
+
 		// PARAMETROS
 		Map<String, Object> pamameters = new HashMap<>();
 
@@ -162,7 +165,14 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 		TypedQuery<UsuarioTB> query = em.createQuery(JPQL.toString(), UsuarioTB.class);
 		pamameters.forEach((k, v) -> query.setParameter(k, v));
 
-		return query.getSingleResult();
+		Optional<UsuarioTB> optionalUsuarioTb = Optional.of(query.getSingleResult());
+
+		if (optionalUsuarioTb.isPresent()) {
+			UsuarioTB usuarioTb = optionalUsuarioTb.get();
+			result = usuarioTb;
+		}
+
+		return result;
 	}
 
 }

@@ -19,10 +19,14 @@ import com.proyectos.util.PropertiesUtil;
 @RestController
 public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
+	private final String ERROR_NO_DATOS_BD = "No entity found for query";
+
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> manejarTodasExcepciones(Exception ex, WebRequest request) {
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-				request.getDescription(true));
+		String mensaje = ex.getMessage().toUpperCase().contains(ERROR_NO_DATOS_BD.toUpperCase())
+				? PropertiesUtil.getProperty("musicroom.msg.validate.noResultBD")
+				: ex.getMessage();
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), mensaje, request.getDescription(true));
 
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}

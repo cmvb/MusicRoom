@@ -149,12 +149,12 @@ export class RegisterComponent implements OnInit {
         }
       }
     ];
-  }
 
-  ngAfterViewInit() {
+    console.clear();
     this.messageService.clear();
     this.messageService.add({ severity: this.const.severity[0], summary: "Personal", detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
   }
+
 
   consultarTodosUsuarios() {
     try {
@@ -183,14 +183,23 @@ export class RegisterComponent implements OnInit {
   enviarCorreoCodVerificacionReg() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email;
+      let nombreCompleto = this.usuario.nombre + ' ' + this.usuario.apellido;
+      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email + '/' + this.usuario.usuario + '/' + nombreCompleto;
 
       this.util.agregarSesionXItem([{ item: 'usuarioRegister', valor: this.usuario }]);
 
       this.restService.getREST(url)
         .subscribe(resp => {
           this.messageService.add({ severity: this.const.severity[0], summary: "INFORMACIÓN: ", detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
-        });
+        },
+          error => {
+            this.ex = error.error;
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
+            console.log(error, "error");
+          });
 
     } catch (e) {
       console.log(e);
@@ -239,6 +248,7 @@ export class RegisterComponent implements OnInit {
   }
 
   limpiarExcepcion() {
+    console.clear();
     this.ex = this.util.limpiarExcepcion;
     this.msgs = [];
   }
@@ -261,7 +271,7 @@ export class RegisterComponent implements OnInit {
 
           // Procesamiento o Lógica Específica
           this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
-          this.irDashboard();
+          this.irLogin();
         },
           error => {
             this.ex = error.error;
@@ -278,7 +288,7 @@ export class RegisterComponent implements OnInit {
     audio.src = "assets/audio/guitarIntro.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
   irLogin() {
@@ -286,7 +296,7 @@ export class RegisterComponent implements OnInit {
     audio.src = "assets/audio/crash.mp3";
     audio.load();
     audio.play();
-    this.router.navigate(['/music-room/home']);
+    this.router.navigate(['/home']);
   }
 
   guardaTeclaEnter(event) {

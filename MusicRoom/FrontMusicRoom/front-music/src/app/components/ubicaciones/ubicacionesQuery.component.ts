@@ -18,6 +18,7 @@ declare var $: any;
 })
 export class UbicacionesQueryComponent implements OnInit {
   // Objetos de Sesion
+  ACCESS_TOKEN: any;
   usuarioSesion: any;
   sesion: any;
 
@@ -72,6 +73,7 @@ export class UbicacionesQueryComponent implements OnInit {
     this.paisSeleccionado = null;
     this.departamentoSeleccionado = null;
     this.ciudadSeleccionada = null;
+    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -110,7 +112,7 @@ export class UbicacionesQueryComponent implements OnInit {
       let obj = this.objetoFiltro;
       obj.estado = "1";
 
-      this.restService.postREST(url, obj)
+      this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
@@ -156,9 +158,9 @@ export class UbicacionesQueryComponent implements OnInit {
   consultarPaises() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultaPorTipo/0';
+      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultarPorTipo/0';
 
-      this.restService.getREST(url)
+      this.restService.getSecureREST(url, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.dataP = resp;
@@ -181,9 +183,9 @@ export class UbicacionesQueryComponent implements OnInit {
   consultarDepartamentos() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultaPorTipo/1';
+      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultarPorTipo/1';
 
-      this.restService.getREST(url)
+      this.restService.getSecureREST(url, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.dataD = resp;
@@ -206,9 +208,9 @@ export class UbicacionesQueryComponent implements OnInit {
   consultarCiudades() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultaPorTipo/2';
+      let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultarPorTipo/2';
 
-      this.restService.getREST(url)
+      this.restService.getSecureREST(url, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.dataC = resp;
@@ -237,13 +239,13 @@ export class UbicacionesQueryComponent implements OnInit {
 
   editar(objetoEdit) {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }, { item: 'listaCiudades', valor: this.listaCiudades }, { item: 'listaDepartamentos', valor: this.listaDepartamentos }, { item: 'listaPaises', valor: this.listaPaises }]);
-    this.router.navigate(['/music-room/ubicacionEdit']);
+    this.router.navigate(['/ubicacionEdit']);
     return true;
   }
 
   irCrear() {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }, { item: 'listaCiudades', valor: this.listaCiudades }, { item: 'listaDepartamentos', valor: this.listaDepartamentos }, { item: 'listaPaises', valor: this.listaPaises }]);
-    this.router.navigate(['/music-room/ubicacionEdit']);
+    this.router.navigate(['/ubicacionEdit']);
     return true;
   }
 
@@ -252,7 +254,7 @@ export class UbicacionesQueryComponent implements OnInit {
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'eliminarUbicacion';
 
-      this.restService.postREST(url, objetoEdit)
+      this.restService.postSecureREST(url, objetoEdit, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
@@ -275,7 +277,7 @@ export class UbicacionesQueryComponent implements OnInit {
     }
   }
 
-  cargarDepartamentosPorPais() {
+  cargarDepartamentosPorPais(event) {
     if (this.paisSeleccionado != null) {
       let nuevaListaDepartamentos = [];
       let paisUbicacion = this.util.obtenerUbicacionDeEnum(this.paisSeleccionado.value.idUbicacion, this.listaPaises);
@@ -295,7 +297,7 @@ export class UbicacionesQueryComponent implements OnInit {
     }
   }
 
-  cargarCiudadesPorDepartamento() {
+  cargarCiudadesPorDepartamento(event) {
     if (this.departamentoSeleccionado != null) {
       let nuevaListaCiudades = [];
       let departamentoUbicacion = this.util.obtenerUbicacionDeEnum(this.departamentoSeleccionado.value.idUbicacion, this.listaDepartamentos);

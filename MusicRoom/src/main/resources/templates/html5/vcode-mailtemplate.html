@@ -4,7 +4,7 @@
 <head>
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Simple Transactional Email</title>
+<title>Email Activar Nuevo Usuario Music Room</title>
 
 <style type="text/css">
 body {
@@ -401,7 +401,11 @@ a[x-apple-data-detectors=true] {
 													style="font-size: 12px; line-height: 14px; font-family: 'Varela Round', 'Trebuchet MS', Helvetica, sans-serif; color: #555555;">
 													<p
 														style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;">
-														<span style="font-size: 24px;"><strong style="cursor: pointer;" th:text="${email}"></strong></span>
+														<span style="font-size: 24px;"><strong style="cursor: pointer;" th:text="${nombreCompleto}">@nombreCompleto</strong></span>
+													</p>
+													<p
+														style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;">
+														<span style="font-size: 24px;"><strong style="cursor: pointer;" th:text="${user}">@user</strong></span>
 													</p>
 												</div>
 											</div>
@@ -413,8 +417,7 @@ a[x-apple-data-detectors=true] {
 													<p
 														style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;">
 														<span style="font-size: 16px;">Digite el token que
-															se visualiza para realizar la Activación de su Cuenta o
-															siga el enlace.</span>
+															se visualiza para realizar la Activación de su Cuenta.</span>
 													</p>
 												</div>
 											</div>
@@ -426,13 +429,6 @@ a[x-apple-data-detectors=true] {
 													style="font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
 													<p
 														style="font-size: 14px; line-height: 19px; text-align: center; margin: 0;">
-														<span style="font-size: 16px;"> <a style=""
-															th:href="${resetUrl}"> <span
-																style="color: #214576; line-height: 19px; font-size: 16px;">
-																	<strong>Ir a </strong>
-															</span> <em style="font-style: unset">Music Room</em>
-														</a>
-														</span>
 													</p>
 												</div>
 											</div>
@@ -521,7 +517,7 @@ a[x-apple-data-detectors=true] {
 													<span
 														style="padding-left: 40px; padding-right: 40px; font-size: 20px; display: inline-block;">
 														<span style="font-size: 16px; line-height: 32px;"><span
-															style="font-size: 20px; line-height: 40px;"><strong th:text="${token}"></strong></span></span>
+															style="font-size: 20px; line-height: 40px;"><strong th:text="${token}">@token</strong></span></span>
 													</span>
 												</div>
 												<!--[if mso]></center></v:textbox></v:roundrect></td></tr></table><![endif]-->

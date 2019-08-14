@@ -132,7 +132,7 @@ export class UsuarioEditComponent implements OnInit {
 
   irAtras() {
     this.util.limpiarSesionXItem(['listaConsulta']);
-    this.router.navigate(['/music-room/usuarioQuery']);
+    this.router.navigate(['/usuarioQuery']);
   }
 
   guardaTeclaEnter(event) {

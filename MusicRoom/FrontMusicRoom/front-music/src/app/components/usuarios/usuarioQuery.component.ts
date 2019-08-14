@@ -115,13 +115,13 @@ export class UsuarioQueryComponent implements OnInit {
 
   editar(objetoEdit) {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }]);
-    this.router.navigate(['/music-room/usuarioEdit']);
+    this.router.navigate(['/usuarioEdit']);
     return true;
   }
 
   irCrear() {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }]);
-    this.router.navigate(['/music-room/usuarioEdit']);
+    this.router.navigate(['/usuarioEdit']);
     return true;
   }
 
