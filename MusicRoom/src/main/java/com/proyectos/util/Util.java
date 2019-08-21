@@ -43,6 +43,7 @@ import com.proyectos.enums.ESeveridadMensaje;
 import com.proyectos.enums.ETipoDocumento;
 import com.proyectos.enums.ETipoUbicacion;
 import com.proyectos.enums.ETipoUsuario;
+import com.proyectos.model.SalaTB;
 import com.proyectos.model.TerceroTB;
 import com.proyectos.model.UbicacionTB;
 import com.proyectos.model.UsuarioTB;
@@ -841,6 +842,10 @@ public abstract class Util {
 			errores = validarTercero((TerceroTB) objeto);
 
 			break;
+		case ConstantesTablasNombre.MRA_SALA_TB:
+			errores = validarSala((SalaTB) objeto);
+
+			break;
 		}
 
 		return errores;
@@ -969,6 +974,38 @@ public abstract class Util {
 		}
 		if (tercero.getUbicacionTb() == null) {
 			errores.add(PropertiesUtil.getProperty("lbl_mtto_tercero_ubicacion") + VALOR_INCORRECTO);
+		}
+
+		return errores;
+	}
+
+	private static List<String> validarSala(SalaTB sala) {
+		List<String> errores = new ArrayList<>();
+		final String VALOR_INCORRECTO = PropertiesUtil.getProperty("musicroom.msg.validate.valor.incorrecto");
+
+		if (StringUtils.isBlank(sala.getNombreSala())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_sala_nombre_sala") + VALOR_INCORRECTO);
+		}
+		if (sala.getTerceroTb() == null) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_sala_tercero") + VALOR_INCORRECTO);
+		}
+		if (sala.getFotoPrincipalTb() == null) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_sala_foto_principal") + VALOR_INCORRECTO);
+		}
+		else {
+			//Validar archivo foto principal
+		}
+		if (sala.getFoto1Tb() != null) {
+			// Validar archivo foto 1
+		}
+		if (sala.getFoto2Tb() != null) {
+			//Validar archivo foto 2
+		}
+		if (sala.getFoto3Tb() != null) {
+			//Validar archivo foto 3
+		}
+		if (sala.getFoto4Tb() != null) {
+			//Validar archivo foto 4
 		}
 
 		return errores;

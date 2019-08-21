@@ -115,7 +115,8 @@ export class TercerosEditComponent implements OnInit {
   }
 
   ajustarCombos() {
-    this.objeto.estado = this.objeto.estado.value;
+    this.objeto.estado = this.objeto.estado === undefined ? null : this.objeto.estado.value;
+    
     if (this.ciudadSeleccionada != null) {
       let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
       Object.assign(this.objeto.ubicacionTb, ciudad);
