@@ -22,6 +22,7 @@
 
                 <div class="ui-g center">
                   <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                    <!-- PHASE ADD -->
                     <div *ngIf="phase === const.phaseAdd" class="mdl-card__supporting-text">
                       <div class="ui-g center">
                         <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad">
@@ -135,34 +136,95 @@
                         <!-- ESTADO -->
                       </div>
                     </div>
+                    <!-- PHASE ADD -->
 
+                    <!-- PHASE EDIT -->
                     <div *ngIf="phase !== const.phaseAdd" class="mdl-card__supporting-text">
                       <div class="ui-g center">
-                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <!-- TAB PAIS -->
+                        <div *ngIf="objeto.tipoUbicacion !== 0" class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_pais}}</label>
                           <span class="ui-float-label">
                             <ng-select id="txtPaisEd" (change)="cargarDepartamentosPorPais($event)"
+                              [disabled]="objeto.tipoUbicacion !== 0"
                               [(ngModel)]="paisSeleccionado" [items]="enumFiltroPaises">
                             </ng-select>
                           </span>
                         </div>
-                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                          <label for="float-input">{{msg.lbl_mtto_ubicacion_departamento}}</label>
+                        <div *ngIf="objeto.tipoUbicacion === 0" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
+                            {{msg.lbl_mtto_ubicacion_pais}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtCodigoPaisPEd" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="codigoPaisP" type="text" size="20">
+                          </span>
+                        </div>
+                        <div *ngIf="objeto.tipoUbicacion === 0" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
+                            {{msg.lbl_mtto_ubicacion_pais}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtNombrePaisPEd" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="nombrePaisP" type="text" size="50">
+                          </span>
+                        </div>
+                        <!-- TAB PAIS -->
+
+                        <!-- TAB DEPARTAMENTO -->
+                        <div *ngIf="objeto.tipoUbicacion !== 1" class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_departamento}}</label>
                           <span class="ui-float-label">
                             <ng-select id="txtDepartamentoEd" (change)="cargarCiudadesPorDepartamento($event)"
-                              [disabled]="paisSeleccionado == null" [(ngModel)]="departamentoSeleccionado"
+                              [disabled]="objeto.tipoUbicacion !== 1" [(ngModel)]="departamentoSeleccionado"
                               [items]="enumFiltroDepartamentos">
                             </ng-select>
                           </span>
                         </div>
-                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                          <label for="float-input">{{msg.lbl_mtto_ubicacion_ciudad}}</label>
+                        <div *ngIf="objeto.tipoUbicacion === 1" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
+                            {{msg.lbl_mtto_ubicacion_departamento}}</label>
                           <span class="ui-float-label">
-                            <ng-select [disabled]="departamentoSeleccionado == null || paisSeleccionado == null"
+                            <input pInputText id="txtCodigoDepartamentoDEd" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="codigoDepartamentoD" type="text" size="20">
+                          </span>
+                        </div>
+                        <div *ngIf="objeto.tipoUbicacion === 1" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
+                            {{msg.lbl_mtto_ubicacion_departamento}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtNombreDepartamentoDEd" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="nombreDepartamentoD" type="text" size="50">
+                          </span>
+                        </div>
+                        <!-- TAB DEPARTAMENTO -->
+
+                        <!-- TAB CIUDAD -->
+                        <div *ngIf="objeto.tipoUbicacion !== 2" class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_ciudad}}</label>
+                          <span class="ui-float-label">
+                            <ng-select [disabled]="objeto.tipoUbicacion !== 2"
                               id="txtCiudadEd" [(ngModel)]="ciudadSeleccionada" [items]="enumFiltroCiudades">
                             </ng-select>
                           </span>
                         </div>
+                        <div *ngIf="objeto.tipoUbicacion === 2" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
+                            {{msg.lbl_mtto_ubicacion_ciudad}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtCodigoCiudadCEd" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="codigoCiudadC" type="text" size="20">
+                          </span>
+                        </div>
+                        <div *ngIf="objeto.tipoUbicacion === 2" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
+                            {{msg.lbl_mtto_ubicacion_ciudad}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtNombreCiudadCEd" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="nombreCiudadC" type="text" size="50">
+                          </span>
+                        </div>
+                        <!-- TAB CIUDAD -->
+
+                        <!-- ESTADO -->
                         <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
                           <span class="ui-float-label">
@@ -170,9 +232,12 @@
                             </ng-select>
                           </span>
                         </div>
+                        <!-- ESTADO -->
                       </div>
                     </div>
+                    <!-- PHASE EDIT -->
 
+                    <!-- ACCIONES -->
                     <div class="mdl-card__actions mdl-card--border">
                       <div class="ui-g center">
                         <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
@@ -195,6 +260,7 @@
                         <p-messages class="w100"></p-messages>
                       </div>
                     </div>
+                    <!-- ACCIONES -->
                   </div>
                 </div>
               </div>

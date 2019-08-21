@@ -24,6 +24,11 @@ public class SalaTB extends BaseEntidadTB implements Serializable {
 	@Id
 	@Column(name = "sal_id_sala", nullable = false, length = 10)
 	private long idSala;
+	
+	@NotNull
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "sal_tercero")
+	private TerceroTB terceroTb;
 
 	@NotNull
 	@Column(name = "sal_nombre_sala", nullable = false, length = 50)
@@ -59,6 +64,14 @@ public class SalaTB extends BaseEntidadTB implements Serializable {
 
 	public void setIdSala(long idSala) {
 		this.idSala = idSala;
+	}
+
+	public TerceroTB getTerceroTb() {
+		return terceroTb;
+	}
+
+	public void setTerceroTb(TerceroTB terceroTb) {
+		this.terceroTb = terceroTb;
 	}
 
 	public String getNombreSala() {

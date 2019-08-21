@@ -100,6 +100,7 @@ export class UbicacionesEditComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
+    this.inicializarCombos();
     this.util.limpiarSesionXItem(['mensajeConfirmacion']);
     this.phase = this.util.getSesionXItem('phase');
     this.isDisabled = this.phase !== this.const.phaseAdd;
@@ -117,8 +118,21 @@ export class UbicacionesEditComponent implements OnInit {
 
     if (this.util.getSesionXItem('editParam') != null) {
       this.objeto = JSON.parse(localStorage.getItem('editParam'));
-      this.inicializarCombos();
       this.colocarValoresObjetoEdit();
+      if (this.phase !== this.const.phaseAdd) {
+        if (this.objeto.tipoUbicacion === 0) {
+          this.codigoPaisP = this.paisSeleccionado.value.codigoPais;
+          this.nombrePaisP = this.paisSeleccionado.value.nombrePais;
+        }
+        if (this.objeto.tipoUbicacion === 1) {
+          this.codigoDepartamentoD = this.departamentoSeleccionado.value.codigoDepartamento;
+          this.nombreDepartamentoD = this.departamentoSeleccionado.value.nombreDepartamento;
+        }
+        if (this.objeto.tipoUbicacion === 2) {
+          this.codigoCiudadC = this.ciudadSeleccionada.value.codigoCiudad;
+          this.nombreCiudadC = this.ciudadSeleccionada.value.nombreCiudad;
+        }
+      }
     }
 
     this.tabsMenu = [
@@ -172,7 +186,7 @@ export class UbicacionesEditComponent implements OnInit {
   }
 
   ajustarCombos() {
-    this.objeto.estado = this.objeto.estado.value;
+    this.objeto.estado = this.objeto.estado === undefined ? null : this.objeto.estado.value;
 
     if (this.phase === this.const.phaseAdd) {
       if (this.mostrarP) {
@@ -196,8 +210,8 @@ export class UbicacionesEditComponent implements OnInit {
       else if (this.mostrarC) {
         this.objeto.codigoPais = this.paisSeleccionadoC.value.codigoPais;
         this.objeto.nombrePais = this.paisSeleccionadoC.value.nombrePais;
-        this.objeto.codigoDepartamento = this.departamentoSeleccionadoC.value.codigoPais;
-        this.objeto.nombreDepartamento = this.departamentoSeleccionadoC.value.nombrePais;
+        this.objeto.codigoDepartamento = this.departamentoSeleccionadoC.value.codigoDepartamento;
+        this.objeto.nombreDepartamento = this.departamentoSeleccionadoC.value.nombreDepartamento;
         this.objeto.codigoCiudad = this.codigoCiudadC;
         this.objeto.nombreCiudad = this.nombreCiudadC;
         this.objeto.tipoUbicacion = 2;

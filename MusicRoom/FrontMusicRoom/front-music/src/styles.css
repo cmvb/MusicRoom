@@ -25,15 +25,21 @@ h5 {
 
 input {
   width: 100%;
+  text-transform: uppercase;
 }
 
 button {
   min-width: 130px !important;
+  cursor: pointer;
 }
 
 .mdl-textfield {
   width: 100%;
   padding: 5px 0;
+}
+
+a{
+  cursor: pointer;
 }
 
 p {

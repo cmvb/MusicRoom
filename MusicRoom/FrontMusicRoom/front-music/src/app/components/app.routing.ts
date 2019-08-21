@@ -15,6 +15,8 @@ import { UbicacionesEditComponent } from './ubicaciones/ubicacionesEdit.componen
 import { UbicacionesQueryComponent } from './ubicaciones/ubicacionesQuery.component';
 import { TercerosEditComponent } from './terceros/tercerosEdit.component';
 import { TercerosQueryComponent } from './terceros/tercerosQuery.component';
+import { SalasEditComponent } from './salas/salasEdit.component';
+import { SalasQueryComponent } from './salas/salasQuery.component';
 import { MultiUploadComponent } from './multi-upload/multi-upload.component';
 import { DualListBoxComponent } from './dual-list-box/dual-list-box.component';
 import { ModalsComponent } from './modals/modals.component';
@@ -41,6 +43,8 @@ const routes: Routes = [
   { path: 'ubicacionEdit', component: UbicacionesEditComponent, canActivate: [LoginGuard] },
   { path: 'terceroQuery', component: TercerosQueryComponent, canActivate: [LoginGuard] },
   { path: 'terceroEdit', component: TercerosEditComponent, canActivate: [LoginGuard] },
+  { path: 'salaQuery', component: SalasQueryComponent, canActivate: [LoginGuard] },
+  { path: 'salaEdit', component: SalasEditComponent, canActivate: [LoginGuard] },
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/error404' },

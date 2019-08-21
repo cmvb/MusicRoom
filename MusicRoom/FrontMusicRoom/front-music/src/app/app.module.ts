@@ -49,6 +49,7 @@ import { Util } from './components/Util';
 // Imports Componentes
 import { AppComponent } from './app.component';
 import { LoginGuard } from './components/login.guard';
+import { TokenComponent } from './components/v-code/token/token.component';
 import { VCodeComponent } from './components/v-code/v-code.component';
 import { Error403Component } from './components/error/error403.component';
 import { Error404Component } from './components/error/error404.component';
@@ -62,8 +63,8 @@ import { UbicacionesEditComponent } from './components/ubicaciones/ubicacionesEd
 import { UbicacionesQueryComponent } from './components/ubicaciones/ubicacionesQuery.component';
 import { TercerosEditComponent } from './components/terceros/tercerosEdit.component';
 import { TercerosQueryComponent } from './components/terceros/tercerosQuery.component';
-import { TokenComponent } from './components/v-code/token/token.component';
-
+import { SalasEditComponent } from './components/salas/salasEdit.component';
+import { SalasQueryComponent } from './components/salas/salasQuery.component';
 
 // Constantes
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -117,7 +118,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     UbicacionesQueryComponent,
     UbicacionesEditComponent,
     TercerosQueryComponent,
-    TercerosEditComponent,
+    TercerosEditComponent,    
+    SalasQueryComponent,
+    SalasEditComponent,
     PdfViewerthis,
     Error403Component,
     Error404Component,

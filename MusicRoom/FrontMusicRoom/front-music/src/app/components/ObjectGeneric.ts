@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-//export var HOST = 'http://localhost:9002';
+export var HOST = 'http://localhost:9002';
 //export var HOST = 'http://10.176.147.19:9002';
-export var HOST = 'http://192.168.1.54:9002';
+//export var HOST = 'http://192.168.1.54:9002';
 
-//export var SYSTEM = 'http://localhost:4200';
+export var SYSTEM = 'http://localhost:4200';
 //export var SYSTEM = 'http://10.176.147.19:4200';
-export var SYSTEM = 'http://192.168.1.54:4200';
+//export var SYSTEM = 'http://192.168.1.54:4200';
 
 @Injectable()
 export class DataObjects {
@@ -34,6 +34,7 @@ export class DataObjects {
       urlControllerUbicacion: 'music-room/ubicacion/',
       urlControllerTercero: 'music-room/tercero/',
       urlControllerReporte: 'music-room/reporte-archivo/',
+      urlControllerSala: 'music-room/sala/',
       tokenUsernameAUTH: 'MusicRoomApp',
       tokenPasswordAUTH: 'musicroom2019codex',
       tokenNameAUTH: 'access_token',
@@ -237,6 +238,27 @@ export class DataObjects {
     }
   };
 
+  getDataSala() {
+    return {
+      idSala: '',
+      terceroTb: this.getDataTercero(),
+      nombreSala: '',
+      infoAdicional: '',
+      fotoPrincipalTb: this.getDataArchivo(),
+      foto1Tb: this.getDataArchivo(),
+      foto2Tb: this.getDataArchivo(),
+      foto3Tb: this.getDataArchivo(),
+      foto4Tb: this.getDataArchivo(),
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
+    }
+  };
+
   getEnumerados() {
     let properties = this.getProperties(this.getConst().idiomaEs);
 
@@ -419,6 +441,18 @@ export class DataObjects {
       lbl_mtto_tercero_telefono2: idioma == constant.idiomaEs ? 'Teléfono 2' : 'Telephone 2',
       lbl_mtto_tercero_direccion: idioma == constant.idiomaEs ? 'Dirección' : 'Address',
       lbl_mtto_tercero_info_adicional: idioma == constant.idiomaEs ? 'Información Adicional' : 'Other Info',
+
+      lbl_mtto_sala_title: idioma == constant.idiomaEs ? 'Configuración de Salas de Ensayo' : 'Rehearsal Rooms Settings',
+      lbl_mtto_sala_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
+      lbl_mtto_sala_tercero: idioma == constant.idiomaEs ? 'Tercero' : 'Company',
+      lbl_mtto_sala_info_adicional: idioma == constant.idiomaEs ? 'Info. Adicional' : 'Additional Info.',
+      lbl_mtto_sala_foto_principal: idioma == constant.idiomaEs ? 'Foto Principal' : 'Main Photo',
+      lbl_mtto_sala_foto: idioma == constant.idiomaEs ? 'Foto' : 'Photo',
+      lbl_mtto_sala_1: idioma == constant.idiomaEs ? '1' : '1',
+      lbl_mtto_sala_2: idioma == constant.idiomaEs ? '2' : '2',
+      lbl_mtto_sala_3: idioma == constant.idiomaEs ? '3' : '3',
+      lbl_mtto_sala_4: idioma == constant.idiomaEs ? '4' : '4',
+
 
     }
   };
