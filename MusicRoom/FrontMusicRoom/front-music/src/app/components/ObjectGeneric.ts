@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 export var HOST = 'http://localhost:9002';
 //export var HOST = 'http://10.176.147.19:9002';
-//export var HOST = 'http://192.168.1.54:9002';
+//export var HOST = 'http://192.168.1.52:9002';
+//export var HOST = 'http://185.224.139.43:9002/music-room';
 
 export var SYSTEM = 'http://localhost:4200';
 //export var SYSTEM = 'http://10.176.147.19:4200';
-//export var SYSTEM = 'http://192.168.1.54:4200';
+//export var SYSTEM = 'http://192.168.1.52:4200';
+//export var SYSTEM = 'http://185.224.139.43:8080/music-room';
+
 
 @Injectable()
 export class DataObjects {

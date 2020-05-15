@@ -4,17 +4,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.IUsuarioDao;
+import com.proyectos.dao.jpa.IUsuarioJPARepoDao;
 import com.proyectos.model.UsuarioTB;
 import com.proyectos.util.Util;
 
@@ -23,6 +24,9 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;
+
+	@Autowired
+	private IUsuarioJPARepoDao usuarioJPADAO;
 
 	@Override
 	public List<UsuarioTB> consultarTodos() {
@@ -152,6 +156,8 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 	public UsuarioTB consultarPorUsername(String usuario) {
 		UsuarioTB result = null;
 
+		List<UsuarioTB> x = usuarioJPADAO.findAll();
+
 		// PARAMETROS
 		Map<String, Object> pamameters = new HashMap<>();
 
@@ -165,10 +171,9 @@ public class UsuarioDaoImpl extends AbstractDao<UsuarioTB> implements IUsuarioDa
 		TypedQuery<UsuarioTB> query = em.createQuery(JPQL.toString(), UsuarioTB.class);
 		pamameters.forEach((k, v) -> query.setParameter(k, v));
 
-		Optional<UsuarioTB> optionalUsuarioTb = Optional.of(query.getSingleResult());
-
-		if (optionalUsuarioTb.isPresent()) {
-			UsuarioTB usuarioTb = optionalUsuarioTb.get();
+		List<UsuarioTB> optionalUsuarioTb = query.getResultList();
+		if (optionalUsuarioTb != null && !optionalUsuarioTb.isEmpty()) {
+			UsuarioTB usuarioTb = optionalUsuarioTb.get(0);
 			result = usuarioTb;
 		}
 

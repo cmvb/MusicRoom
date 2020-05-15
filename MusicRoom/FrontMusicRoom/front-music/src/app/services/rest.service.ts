@@ -57,6 +57,7 @@ export class RestService {
 
   // SERVICES WITH SECURITY
   postOauthREST(url, usuario: string, clave: string) {
+    debugger;
     const body = `grant_type=password&username=${encodeURIComponent(usuario)}&password=${encodeURIComponent(clave)}`;
 
     return this.http.post(url, body, {

@@ -188,6 +188,7 @@ export class RegisterComponent implements OnInit {
 
       this.util.agregarSesionXItem([{ item: 'usuarioRegister', valor: this.usuario }]);
 
+      debugger;
       this.restService.getREST(url)
         .subscribe(resp => {
           this.messageService.add({ severity: this.const.severity[0], summary: "INFORMACIÓN: ", detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });

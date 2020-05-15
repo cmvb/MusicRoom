@@ -39,7 +39,9 @@ export class SalasEditComponent implements OnInit {
   enums: any;
   enumSiNo = [];
   listaTerceros = [];
-  //enumFiltroCiudades = [];
+  enumFiltroCiudades = [];
+  ciudadSeleccionada: any;
+  listaCiudades: any;
   terceroSeleccionado: any;
 
   // Propiedades de las peticiones REST
@@ -69,7 +71,7 @@ export class SalasEditComponent implements OnInit {
     this.util.limpiarSesionXItem(['mensajeConfirmacion']);
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
     this.listaTerceros = JSON.parse(localStorage.getItem('listaTerceros'));
-    //this.enumFiltroCiudades = this.util.obtenerEnumeradoDeListaUbicacion(this.listaTerceros, 2);
+    this.enumFiltroCiudades = this.util.obtenerEnumeradoDeListaUbicacion(this.listaTerceros, 2);
 
     this.phase = this.util.getSesionXItem('phase');
     this.isDisabled = this.phase !== this.const.phaseAdd;
@@ -118,7 +120,7 @@ export class SalasEditComponent implements OnInit {
     this.objeto.estado = this.objeto.estado === undefined ? null : this.objeto.estado.value;
 
     if (this.terceroSeleccionado != null) {
-      //let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
+      let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
       Object.assign(this.objeto.terceroTb, this.terceroSeleccionado);
     }
     else {

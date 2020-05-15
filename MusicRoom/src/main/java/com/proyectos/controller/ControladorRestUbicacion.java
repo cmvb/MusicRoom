@@ -28,7 +28,7 @@ import com.proyectos.util.Util;
 @RestController
 @RequestMapping("/music-room/ubicacion")
 public class ControladorRestUbicacion {
-	
+
 	private final String PERMISO_ADMINISTRADOR = "@restAuthService.hasAccess('/music-room', '/')";
 
 	@Autowired
@@ -53,13 +53,15 @@ public class ControladorRestUbicacion {
 		return new ResponseEntity<UbicacionTB>(ubicacion, HttpStatus.OK);
 	}
 
-	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarPorTipo') or " + PERMISO_ADMINISTRADOR)
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarPorTipo') or "
+			+ PERMISO_ADMINISTRADOR)
 	@GetMapping(value = "/consultarPorTipo/{tipo}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UbicacionTB>> consultarPorTipo(@PathVariable("tipo") Integer tipoUbicacion) {
 		return new ResponseEntity<List<UbicacionTB>>(ubicacionService.consultarPorTipo(tipoUbicacion), HttpStatus.OK);
 	}
 
-	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarPorFiltros') or " + PERMISO_ADMINISTRADOR)
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/consultarPorFiltros') or "
+			+ PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/consultarPorFiltros")
 	public ResponseEntity<List<UbicacionTB>> consultarPorFiltros(@RequestBody UbicacionTB ubicacion) {
@@ -71,7 +73,7 @@ public class ControladorRestUbicacion {
 	@RequestMapping("/crearUbicacion")
 	public ResponseEntity<UbicacionTB> crear(@RequestBody UbicacionTB ubicacion) {
 		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_UBICACION_TB, ubicacion);
-		
+
 		UbicacionTB ubicacionNuevo = new UbicacionTB();
 		if (errores.isEmpty()) {
 			List<UbicacionTB> listaUbicaciones = ubicacionService.consultarTodos();
@@ -146,7 +148,8 @@ public class ControladorRestUbicacion {
 		return new ResponseEntity<UbicacionTB>(ubicacionNuevo, HttpStatus.OK);
 	}
 
-	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/modificarUbicacion') or " + PERMISO_ADMINISTRADOR)
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/modificarUbicacion') or "
+			+ PERMISO_ADMINISTRADOR)
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/modificarUbicacion")
 	public ResponseEntity<UbicacionTB> modificar(@RequestBody UbicacionTB ubicacion) {
@@ -228,7 +231,8 @@ public class ControladorRestUbicacion {
 		return new ResponseEntity<UbicacionTB>(ubicacionNuevo, HttpStatus.OK);
 	}
 
-	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/eliminarUbicacion') or " + PERMISO_ADMINISTRADOR)
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/ubicacion', '/eliminarUbicacion') or "
+			+ PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/eliminarUbicacion")
 	public void eliminar(@RequestBody UbicacionTB ubicacion) {

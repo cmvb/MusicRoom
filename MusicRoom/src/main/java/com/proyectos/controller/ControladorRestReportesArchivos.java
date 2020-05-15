@@ -48,7 +48,7 @@ public class ControladorRestReportesArchivos {
 	@GetMapping(value = "/leerArchivo/{idArchivo}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> leerArchivo(@PathVariable("idArchivo") Long idArchivo) throws IOException {
 		byte[] resultado = archivoService.leerArchivo(idArchivo);
-		
+
 		return new ResponseEntity<byte[]>(resultado, HttpStatus.OK);
 	}
 }

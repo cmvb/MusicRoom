@@ -15,6 +15,8 @@
 	<version>0.0.1</version>
 	<name>MusicRoom</name>
 	<description>Proyecto para Salas de Ensayo Musicales</description>
+	<!-- Despliegue -->
+	<packaging>war</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -126,7 +128,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.7</version>
+			<version>3.0</version>
 		</dependency>
 
 		<dependency>
@@ -179,12 +181,12 @@
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>

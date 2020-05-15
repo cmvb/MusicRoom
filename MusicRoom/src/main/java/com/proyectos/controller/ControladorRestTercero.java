@@ -29,7 +29,7 @@ import com.proyectos.util.Util;
 @RestController
 @RequestMapping("/music-room/tercero")
 public class ControladorRestTercero {
-	
+
 	private final String PERMISO_ADMINISTRADOR = "@restAuthService.hasAccess('/music-room', '/')";
 
 	@Autowired
@@ -54,7 +54,8 @@ public class ControladorRestTercero {
 		return new ResponseEntity<TerceroTB>(tercero, HttpStatus.OK);
 	}
 
-	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/consultarPorFiltros') or " + PERMISO_ADMINISTRADOR)
+	@PreAuthorize("@restAuthService.hasAccess('/music-room/tercero', '/consultarPorFiltros') or "
+			+ PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping("/consultarPorFiltros")
 	public ResponseEntity<List<TerceroTB>> consultarPorFiltros(@RequestBody TerceroTB tercero) {

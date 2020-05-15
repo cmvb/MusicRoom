@@ -10,13 +10,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.IUbicacionDao;
 import com.proyectos.enums.ETipoUbicacion;
 import com.proyectos.model.UbicacionTB;
+import org.apache.commons.lang3.StringUtils;
 
 @Repository
 public class UbicacionDaoImpl extends AbstractDao<UbicacionTB> implements IUbicacionDao {

@@ -28,7 +28,8 @@ public class RestAuthService {
 
 				for (GrantedAuthority auth : authentication.getAuthorities()) {
 					String rolUser = auth.getAuthority();
-					if (ConstantesRoles.ROL_ADMINISTRADOR.equalsIgnoreCase(rolUser) || rolValido.equalsIgnoreCase(rolUser)) {
+					if (ConstantesRoles.ROL_ADMINISTRADOR.equalsIgnoreCase(rolUser)
+							|| rolValido.equalsIgnoreCase(rolUser)) {
 						acceso = true;
 						break;
 					}

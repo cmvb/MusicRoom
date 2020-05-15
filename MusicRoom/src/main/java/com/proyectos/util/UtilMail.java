@@ -11,7 +11,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
-//import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import com.proyectos.model.dto.MailDTO;
 
