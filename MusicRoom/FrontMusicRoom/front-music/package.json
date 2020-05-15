@@ -26,7 +26,7 @@
     "@auth0/angular-jwt": "^2.1.0",
     "@ng-select/ng-select": "^2.18.0",
     "core-js": "^2.5.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ng2-pdf-viewer": "^5.2.4",
     "ngx-dropzone-wrapper": "^7.2.1",
     "ngx-pagination": "^3.2.1",
