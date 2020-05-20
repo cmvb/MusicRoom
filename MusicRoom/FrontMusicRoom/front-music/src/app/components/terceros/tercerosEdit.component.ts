@@ -13,7 +13,7 @@ declare var $: any;
 @Component({
   selector: 'app-terceros-edit',
   templateUrl: './tercerosEdit.component.html',
-  styleUrls: ['./terceros.component.css'],
+  styleUrls: ['./terceros.component.scss'],
   providers: [RestService, MessageService]
 })
 export class TercerosEditComponent implements OnInit {

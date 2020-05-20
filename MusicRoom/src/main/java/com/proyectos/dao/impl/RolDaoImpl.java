@@ -11,19 +11,24 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.IRolDao;
+import com.proyectos.dao.jpa.IRolJPARepoDao;
 import com.proyectos.model.RolTB;
 import com.proyectos.util.Util;
-import org.apache.commons.lang3.StringUtils;
 
 @Repository
 public class RolDaoImpl extends AbstractDao<RolTB> implements IRolDao {
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;
+
+	@Autowired
+	private IRolJPARepoDao rolJPADAO;
 
 	@Override
 	public List<RolTB> consultarTodos() {

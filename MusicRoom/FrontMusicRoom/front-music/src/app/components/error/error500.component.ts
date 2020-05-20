@@ -11,7 +11,7 @@ import { debug } from 'util';
 @Component({
   selector: 'app-error500',
   templateUrl: './error500.component.html',
-  styleUrls: ['./error.component.css'],
+  styleUrls: ['./error.component.scss'],
   providers: [RestService, MessageService]
 })
 export class Error500Component implements OnInit {

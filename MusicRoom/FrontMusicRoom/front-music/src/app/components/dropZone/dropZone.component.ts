@@ -16,7 +16,7 @@ declare var $: any;
 @Component({
   selector: 'app-drop-zone',
   templateUrl: './dropZone.component.html',
-  styleUrls: ['./dropZone.component.css']
+  styleUrls: ['./dropZone.component.scss']
 })
 
 export class DropZoneComponent implements OnInit {

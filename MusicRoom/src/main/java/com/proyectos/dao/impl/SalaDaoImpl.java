@@ -9,18 +9,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.ISalaDao;
+import com.proyectos.dao.jpa.ISalaJPARepoDao;
 import com.proyectos.model.SalaTB;
-import org.apache.commons.lang3.StringUtils;
 
 @Repository
 public class SalaDaoImpl extends AbstractDao<SalaTB> implements ISalaDao {
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;
+
+	@Autowired
+	private ISalaJPARepoDao salaJPADAO;
 
 	@Override
 	public List<SalaTB> consultarTodos() {
@@ -57,7 +62,7 @@ public class SalaDaoImpl extends AbstractDao<SalaTB> implements ISalaDao {
 			pamameters.put("UBICACION", salaFiltro.getTerceroTb().getIdTercero());
 		}
 		// Q. Order By
-		JPQL.append(" ORDER BY t.idSala");
+		JPQL.append("ORDER BY t.idSala");
 		// END QUERY
 
 		TypedQuery<SalaTB> query = em.createQuery(JPQL.toString(), SalaTB.class);

@@ -393,13 +393,26 @@ export class Util {
     $('.modal-backdrop').remove();
   }
 
-  // Función que arma el enumerado de ubicaciones desde la lista
+  // Función que arma el enumerado de Ubicaciones desde la lista
   obtenerEnumeradoDeListaUbicacion(lista, tipoUbicacion) {
     let enumerado = [];
     for (let i in lista) {
       let ubicacion = lista[i];
       let nombreUbicacion = tipoUbicacion == 0 ? ubicacion.nombrePais : (tipoUbicacion == 1 ? ubicacion.nombreDepartamento + ' - (' + ubicacion.nombrePais + ')' : ubicacion.nombreCiudad + ' - (' + ubicacion.nombreDepartamento + ')');
       let enumObj = { value: ubicacion, label: nombreUbicacion };
+      enumerado.push(enumObj);
+    }
+
+    return enumerado;
+  }
+
+  // Función que arma el enumerado de Terceros desde la lista
+  obtenerEnumeradoDeListaTercero(lista) {
+    let enumerado = [];
+    for (let i in lista) {
+      let tercero = lista[i];
+      let nombreTercero = tercero.razonSocial;
+      let enumObj = { value: tercero, label: nombreTercero };
       enumerado.push(enumObj);
     }
 
@@ -518,6 +531,19 @@ export class Util {
       }
     }
     return { value: ubicacion, label: label };
+  }
+
+  // Función para obtener el objeto Tercero de una lista con el Id que está en un combo
+  obtenerTerceroDeEnum(idTerceroEnum, listaTerceros) {
+    let tercero: any;
+    for (let i in listaTerceros) {
+      let ter = listaTerceros[i];
+      if (ter.idTercero == idTerceroEnum) {
+        tercero = ter;
+        break;
+      }
+    }
+    return tercero;
   }
 
   // Función que permite validar la estructura de un Email de acuerdo a un patrón REGEX

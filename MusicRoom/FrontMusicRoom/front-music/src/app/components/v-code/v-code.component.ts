@@ -13,7 +13,7 @@ declare var $: any;
 @Component({
   selector: 'app-v-code',
   templateUrl: './v-code.component.html',
-  styleUrls: ['./v-code.component.css'],
+  styleUrls: ['./v-code.component.scss'],
   providers: [RestService, MessageService]
 })
 export class VCodeComponent implements OnInit {

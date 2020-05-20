@@ -7,13 +7,14 @@ import 'rxjs/add/operator/map';
 import { RestService } from '../../services/rest.service';
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $: any;
 
 @Component({
   selector: 'app-salas-edit',
   templateUrl: './salasEdit.component.html',
-  styleUrls: ['./salas.component.css'],
+  styleUrls: ['./salas.component.scss'],
   providers: [RestService, MessageService]
 })
 export class SalasEditComponent implements OnInit {
@@ -39,17 +40,22 @@ export class SalasEditComponent implements OnInit {
   enums: any;
   enumSiNo = [];
   listaTerceros = [];
-  enumFiltroCiudades = [];
-  ciudadSeleccionada: any;
-  listaCiudades: any;
+  enumFiltroTerceros = [];
   terceroSeleccionado: any;
+  enumFotos = [];
 
   // Propiedades de las peticiones REST
   headers = new Headers({ 'Content-Type': 'application/json' });
   options = new RequestOptions({ headers: this.headers });
 
+  // Archivos
+  uploadedFiles: any[] = [];
+  imagenData: any;
+  fotos: any[] = [];
+  displayModal: boolean = false;
+
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService, private sanitizer: DomSanitizer) {
     this.usuarioSesion = datasObject.getDataUsuario();
     this.sesion = datasObject.getDataSesion();
     this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
@@ -62,6 +68,73 @@ export class SalasEditComponent implements OnInit {
     this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
+  showDialog() {
+    this.displayModal = true;
+  }
+
+  onUpload(event) {
+    this.uploadedFiles = [];
+    this.fotos = [];
+    let i = 0;
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
+      if (this.uploadedFiles.length == 1) {
+        this.objeto.fotoPrincipalTb.nombreArchivo = file.name;
+        this.objeto.fotoPrincipalTb.tipoArchivo = file.name.split('.');
+      } else if (this.uploadedFiles.length == 2) {
+        this.objeto.foto1Tb.nombreArchivo = file.name;
+        this.objeto.foto1Tb.tipoArchivo = file.name.split('.');
+      } else if (this.uploadedFiles.length == 3) {
+        this.objeto.foto2Tb.nombreArchivo = file.name;
+        this.objeto.foto2Tb.tipoArchivo = file.name.split('.');
+      } else if (this.uploadedFiles.length == 4) {
+        this.objeto.foto3Tb.nombreArchivo = file.name;
+        this.objeto.foto3Tb.tipoArchivo = file.name.split('.');
+      } else if (this.uploadedFiles.length == 5) {
+        this.objeto.foto4Tb.nombreArchivo = file.name;
+        this.objeto.foto4Tb.tipoArchivo = file.name.split('.');
+      }
+
+      this.sanitizarUrl(file, i);
+      i++;
+    }
+  }
+
+  sanitizarUrl(data: any, i) {
+    debugger;
+    let reader = new FileReader();
+    reader.readAsDataURL(data);
+    reader.onloadend = () => {
+      let dato = reader.result;
+
+      if (this.uploadedFiles.length > 0 && this.uploadedFiles.length <= 5) {
+        if (i == 0) {
+          this.objeto.fotoPrincipalTb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          this.fotos.push(this.objeto.fotoPrincipalTb);
+        } else if (i == 1) {
+          this.objeto.foto1Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          this.fotos.push(this.objeto.foto1Tb);
+        } else if (i == 2) {
+          this.objeto.foto2Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          this.fotos.push(this.objeto.foto2Tb);
+        } else if (i == 3) {
+          this.objeto.foto3Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          this.fotos.push(this.objeto.foto3Tb);
+        } else if (i == 4) {
+          this.objeto.foto4Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          this.fotos.push(this.objeto.foto4Tb);
+        }
+
+        this.messageService.clear();
+        this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_mensaje_archivo_subido });
+      } else {
+        this.uploadedFiles = [];
+        this.messageService.clear();
+        this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_cant_archivos_permitidos });
+      }
+    }
+  }
+
   // Procesos que se ejecutan cuando algo en el DOM cambia
   ngDoCheck() {
   }
@@ -70,8 +143,15 @@ export class SalasEditComponent implements OnInit {
   ngOnInit() {
     this.util.limpiarSesionXItem(['mensajeConfirmacion']);
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
+    this.enumFotos = [
+      { value: 0, label: this.msg.lbl_mtto_sala_foto_principal },
+      { value: 1, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_1 },
+      { value: 2, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_2 },
+      { value: 3, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_3 },
+      { value: 4, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_4 }
+    ];
     this.listaTerceros = JSON.parse(localStorage.getItem('listaTerceros'));
-    this.enumFiltroCiudades = this.util.obtenerEnumeradoDeListaUbicacion(this.listaTerceros, 2);
+    this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
 
     this.phase = this.util.getSesionXItem('phase');
     this.isDisabled = this.phase !== this.const.phaseAdd;
@@ -80,6 +160,12 @@ export class SalasEditComponent implements OnInit {
       this.objeto = JSON.parse(localStorage.getItem('editParam'));
       this.terceroSeleccionado = this.objeto.terceroTb;
     }
+
+    this.objeto.fotoPrincipalTb.valor = null;
+    this.objeto.foto1Tb.valor = null;
+    this.objeto.foto2Tb.valor = null;
+    this.objeto.foto3Tb.valor = null;
+    this.objeto.foto4Tb.valor = null;
   }
 
   limpiarExcepcion() {
@@ -97,7 +183,7 @@ export class SalasEditComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
-          let mensajeConfirmacion = 'La Sala #' + this.data.idTercero + ' fue ' + (this.phase === this.const.phaseAdd ? 'creada' : 'actualizada') + ' satisfactoriamente.';
+          let mensajeConfirmacion = 'La Sala #' + this.data.idSala + ' fue ' + (this.phase === this.const.phaseAdd ? 'creada' : 'actualizada') + ' satisfactoriamente.';
           this.util.agregarSesionXItem([{ item: 'mensajeConfirmacion', valor: mensajeConfirmacion }]);
           this.irAtras();
         },
@@ -117,11 +203,9 @@ export class SalasEditComponent implements OnInit {
   }
 
   ajustarCombos() {
-    this.objeto.estado = this.objeto.estado === undefined ? null : this.objeto.estado.value;
-
     if (this.terceroSeleccionado != null) {
-      let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
-      Object.assign(this.objeto.terceroTb, this.terceroSeleccionado);
+      let tercero = this.util.obtenerTerceroDeEnum(this.terceroSeleccionado.value.idTercero, this.listaTerceros);
+      Object.assign(this.objeto.terceroTb, tercero);
     }
     else {
       this.objeto.terceroTb = null;

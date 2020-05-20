@@ -13,7 +13,7 @@ declare var $: any;
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  styleUrls: ['./register.component.scss'],
   providers: [RestService, MessageService]
 })
 export class RegisterComponent implements OnInit {

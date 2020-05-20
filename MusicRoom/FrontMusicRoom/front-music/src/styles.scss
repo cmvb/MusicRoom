@@ -33,6 +33,17 @@ button {
   cursor: pointer;
 }
 
+#fondoOpaco{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #0000005c;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: none;
+}
+
 .mdl-textfield {
   width: 100%;
   padding: 5px 0;
@@ -331,10 +342,10 @@ _:-ms-input-placeholder, :root .demo-graph {
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding: 15px 15px;
-  height: 65px;
-  color: #9e9e9e;
-  background-color: #424242;
+  padding: 0;
+  height: 55px;
+  color: #222222;
+  background-color: #607d8b;
 }
 
 .content-page-login {
@@ -345,7 +356,7 @@ _:-ms-input-placeholder, :root .demo-graph {
   margin-bottom: 10%;
   width: 50%;
   margin-left: 25%;
-  background-image: url('assets/images/fondoLogin.jpg');
+  background: #222222;
   margin-right: 25%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -365,7 +376,8 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .mttoTitle {
   color: #f4f4f4;
-  background: #4169ad6e;
+  background: #222222;
+  border-bottom: 1px solid rgb(255,171,64);
   border-radius: 5px;
   padding: 5px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
@@ -434,8 +446,9 @@ _:-ms-input-placeholder, :root .demo-graph {
   color: red;
 }
 
-.mdl-layout__header-row {
-  background-image: url('assets/images/fondoLogin.jpg');
+.mdl-layout__header-row {  
+  background: #222222;
+  border-bottom: 1px solid rgb(255,171,64);
 }
 
 .mdl-card {
@@ -468,7 +481,6 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
   height: 19px !important;
-  background-color: #448aff !important;
 }
 
 .ui-paginator .ui-paginator-pages {
@@ -488,8 +500,6 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .ui-table .ui-table-thead>tr>th {
   padding: 5px !important;
-  color: #ececec !important;
-  background: #448aff !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
 }
@@ -501,7 +511,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .fontNosifer {
   /*font-family: "Nosifer Caps";*/
-  font-family: "Merienda One";
+  font-family: "Muli";
 }
 
 .espacioFooter {
@@ -614,6 +624,10 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .hoverDelete:hover {
   color: red;
+}
+
+.hoverWarning:hover {
+  color: rgb(255,171,64);
 }
 
 .mdl-button--icon {
@@ -804,8 +818,6 @@ table.falsa {
 
 .ui-table-wrapper.ng-star-inserted {
   background: #f4f4f4;
-  border-left: 1px solid #c8c8c8;
-  border-right: 1px solid #c8c8c8;
 }
 
 .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-icon, .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-text {
@@ -827,13 +839,13 @@ table.falsa {
 }
 
 .custom .ui-scrollpanel-bar {
-  background-color: #1976d2;
+  background-color: rgb(255,171,64);
   opacity: 1;
   transition: background-color .3s;
 }
 
 .custom .ui-scrollpanel-bar:hover {
-  background-color: #135ba1;
+  background-color: darorange;
 }
 
 .alturaImgRegister {

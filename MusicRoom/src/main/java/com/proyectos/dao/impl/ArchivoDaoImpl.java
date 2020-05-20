@@ -5,10 +5,12 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.IArchivoDao;
+import com.proyectos.dao.jpa.IArchivoJPARepoDao;
 import com.proyectos.model.ArchivoTB;
 
 @Repository
@@ -16,6 +18,9 @@ public class ArchivoDaoImpl extends AbstractDao<ArchivoTB> implements IArchivoDa
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;
+
+	@Autowired
+	private IArchivoJPARepoDao archivoJPADAO;
 
 	@Override
 	public ArchivoTB guardarArchivo(ArchivoTB archivo) {

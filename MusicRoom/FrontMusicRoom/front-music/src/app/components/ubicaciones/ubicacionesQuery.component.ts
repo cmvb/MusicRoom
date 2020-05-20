@@ -13,7 +13,7 @@ declare var $: any;
 @Component({
   selector: 'app-ubicaciones-query',
   templateUrl: './ubicacionesQuery.component.html',
-  styleUrls: ['./ubicaciones.component.css'],
+  styleUrls: ['./ubicaciones.component.scss'],
   providers: [RestService, MessageService]
 })
 export class UbicacionesQueryComponent implements OnInit {

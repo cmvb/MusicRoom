@@ -9,10 +9,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.ICodigoVerificacionDao;
+import com.proyectos.dao.jpa.ICodigoVerificacionJPARepoDao;
 import com.proyectos.model.CodigoVerificacionTB;
 
 @Repository
@@ -20,6 +22,9 @@ public class CodigoVerificacionDaoImpl extends AbstractDao<CodigoVerificacionTB>
 
 	@PersistenceContext(unitName = "default")
 	private EntityManager em;
+
+	@Autowired
+	private ICodigoVerificacionJPARepoDao vCodeJPADAO;
 
 	@Override
 	public CodigoVerificacionTB crear(CodigoVerificacionTB vCodeTB) {

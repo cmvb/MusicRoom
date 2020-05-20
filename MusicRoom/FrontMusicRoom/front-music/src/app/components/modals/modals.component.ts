@@ -6,7 +6,7 @@ declare var $: any;
 @Component({
   selector: 'app-modals',
   templateUrl: './modals.component.html',
-  styleUrls: ['./modals.component.css']
+  styleUrls: ['./modals.component.scss']
 })
 export class ModalsComponent implements OnInit {
   util:any;

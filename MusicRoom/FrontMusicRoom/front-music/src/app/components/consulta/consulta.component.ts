@@ -8,7 +8,7 @@ import { Util } from '../Util';
 @Component({
   selector: 'app-consulta',
   templateUrl: './consulta.component.html',
-  styleUrls: ['./consulta.component.css']
+  styleUrls: ['./consulta.component.scss']
 })
 
 export class ConsultaComponent implements OnInit {

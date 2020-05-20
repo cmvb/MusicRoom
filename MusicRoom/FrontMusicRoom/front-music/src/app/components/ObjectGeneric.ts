@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-export var HOST = 'http://localhost:9002';
+//export var HOST = 'http://localhost:9002';
 //export var HOST = 'http://10.176.147.19:9002';
-//export var HOST = 'http://192.168.1.52:9002';
+export var HOST = 'http://192.168.1.52:9002';
 //export var HOST = 'http://185.224.139.43:9002/music-room';
 
-export var SYSTEM = 'http://localhost:4200';
+//export var SYSTEM = 'http://localhost:4200';
 //export var SYSTEM = 'http://10.176.147.19:4200';
-//export var SYSTEM = 'http://192.168.1.52:4200';
+export var SYSTEM = 'http://192.168.1.52:4200';
 //export var SYSTEM = 'http://185.224.139.43:8080/music-room';
 
 
@@ -309,6 +309,12 @@ export class DataObjects {
   getProperties(idioma) {
     let constant = this.getConst();
     return {
+      // Mensajes
+      lbl_summary_info: idioma == constant.idiomaEs ? '¡Información!' : 'Info!',
+      lbl_summary_success: idioma == constant.idiomaEs ? '¡Exitoso!' : 'Success!',
+      lbl_summary_warning: idioma == constant.idiomaEs ? '¡Advertencia!' : 'Warning!',
+      lbl_summary_danger: idioma == constant.idiomaEs ? '¡Error!' : 'Error!',
+
       // Generales
       lbl_info_sin_resultados: idioma == constant.idiomaEs ? 'Sin Resultados' : 'Without Results',
       lbl_info_fallo_conectar_base_datos: idioma == constant.idiomaEs ? 'No hay Conexión a la Base de Datos' : 'Without Conection to Data Base',
@@ -324,6 +330,12 @@ export class DataObjects {
       lbl_ir_inicio: idioma == constant.idiomaEs ? 'Ir al Login' : 'Go to Login',
       lbl_btn_olvidaste_tu_clave: idioma == constant.idiomaEs ? '¿Olvidaste tu Clave?' : 'Do You forget your Password?',
       lbl_btn_no_ha_llegado_correo_vcode: idioma == constant.idiomaEs ? '¿No ha llegado ningún Correo? Presiona para Reintentar.' : 'No mail has arrived? Press to Retry.',
+      lbl_drag_archivos: idioma == constant.idiomaEs ? 'Haga [Clic] o arrastre un archivo aquí' : 'Click or Drag a file here',
+      lbl_cantidad_max_archivos: idioma == constant.idiomaEs ? 'Cantidad máxima: 5 archivos' : 'Only 5 Files',
+
+      // Mensajes
+      lbl_mensaje_archivo_subido: idioma == constant.idiomaEs ? 'Archivo(s) subido correctamente.' : 'File(s) uploaded successfully.',
+      lbl_mensaje_cant_archivos_permitidos: idioma == constant.idiomaEs ? 'La cantidad de archivos por subir supera la cantidad permitida.' : 'The number of files to upload exceeds the allowed number.',
 
       // Modales
       lbl_info_titulo_modal_error: idioma == constant.idiomaEs ? 'ERROR' : 'ERROR',
@@ -362,6 +374,10 @@ export class DataObjects {
       lbl_btn_ite_agregar: idioma == constant.idiomaEs ? 'Agregar' : 'Add',
       lbl_btn_siguiente: idioma == constant.idiomaEs ? 'Siguiente' : 'Next',
       lbl_btn_anterior: idioma == constant.idiomaEs ? 'Anterior' : 'Back',
+      lbl_btn_cancelar: idioma == constant.idiomaEs ? 'Cancelar' : 'Cancel',
+      lbl_btn_subir: idioma == constant.idiomaEs ? 'Subir' : 'Upload',
+      lbl_btn_escoger: idioma == constant.idiomaEs ? 'Escoger' : 'Choose',
+      lbl_subir_archivos: idioma == constant.idiomaEs ? 'Subir Archivos' : 'Upload Files',
 
       // Header
       lbl_header_usuario: idioma == constant.idiomaEs ? 'Usuario' : 'User',
@@ -378,10 +394,11 @@ export class DataObjects {
       lbl_tip_eliminar: idioma == constant.idiomaEs ? '[Clic] para eliminar registro' : 'Click to delete the register selected',
       lbl_tip_buscar: idioma == constant.idiomaEs ? '[Clic] para buscar registros' : 'Click to search registers',
       lbl_tip_limpiar: idioma == constant.idiomaEs ? '[Clic] para limpiar' : 'Click to clean',
-      lbl_tip_anterior: idioma == constant.idiomaEs ? '[Clic] para Regresar' : 'Click to go back',
-      lbl_tip_actualizar: idioma == constant.idiomaEs ? '[Clic] para Actualizar' : 'Click to update',
-      lbl_tip_guardar: idioma == constant.idiomaEs ? '[Clic] para Guardar' : 'Click to save',
-      lbl_tip_exportar_datos: idioma == constant.idiomaEs ? '[Clic] para Exportar' : 'Click to export',
+      lbl_tip_anterior: idioma == constant.idiomaEs ? '[Clic] para regresar' : 'Click to go back',
+      lbl_tip_actualizar: idioma == constant.idiomaEs ? '[Clic] para actualizar' : 'Click to update',
+      lbl_tip_guardar: idioma == constant.idiomaEs ? '[Clic] para guardar' : 'Click to save',
+      lbl_tip_exportar_datos: idioma == constant.idiomaEs ? '[Clic] para exportar' : 'Click to export',
+      lbl_tip_subir_archivos: idioma == constant.idiomaEs ? '[Clic] para ir a subir archivos' : 'Click to go to upload files',
 
       //Enums
       lbl_enum_generico_valor_vacio: idioma == constant.idiomaEs ? 'Selecciona una opción' : 'Select a Item',
@@ -445,6 +462,7 @@ export class DataObjects {
       lbl_mtto_tercero_direccion: idioma == constant.idiomaEs ? 'Dirección' : 'Address',
       lbl_mtto_tercero_info_adicional: idioma == constant.idiomaEs ? 'Información Adicional' : 'Other Info',
 
+      // Módulo Sala
       lbl_mtto_sala_title: idioma == constant.idiomaEs ? 'Configuración de Salas de Ensayo' : 'Rehearsal Rooms Settings',
       lbl_mtto_sala_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
       lbl_mtto_sala_tercero: idioma == constant.idiomaEs ? 'Tercero' : 'Company',

@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.ISesionDao;
 import com.proyectos.dao.IUsuarioDao;
+import com.proyectos.dao.jpa.ISesionJPARepoDao;
+import com.proyectos.dao.jpa.IUsuarioJPARepoDao;
 import com.proyectos.enums.EEstado;
 import com.proyectos.model.SesionTB;
 import com.proyectos.model.UsuarioTB;
@@ -29,6 +31,12 @@ public class SesionDaoImpl extends AbstractDao<SesionTB> implements ISesionDao {
 
 	@Autowired
 	private IUsuarioDao usuarioDAO;
+
+	@Autowired
+	private ISesionJPARepoDao sesionJPADAO;
+
+	@Autowired
+	private IUsuarioJPARepoDao usuarioJPADAO;
 
 	@Override
 	public SesionTB login(String usuario, String password) {

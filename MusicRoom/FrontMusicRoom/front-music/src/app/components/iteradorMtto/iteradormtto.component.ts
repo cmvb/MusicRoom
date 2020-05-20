@@ -13,7 +13,7 @@ import { RestService } from '../../services/rest.service';
 @Component({
   selector: 'app-iterador',
   templateUrl: './iteradormtto.component.html',
-  styleUrls: ['./iteradormtto.component.css']
+  styleUrls: ['./iteradormtto.component.scss']
 })
 
 export class IteradorMttoComponent implements OnInit {

@@ -11,7 +11,7 @@ import { debug } from 'util';
 @Component({
   selector: 'app-error404',
   templateUrl: './error404.component.html',
-  styleUrls: ['./error.component.css'],
+  styleUrls: ['./error.component.scss'],
   providers: [RestService, MessageService]
 })
 export class Error404Component implements OnInit {

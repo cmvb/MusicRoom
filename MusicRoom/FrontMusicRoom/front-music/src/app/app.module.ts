@@ -22,6 +22,11 @@ import { NgxUiLoaderConfig, NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoade
 import { CalendarModule } from 'primeng/calendar';
 import { DeferModule } from 'primeng/defer';
 import { DragDropModule } from 'primeng/dragdrop';
+import { CarouselModule } from 'primeng/carousel';
+import { CardModule } from 'primeng/card';
+import { FileUploadModule } from 'primeng/fileupload';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessageModule } from 'primeng/message';
@@ -68,13 +73,13 @@ import { SalasQueryComponent } from './components/salas/salasQuery.component';
 
 // Constantes
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
-  "bgsColor": "#00ACC1",
+  "bgsColor": "#ffab40",
   "bgsOpacity": 0.5,
   "bgsPosition": "bottom-right",
   "bgsSize": 60,
   "bgsType": "ball-spin-clockwise",
   "blur": 5,
-  "fgsColor": "#00ACC1",
+  "fgsColor": "#ffab40",
   "fgsPosition": "center-center",
   "fgsSize": 180,
   "fgsType": "three-strings",
@@ -84,7 +89,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   "masterLoaderId": "master",
   "overlayBorderRadius": "0",
   "overlayColor": "rgba(40, 40, 40, 0.8)",
-  "pbColor": "#00ACC1",
+  "pbColor": "#ffab40",
   "pbDirection": "ltr",
   "pbThickness": 3,
   "hasProgressBar": true,
@@ -151,6 +156,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
+    CarouselModule,
+    CardModule,
+    FileUploadModule,
+    RadioButtonModule,
+    DialogModule,
     InputTextModule,
     MessagesModule,
     MessageModule,

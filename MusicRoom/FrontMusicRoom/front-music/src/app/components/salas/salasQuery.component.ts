@@ -13,7 +13,7 @@ declare var $: any;
 @Component({
   selector: 'app-salas-query',
   templateUrl: './salasQuery.component.html',
-  styleUrls: ['./salas.component.css'],
+  styleUrls: ['./salas.component.scss'],
   providers: [RestService, MessageService]
 })
 export class SalasQueryComponent implements OnInit {
@@ -37,7 +37,7 @@ export class SalasQueryComponent implements OnInit {
   // Enumerados
   enums: any;
   listaTerceros = [];
-  //enumFiltroCiudades = [];
+  enumFiltroTerceros = [];
   terceroSeleccionado: any;
 
   // Opciones del Componente Consulta
@@ -121,14 +121,14 @@ export class SalasQueryComponent implements OnInit {
   consultarTerceros() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerTercero + 'consultarTodos';
+      let url = this.const.urlRestService + this.const.urlControllerTercero;
 
       this.restService.getSecureREST(url, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.dataC = resp;
           this.listaTerceros = this.dataC;
-          // this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaUbicacion(this.listaCiudades, 2);
+          this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
         },
           error => {
             this.ex = error.error;
@@ -158,7 +158,7 @@ export class SalasQueryComponent implements OnInit {
 
   irCrear() {
     this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }, { item: 'listaTerceros', valor: this.listaTerceros }]);
-    this.router.navigate(['/terceroEdit']);
+    this.router.navigate(['/salaEdit']);
     return true;
   }
 
@@ -198,8 +198,8 @@ export class SalasQueryComponent implements OnInit {
 
   ajustarCombos() {
     if (this.terceroSeleccionado != null) {
-      //let tercero = this.util.obtenerUbicacionDeEnum(this.terceroSeleccionada.value.idUbicacion, this.listaCiudades);
-      Object.assign(this.objetoFiltro.terceroTb, this.terceroSeleccionado);
+      let tercero = this.util.obtenerTerceroDeEnum(this.terceroSeleccionado.value.idTercero, this.listaTerceros);
+      Object.assign(this.objetoFiltro.terceroTb, tercero);
     }
     else {
       this.objetoFiltro.terceroTb = null;

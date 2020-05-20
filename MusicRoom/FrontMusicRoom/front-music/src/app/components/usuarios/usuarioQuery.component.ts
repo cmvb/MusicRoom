@@ -13,7 +13,7 @@ declare var $: any;
 @Component({
   selector: 'app-usuario-query',
   templateUrl: './usuarioQuery.component.html',
-  styleUrls: ['./usuarios.component.css'],
+  styleUrls: ['./usuarios.component.scss'],
   providers: [RestService, MessageService]
 })
 
