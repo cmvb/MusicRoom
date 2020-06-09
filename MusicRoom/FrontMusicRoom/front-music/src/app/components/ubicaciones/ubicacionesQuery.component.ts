@@ -43,10 +43,12 @@ export class UbicacionesQueryComponent implements OnInit {
   listaCiudades = [];
   enumFiltroPaises = [];
   enumFiltroDepartamentos = [];
-  enumFiltroCiudades = [];
+  enumFiltroCiudades = [];  
+  enumFiltroTipoUbicacion = []; 
   paisSeleccionado: any;
   departamentoSeleccionado: any;
   ciudadSeleccionada: any;
+  tipoUbicacionSeleccionada: any;
 
   // Opciones del Componente Consulta
   btnEditar = true;
@@ -73,6 +75,7 @@ export class UbicacionesQueryComponent implements OnInit {
     this.paisSeleccionado = null;
     this.departamentoSeleccionado = null;
     this.ciudadSeleccionada = null;
+    this.tipoUbicacionSeleccionada = null;
     this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
@@ -81,7 +84,10 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   // Procesos que se ejecutan al cargar el componente
-  ngOnInit() {
+  ngOnInit() {    
+    this.enumFiltroTipoUbicacion = this.util.getEnum(this.enums.tipoUbicacion.cod);
+    this.tipoUbicacionSeleccionada = this.enumFiltroTipoUbicacion[0];
+
     this.consultarUbicaciones();
     // Paises
     this.consultarPaises();
@@ -101,7 +107,7 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   consultarUbicaciones() {
@@ -111,6 +117,7 @@ export class UbicacionesQueryComponent implements OnInit {
       this.ajustarCombos();
       let obj = this.objetoFiltro;
       obj.estado = "1";
+      obj.tipoUbicacion = this.tipoUbicacionSeleccionada.value;
 
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
@@ -135,22 +142,21 @@ export class UbicacionesQueryComponent implements OnInit {
     if (this.paisSeleccionado != null) {
       let pais = this.util.obtenerUbicacionDeEnum(this.paisSeleccionado.value.idUbicacion, this.listaPaises);
       this.objetoFiltro.codigoPais = pais.codigoPais;
-    }
-    else {
+    } else {
       this.objetoFiltro.codigoPais = null;
     }
+
     if (this.departamentoSeleccionado != null) {
       let departamento = this.util.obtenerUbicacionDeEnum(this.departamentoSeleccionado.value.idUbicacion, this.listaDepartamentos);
       this.objetoFiltro.codigoDepartamento = departamento.codigoDepartamento;
-    }
-    else {
+    } else {
       this.objetoFiltro.codigoDepartamento = null;
     }
+
     if (this.ciudadSeleccionada != null) {
       let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
       this.objetoFiltro.codigoCiudad = ciudad.codigoCiudad;
-    }
-    else {
+    } else {
       this.objetoFiltro.codigoCiudad = null;
     }
   }

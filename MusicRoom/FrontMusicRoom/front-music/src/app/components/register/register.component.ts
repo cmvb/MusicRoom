@@ -250,7 +250,7 @@ export class RegisterComponent implements OnInit {
 
   limpiarExcepcion() {
     console.clear();
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
     this.msgs = [];
   }
 

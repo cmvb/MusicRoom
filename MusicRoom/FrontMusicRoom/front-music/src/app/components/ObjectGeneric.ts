@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-//export var HOST = 'http://localhost:9002';
-//export var HOST = 'http://10.176.147.19:9002';
-export var HOST = 'http://192.168.1.52:9002';
+export var HOST = 'http://localhost:9002';
+//export var HOST = 'http://10.108.2.66:9002';
+//export var HOST = 'http://192.168.1.15:9002';
 //export var HOST = 'http://185.224.139.43:9002/music-room';
 
-//export var SYSTEM = 'http://localhost:4200';
-//export var SYSTEM = 'http://10.176.147.19:4200';
-export var SYSTEM = 'http://192.168.1.52:4200';
+export var SYSTEM = 'http://localhost:4200';
+//export var SYSTEM = 'http://10.108.2.66:4200';
+//export var SYSTEM = 'http://192.168.1.15:4200';
 //export var SYSTEM = 'http://185.224.139.43:8080/music-room';
 
 
@@ -302,6 +302,14 @@ export class DataObjects {
           { value: 3, label: properties.lbl_enum_tipo_documento_valor_ce }
         ]
       },
+      tipoUbicacion: {
+        cod: 6, valores: [
+          { value: -1, label: properties.lbl_enum_generico_valor_vacio },
+          { value: 0, label: properties.lbl_enum_tipo_ubicacion_valor_pais },
+          { value: 1, label: properties.lbl_enum_tipo_ubicacion_valor_departamento },
+          { value: 2, label: properties.lbl_enum_tipo_ubicacion_valor_ciudad }
+        ]
+      },
       //valorIva: {cod: 25},
     }
   };
@@ -336,6 +344,16 @@ export class DataObjects {
       // Mensajes
       lbl_mensaje_archivo_subido: idioma == constant.idiomaEs ? 'Archivo(s) subido correctamente.' : 'File(s) uploaded successfully.',
       lbl_mensaje_cant_archivos_permitidos: idioma == constant.idiomaEs ? 'La cantidad de archivos por subir supera la cantidad permitida.' : 'The number of files to upload exceeds the allowed number.',
+      lbl_mensaje_cant_archivos_permitidos_detalle: idioma == constant.idiomaEs ? 'Máximo {0} archivo(s).' : 'Limit is {0} at most.',
+      lbl_mensaje_dropzone_principal: idioma == constant.idiomaEs ? 'Esta es una zona de carga de archivos' : 'This is a file upload area.',
+      lbl_mensaje_dropzone_secundario: idioma == constant.idiomaEs ? 'Arrastre su archivo o dé [Clic] para subir uno desde el explorador de archivos' : 'Drag your file or Click to upload one from file explorer.',
+      lbl_mensaje_size_archivos_permitidos: idioma == constant.idiomaEs ? 'Error con el tamaño del archivo: ' : 'File size error: ',
+      lbl_mensaje_size_archivos_permitidos_detalle: idioma == constant.idiomaEs ? 'El tamaño del archivo excede lo permitido. El máximo es ' : 'The file size exceeds what is allowed. Maximum upload size is ',
+      lbl_mensaje_tipo_archivos_permitidos_generico: idioma == constant.idiomaEs ? 'El tipo del archivo o elemento no es permitido.' : 'The file or element type is not allowed.',
+      lbl_mensaje_tipo_archivos_permitidos: idioma == constant.idiomaEs ? 'Error con el tipo del archivo: ' : 'File type error: ',
+      lbl_mensaje_tipo_archivos_permitidos_detalle: idioma == constant.idiomaEs ? 'El tipo del archivo no es permitido. Se permiten {0}.' : 'The file type is not allowed. Allowed file types {0}.',
+      lbl_mensaje_archivo_no_subido: idioma == constant.idiomaEs ? 'El archivo no pudo ser procesado.' : 'The file could not be processed.',
+      lbl_mensaje_seleccione_archivo_para_subir: idioma == constant.idiomaEs ? 'Seleccione un archivo.' : 'Select a file.',
 
       // Modales
       lbl_info_titulo_modal_error: idioma == constant.idiomaEs ? 'ERROR' : 'ERROR',
@@ -377,6 +395,7 @@ export class DataObjects {
       lbl_btn_cancelar: idioma == constant.idiomaEs ? 'Cancelar' : 'Cancel',
       lbl_btn_subir: idioma == constant.idiomaEs ? 'Subir' : 'Upload',
       lbl_btn_escoger: idioma == constant.idiomaEs ? 'Escoger' : 'Choose',
+      lbl_btn_escoger_archivo: idioma == constant.idiomaEs ? 'Escoger Archivo' : 'Choose File',
       lbl_subir_archivos: idioma == constant.idiomaEs ? 'Subir Archivos' : 'Upload Files',
 
       // Header
@@ -398,7 +417,9 @@ export class DataObjects {
       lbl_tip_actualizar: idioma == constant.idiomaEs ? '[Clic] para actualizar' : 'Click to update',
       lbl_tip_guardar: idioma == constant.idiomaEs ? '[Clic] para guardar' : 'Click to save',
       lbl_tip_exportar_datos: idioma == constant.idiomaEs ? '[Clic] para exportar' : 'Click to export',
-      lbl_tip_subir_archivos: idioma == constant.idiomaEs ? '[Clic] para ir a subir archivos' : 'Click to go to upload files',
+      lbl_tip_subir_archivos: idioma == constant.idiomaEs ? '[Clic] para subir archivos' : 'Click to upload files',
+      lbl_tip_eliminar_archivo: idioma == constant.idiomaEs ? '[Clic] para eliminar archivo' : 'Click to delete file',
+      lbl_tip_mostrar_ocultar_archivos: idioma == constant.idiomaEs ? '[Clic] para mostrar/ocultar archivos' : 'Click to show/hide files',
 
       //Enums
       lbl_enum_generico_valor_vacio: idioma == constant.idiomaEs ? 'Selecciona una opción' : 'Select a Item',
@@ -422,6 +443,10 @@ export class DataObjects {
       lbl_enum_tipo_documento_valor_cc: idioma == constant.idiomaEs ? 'CC' : 'CC',
       lbl_enum_tipo_documento_valor_ti: idioma == constant.idiomaEs ? 'TI' : 'TI',
       lbl_enum_tipo_documento_valor_ce: idioma == constant.idiomaEs ? 'CE' : 'CE',
+
+      lbl_enum_tipo_ubicacion_valor_pais: idioma == constant.idiomaEs ? 'País' : 'Country',
+      lbl_enum_tipo_ubicacion_valor_departamento: idioma == constant.idiomaEs ? 'Departamento/Región/Estado' : 'Department/Region/State',
+      lbl_enum_tipo_ubicacion_valor_ciudad: idioma == constant.idiomaEs ? 'Ciudad' : 'CE',
 
       // Módulos Genéricos
       lbl_mtto_generico_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
@@ -447,10 +472,11 @@ export class DataObjects {
       // Módulo Ubicación
       lbl_mtto_ubicacion_title: idioma == constant.idiomaEs ? 'Configuración de Ubicaciones' : 'Locations Settings',
       lbl_mtto_ubicacion_pais: idioma == constant.idiomaEs ? 'País' : 'Country',
-      lbl_mtto_ubicacion_departamento: idioma == constant.idiomaEs ? 'Departamento/Región' : 'Department/Region',
+      lbl_mtto_ubicacion_departamento: idioma == constant.idiomaEs ? 'Departamento/Región/Estado' : 'Department/Region/State',
       lbl_mtto_ubicacion_ciudad: idioma == constant.idiomaEs ? 'Ciudad/Municipio' : 'City/Municipality',
       lbl_mtto_ubicacion_codigo: idioma == constant.idiomaEs ? 'Código' : 'Code',
       lbl_mtto_ubicacion_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
+      lbl_mtto_ubicacion_tipo_ubicacion: idioma == constant.idiomaEs ? 'Tipo Ubicación' : 'Ubication Type',
 
       // Módulo Tercero
       lbl_mtto_tercero_title: idioma == constant.idiomaEs ? 'Configuración de Terceros/Empresas' : 'Companies Settings',

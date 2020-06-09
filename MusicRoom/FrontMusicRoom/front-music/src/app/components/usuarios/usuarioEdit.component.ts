@@ -85,7 +85,7 @@ export class UsuarioEditComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   irGuardar() {

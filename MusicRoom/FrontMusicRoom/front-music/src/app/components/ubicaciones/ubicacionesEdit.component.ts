@@ -218,21 +218,21 @@ export class UbicacionesEditComponent implements OnInit {
       }
     }
     else {
-      if (this.paisSeleccionado != null) {
+      if (this.paisSeleccionado != null && typeof this.paisSeleccionado.value != 'undefined') {
         let pais = this.util.obtenerUbicacionDeEnum(this.paisSeleccionado.value.idUbicacion, this.listaPaises);
         this.objeto.codigoPais = pais.codigoPais;
       }
       else {
         this.objeto.codigoPais = null;
       }
-      if (this.departamentoSeleccionado != null) {
+      if (this.departamentoSeleccionado != null && typeof this.departamentoSeleccionado.value != 'undefined') {
         let departamento = this.util.obtenerUbicacionDeEnum(this.departamentoSeleccionado.value.idUbicacion, this.listaDepartamentos);
         this.objeto.codigoDepartamento = departamento.codigoDepartamento;
       }
       else {
         this.objeto.codigoDepartamento = null;
       }
-      if (this.ciudadSeleccionada != null) {
+      if (this.ciudadSeleccionada != null && typeof this.ciudadSeleccionada.value != 'undefined') {
         let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
         this.objeto.codigoCiudad = ciudad.codigoCiudad;
       }
@@ -243,7 +243,7 @@ export class UbicacionesEditComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   irGuardar() {
@@ -252,6 +252,17 @@ export class UbicacionesEditComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerUbicacion + (this.phase === this.const.phaseAdd ? 'crearUbicacion' : 'modificarUbicacion');
       this.ajustarCombos();
       let obj = this.objeto;
+
+      if (this.objeto.tipoUbicacion === 0) {
+        obj.codigoPais = this.codigoPaisP;
+        obj.nombrePais = this.nombrePaisP;
+      } else if (this.objeto.tipoUbicacion === 1) {
+        obj.codigoDepartamento = this.codigoDepartamentoD;
+        obj.nombreDepartamento = this.nombreDepartamentoD;
+      } else if (this.objeto.tipoUbicacion === 2) {
+        obj.codigoCiudad = this.codigoCiudadC;
+        obj.nombreCiudad = this.nombreCiudadC;
+      }
 
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {

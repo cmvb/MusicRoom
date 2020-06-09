@@ -26,12 +26,12 @@
 }
 
 .imagenPrincipal{
-    width: auto;
+    width: 100%;
     height: 263px;
 }
 
 .imagenSecundaria{
-    width: auto;
+    width: 100%;
     height: 110px;
 }
 
@@ -64,7 +64,6 @@
     border-radius: 3px;
     margin: 0.3em;
     text-align: center;
-    padding: 2em 0 2.25em 0;
     display: flex;
 }
 
@@ -86,3 +85,75 @@
     color: #ffb300;
     padding-top: 8px;
 }
+
+.textLeft{
+    text-align: left;
+}
+.imagenSubida{
+    width: 200px;
+    height: 200px;
+    border:1px solid orange;
+}
+
+.dropzoneC {
+    background: white;
+    border-radius: 5px;
+    border: 2px dashed orange;
+    border-image: none;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.espacio10px{
+    display: block;
+    height: 10px;
+}
+
+.note{
+    font-weight: bold;
+}
+
+.ui-fileupload-choose input[type=file]{
+    cursor: pointer !important;
+}
+
+
+.banner {
+    position: relative;
+    display: block;
+    width: 370px;
+    height: 60px;
+    border: 1px solid darkorange;
+    font: normal 30px/60px 'Rye';
+    text-align: center;
+    color: darkorange;
+    background: rgb(255,171,64);
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15) inset, 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .banner::before,
+  .banner::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: -70px;
+    top: 24px;
+    display: block;
+    width: 40px;
+    height: 0px;
+    border: 30px solid darkorange;
+    border-right: 20px solid darkorange;
+    border-bottom-color: rgb(255,171,64);
+    border-left-color: transparent;
+    transform: rotate(-5deg);
+  }
+  
+  .banner::after {
+    left: auto;
+    right: -70px;
+    border-left: 20px solid darkorange;
+    border-right: 30px solid transparent;
+    transform: rotate(5deg);
+  }

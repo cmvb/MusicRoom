@@ -290,7 +290,7 @@ export class TokenComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
     this.msgs = [];
   }
 

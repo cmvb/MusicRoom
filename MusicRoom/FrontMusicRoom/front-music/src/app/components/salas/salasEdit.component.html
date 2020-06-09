@@ -1,56 +1,20 @@
+<script type="text/javascript">
+  window.addEventListener("dragover", function (e) {
+    e = e || event;
+    e.preventDefault();
+  }, false);
+  window.addEventListener("drop", function (e) {
+    e = e || event;
+    e.preventDefault();
+  }, false);
+</script>
+
 <div class="demo-container demo-layout-transparent">
   <!-- Importamos el Header -->
   <app-header></app-header>
 
-  <!-- Dialog Archivos -->
-  <p-dialog header="{{msg.lbl_subir_archivos}}" [(visible)]="displayModal" [modal]="true" [style]="{width: '80vw'}"
-    [baseZIndex]="1010" [draggable]="false" [resizable]="false">
-
-    <!-- Notificaciones -->
-    <p-toast></p-toast>
-
-    <div class="ui-g center">
-      <div class="ui-g-10 ui-lg-10 ui-md-10 ui-sm-12 ui-xs-12 ui-g-nopad">
-        <p-fileUpload name="files[]" url="./upload.php" customUpload="true" (uploadHandler)="onUpload($event)"
-          fileLimit="5" multiple="multiple" accept="image/*" maxFileSize="1000000" chooseLabel="{{msg.lbl_btn_escoger}}"
-          uploadLabel="{{msg.lbl_btn_subir}}" cancelLabel="{{msg.lbl_btn_cancelar}}">
-
-          <ng-template pTemplate="toolbar">
-            <div class="filesText">Archivos Subidos: ({{uploadedFiles.length}})</div>
-          </ng-template>
-
-          <ng-template pTemplate="content">
-            <div class="details">
-              <div *ngFor="let file of fotos" class="p-grid p-nogutter">
-                <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad">
-                  <div class="file-title w100">
-                    <div class="ui-g center">
-                      <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad">
-                        <img style="width: auto; height: 100px;"
-                          [src]="file != null ? file.valor : 'assets/images/gif/buscar-archivo.gif'" />
-                      </div>
-                      <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad ellipsis">
-                        <i class="font-size-12p material-icons">description</i>
-                        {{file.nombreArchivo}}
-                      </div>
-                      <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad">
-                        <button pButton type="button" class="ui-button-secondary btn-circle"
-                          icon="pi pi-search"></button>
-                        <span class="ui-float-label">
-                          <ng-select [(ngModel)]="file.tipoArchivo" [items]="enumFotos">
-                          </ng-select>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </p-fileUpload>
-      </div>
-    </div>
-  </p-dialog>
+  <!-- Notificaciones -->
+  <p-toast></p-toast>
 
   <mdl-layout>
     <mdl-layout-drawer>
@@ -96,82 +60,51 @@
                           </span>
                         </div>
                       </div>
+
                       <div class="ui-g center">
                         <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_sala_foto_principal}}</label>
-                          <div class="drag-container">
-                            <div class="drag-zone">
-                              <p-card [style]="{padding: '0px !important'}">
-                                <img class="imagenPrincipal"
-                                  [src]="objeto.fotoPrincipalTb.valor != null ? objeto.fotoPrincipalTb.valor : 'assets/images/gif/buscar-archivo.gif'"
+                          <section>
+                            <div class="dropzoneC" (drop)="onUpload($event, 0)" (dragover)="dragOver($event)">
+                              <div class="dz-message">
+                                <img *ngIf="objeto.fotoPrincipalTb.valor != null; else mensajeSubirArchivos"
+                                  class="imagenPrincipal" [src]="objeto.fotoPrincipalTb.valor"
                                   alt="{{objeto.fotoPrincipalTb.nombreArchivo}}" />
-                              </p-card>
+                                <ng-template #mensajeSubirArchivos>
+                                  <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
+                                  <br>{{msg.lbl_mensaje_dropzone_secundario}}
+                                </ng-template>
+                              </div>
                             </div>
-                          </div>
+                            <div class="espacio10px"></div>
+                            <form id="formDropZoneFotoPrincipal" action="" method="POST" enctype="multipart/form-data">
+                              <button (click)="clickFileUpPrincipal();" mdl-button mdl-tooltip-position="top"
+                                mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" type="button"
+                                mdl-button-type="raised" mdl-colored="accent">
+                                <i class="material-icons">description</i> {{msg.lbl_btn_escoger_archivo}}
+                              </button>
+                              <input style="display: none" type="file" accept="image/*" id="fileUpPrincipal"
+                                (change)="onUpload($event, 0)" multiple="1">
+                            </form>
+                          </section>
                         </div>
-                        <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad">
-                          <div class="ui-g center">
-                            <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                              <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_1}}</label>
-                              <div class="drag-container-mini">
-                                <div class="drag-zone">
-                                  <p-card [style]="{padding: '0px !important'}">
-                                    <img class="imagenSecundaria"
-                                      [src]="objeto.foto1Tb.valor != null ? objeto.foto1Tb.valor : 'assets/images/gif/buscar-archivo.gif'"
-                                      alt="{{objeto.foto1Tb.nombreArchivo}}" />
-                                  </p-card>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                              <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_2}}</label>
-                              <div class="drag-container-mini">
-                                <div class="drag-zone">
-                                  <p-card [style]="{padding: '0px !important'}">
-                                    <img class="imagenSecundaria"
-                                      [src]="objeto.foto2Tb.valor != null ? objeto.foto2Tb.valor : 'assets/images/gif/buscar-archivo.gif'"
-                                      alt="{{objeto.foto2Tb.nombreArchivo}}" />
-                                  </p-card>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="ui-g center">
-                            <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                              <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_3}}</label>
-                              <div class="drag-container-mini">
-                                <div class="drag-zone">
-                                  <p-card [style]="{padding: '0px !important'}">
-                                    <img class="imagenSecundaria"
-                                      [src]="objeto.foto3Tb.valor != null ? objeto.foto3Tb.valor : 'assets/images/gif/buscar-archivo.gif'"
-                                      alt="{{objeto.foto3Tb.nombreArchivo}}" />
-                                  </p-card>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                              <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_4}}</label>
-                              <div class="drag-container-mini">
-                                <div class="drag-zone">
-                                  <p-card [style]="{padding: '0px !important'}">
-                                    <img class="imagenSecundaria"
-                                      [src]="objeto.foto4Tb.valor != null ? objeto.foto4Tb.valor : 'assets/images/gif/buscar-archivo.gif'"
-                                      alt="{{objeto.foto4Tb.nombreArchivo}}" />
-                                  </p-card>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
 
-                      <div class="ui-g center">
                         <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                          <button (click)="showDialog()" mdl-button mdl-tooltip-position="top"
-                            mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" type="button" mdl-button-type="raised"
-                            mdl-colored="accent">
-                            <i class="material-icons">description</i> {{msg.lbl_subir_archivos}}
-                          </button>
+                          <div class="ui-g center">
+                            <h1 class="banner">{{msg.lbl_mtto_sala_foto_principal}}</h1>
+                          </div>
+                          <div class="ui-g center">
+                            <h1 class="banner">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_1}}</h1>
+                          </div>
+                          <div class="ui-g center">
+                            <h1 class="banner">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_2}}</h1>
+                          </div>
+                          <div class="ui-g center">
+                            <h1 class="banner">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_3}}</h1>
+                          </div>
+                          <div class="ui-g center">
+                            <h1 class="banner">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_4}}</h1>
+                          </div>
                         </div>
                       </div>
 

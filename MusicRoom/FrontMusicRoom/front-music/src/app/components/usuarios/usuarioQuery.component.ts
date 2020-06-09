@@ -77,7 +77,7 @@ export class UsuarioQueryComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   consultarUsuarios() {

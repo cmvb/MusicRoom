@@ -76,12 +76,13 @@ export class TercerosEditComponent implements OnInit {
 
     if (this.util.getSesionXItem('editParam') != null) {
       this.objeto = JSON.parse(localStorage.getItem('editParam'));
-      this.ciudadSeleccionada = this.util.obtenerUbicacionPorCodigo(this.objeto.ubicacionTb.codigoCiudad, this.listaCiudades, 2);
+      this.inicializarCombos();
+      this.ciudadSeleccionada = this.util.obtenerUbicacionPorCodigo(this.objeto.ubicacionTb.codigoCiudad, this.listaCiudades, 2);      
     }
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   irGuardar() {

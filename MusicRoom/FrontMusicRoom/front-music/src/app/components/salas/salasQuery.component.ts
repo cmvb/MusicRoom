@@ -84,7 +84,7 @@ export class SalasQueryComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   consultarSalas() {

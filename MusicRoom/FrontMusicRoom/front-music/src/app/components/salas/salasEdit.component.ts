@@ -10,6 +10,7 @@ import { Util } from '../Util';
 import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $: any;
+declare function cargarCarousels(): any;
 
 @Component({
   selector: 'app-salas-edit',
@@ -42,17 +43,13 @@ export class SalasEditComponent implements OnInit {
   listaTerceros = [];
   enumFiltroTerceros = [];
   terceroSeleccionado: any;
-  enumFotos = [];
 
   // Propiedades de las peticiones REST
   headers = new Headers({ 'Content-Type': 'application/json' });
   options = new RequestOptions({ headers: this.headers });
 
   // Archivos
-  uploadedFiles: any[] = [];
   imagenData: any;
-  fotos: any[] = [];
-  displayModal: boolean = false;
 
   // Constructor o Inicializador de Variables
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService, private sanitizer: DomSanitizer) {
@@ -68,73 +65,6 @@ export class SalasEditComponent implements OnInit {
     this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
-  showDialog() {
-    this.displayModal = true;
-  }
-
-  onUpload(event) {
-    this.uploadedFiles = [];
-    this.fotos = [];
-    let i = 0;
-    for (let file of event.files) {
-      this.uploadedFiles.push(file);
-      if (this.uploadedFiles.length == 1) {
-        this.objeto.fotoPrincipalTb.nombreArchivo = file.name;
-        this.objeto.fotoPrincipalTb.tipoArchivo = file.name.split('.');
-      } else if (this.uploadedFiles.length == 2) {
-        this.objeto.foto1Tb.nombreArchivo = file.name;
-        this.objeto.foto1Tb.tipoArchivo = file.name.split('.');
-      } else if (this.uploadedFiles.length == 3) {
-        this.objeto.foto2Tb.nombreArchivo = file.name;
-        this.objeto.foto2Tb.tipoArchivo = file.name.split('.');
-      } else if (this.uploadedFiles.length == 4) {
-        this.objeto.foto3Tb.nombreArchivo = file.name;
-        this.objeto.foto3Tb.tipoArchivo = file.name.split('.');
-      } else if (this.uploadedFiles.length == 5) {
-        this.objeto.foto4Tb.nombreArchivo = file.name;
-        this.objeto.foto4Tb.tipoArchivo = file.name.split('.');
-      }
-
-      this.sanitizarUrl(file, i);
-      i++;
-    }
-  }
-
-  sanitizarUrl(data: any, i) {
-    debugger;
-    let reader = new FileReader();
-    reader.readAsDataURL(data);
-    reader.onloadend = () => {
-      let dato = reader.result;
-
-      if (this.uploadedFiles.length > 0 && this.uploadedFiles.length <= 5) {
-        if (i == 0) {
-          this.objeto.fotoPrincipalTb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-          this.fotos.push(this.objeto.fotoPrincipalTb);
-        } else if (i == 1) {
-          this.objeto.foto1Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-          this.fotos.push(this.objeto.foto1Tb);
-        } else if (i == 2) {
-          this.objeto.foto2Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-          this.fotos.push(this.objeto.foto2Tb);
-        } else if (i == 3) {
-          this.objeto.foto3Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-          this.fotos.push(this.objeto.foto3Tb);
-        } else if (i == 4) {
-          this.objeto.foto4Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-          this.fotos.push(this.objeto.foto4Tb);
-        }
-
-        this.messageService.clear();
-        this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_mensaje_archivo_subido });
-      } else {
-        this.uploadedFiles = [];
-        this.messageService.clear();
-        this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_cant_archivos_permitidos });
-      }
-    }
-  }
-
   // Procesos que se ejecutan cuando algo en el DOM cambia
   ngDoCheck() {
   }
@@ -143,13 +73,6 @@ export class SalasEditComponent implements OnInit {
   ngOnInit() {
     this.util.limpiarSesionXItem(['mensajeConfirmacion']);
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
-    this.enumFotos = [
-      { value: 0, label: this.msg.lbl_mtto_sala_foto_principal },
-      { value: 1, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_1 },
-      { value: 2, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_2 },
-      { value: 3, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_3 },
-      { value: 4, label: this.msg.lbl_mtto_sala_foto + " " + this.msg.lbl_mtto_sala_4 }
-    ];
     this.listaTerceros = JSON.parse(localStorage.getItem('listaTerceros'));
     this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
 
@@ -168,8 +91,165 @@ export class SalasEditComponent implements OnInit {
     this.objeto.foto4Tb.valor = null;
   }
 
+  dataGenericaArchivo() {
+    return {
+      idArchivo: '',
+      nombreArchivo: '',
+      tipoArchivo: '',
+      valor: '',
+    };
+  }
+
+  clickFileUpPrincipal() {
+    $('#fileUpPrincipal').click();
+  }
+
+  onUpload(event, i) {
+    try {
+      let flagFileUpload = typeof event !== 'undefined' && typeof event.files !== 'undefined' && event.files !== 'null' && event.files !== null;
+      let flagPathUpload = typeof event.path[0] !== 'undefined' && typeof event.path[0].files !== 'undefined' && event.path[0].files !== 'null' && event.path[0].files !== null;
+      let flagDragAndDrop = typeof event.dataTransfer !== 'undefined' && typeof event.dataTransfer.files !== 'undefined' && event.dataTransfer.files !== 'null' && event.dataTransfer.files !== null;
+
+      if (flagFileUpload || flagDragAndDrop || flagPathUpload) {
+        let files = flagFileUpload ? event.files : (flagDragAndDrop ? event.dataTransfer.files : (flagPathUpload ? event.path[0].files : null));
+        if (files !== null && files.length === 1) {
+          let file = files[0];
+          if (file !== null) {
+            // Validaciones de archivo
+            if (this.validarArchivo(file, event.target.accept)) {
+              // Si el tipo de archivo es aceptado
+              let flag = false;
+              switch (i.toString()) {
+                case '0':
+                  this.objeto.fotoPrincipalTb = this.dataGenericaArchivo();
+                  this.objeto.fotoPrincipalTb.nombreArchivo = file.name;
+                  this.objeto.fotoPrincipalTb.tipoArchivo = file.name.split('.')[1];
+                  flag = true;
+
+                  break;
+                case '1':
+                  this.objeto.foto1Tb = this.dataGenericaArchivo();
+                  this.objeto.foto1Tb.nombreArchivo = file.name;
+                  this.objeto.foto1Tb.tipoArchivo = file.name.split('.')[1];
+                  flag = true;
+
+                  break;
+                case '2':
+                  this.objeto.foto2Tb = this.dataGenericaArchivo();
+                  this.objeto.foto2Tb.nombreArchivo = file.name;
+                  this.objeto.foto2Tb.tipoArchivo = file.name.split('.')[1];
+                  flag = true;
+
+                  break;
+                case '3':
+                  this.objeto.foto3Tb = this.dataGenericaArchivo();
+                  this.objeto.foto3Tb.nombreArchivo = file.name;
+                  this.objeto.foto3Tb.tipoArchivo = file.name.split('.')[1];
+                  flag = true;
+
+                  break;
+                case '4':
+                  this.objeto.foto4Tb = this.dataGenericaArchivo();
+                  this.objeto.foto4Tb.nombreArchivo = file.name;
+                  this.objeto.foto4Tb.tipoArchivo = file.name.split('.')[1];
+                  flag = true;
+
+                  break;
+              }
+
+              if (flag) {
+                this.sanitizarUrl(file, i, event);
+              }
+            }
+          } else {
+            this.messageService.clear();
+            this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_archivo_no_subido });
+          }
+        } else if (files.length > 1) {
+          this.messageService.clear();
+          this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_cant_archivos_permitidos });
+        } else if (files.length === 0) {
+          this.messageService.clear();
+          this.messageService.add({ severity: this.const.severity[0], summary: this.msg.lbl_summary_info, detail: this.msg.lbl_mensaje_seleccione_archivo_para_subir });
+        }
+      } else {
+        this.messageService.clear();
+        this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_archivo_no_subido });
+      }
+    } catch (error) {
+      this.messageService.clear();
+      this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_archivo_no_subido });
+      event.preventDefault();
+    }
+  }
+
+  validarArchivo(archivo: any, acceptStr) {
+    let valido = true;
+    try {
+      this.messageService.clear();
+      let flagRegex = acceptStr.includes('*');
+      let flagRegexOpc1 = flagRegex && archivo.type.toUpperCase().includes(acceptStr.toUpperCase().replace('*', ''));
+      let flagRegexOpc2 = !flagRegex && archivo.type.toUpperCase() === acceptStr.toUpperCase();
+
+      // Validar Tipo
+      if (!flagRegexOpc1 && !flagRegexOpc2) {
+        valido = false;
+        this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_tipo_archivos_permitidos_generico });
+      }
+
+      // Validar Tamaño
+      if (archivo.size > 1000000) {
+        valido = false;
+        this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_size_archivos_permitidos_detalle + archivo.size + ' bytes.' });
+      }
+    } catch (e) {
+      valido = false;
+      console.log(e);
+    }
+
+    return valido;
+  }
+
+  sanitizarUrl(data: any, i, event) {
+    try {
+      let subirArchivoA = localStorage.getItem('fileUploadTo');
+      let reader = new FileReader();
+      event.preventDefault();
+      reader.readAsDataURL(data);
+      reader.onloadend = () => {
+        let dato = reader.result;
+        let flag = false;
+        switch (i.toString()) {
+          case '0':
+            this.objeto.fotoPrincipalTb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            break;
+          case '1':
+            this.objeto.foto1Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            break;
+          case '2':
+            this.objeto.foto2Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            break;
+          case '3':
+            this.objeto.foto3Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            break;
+          case '4':
+            this.objeto.foto4Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            break;
+        }
+
+        this.messageService.clear();
+        this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_mensaje_archivo_subido });
+        localStorage.setItem('fileUploadTo', null);
+      }
+    } catch (error) { console.log(error) }
+  }
+
+  dragOver(event) {
+    event.preventDefault();
+  }
+
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   irGuardar() {
@@ -194,7 +274,6 @@ export class SalasEditComponent implements OnInit {
             this.messageService.add(mensaje);
 
             this.inicializarCombos();
-
             console.log(error, "error");
           })
     } catch (e) {
@@ -203,18 +282,23 @@ export class SalasEditComponent implements OnInit {
   }
 
   ajustarCombos() {
+    this.objeto.estado = this.objeto.estado === undefined ? null : this.objeto.estado.value;
     if (this.terceroSeleccionado != null) {
       let tercero = this.util.obtenerTerceroDeEnum(this.terceroSeleccionado.value.idTercero, this.listaTerceros);
       Object.assign(this.objeto.terceroTb, tercero);
     }
     else {
-      this.objeto.terceroTb = null;
+      this.objeto.terceroTb = {};
     }
+    this.objeto.fotoPrincipalTb.tipoArchivo = this.objeto.fotoPrincipalTb.tipoArchivo.value;
+    this.objeto.foto1Tb.tipoArchivo = this.objeto.foto1Tb.tipoArchivo.value;
+    this.objeto.foto2Tb.tipoArchivo = this.objeto.foto2Tb.tipoArchivo.value;
+    this.objeto.foto3Tb.tipoArchivo = this.objeto.foto3Tb.tipoArchivo.value;
+    this.objeto.foto4Tb.tipoArchivo = this.objeto.foto4Tb.tipoArchivo.value;
   }
 
   inicializarCombos() {
     this.objeto.estado = this.util.getValorEnumerado(this.enumSiNo, this.objeto.estado);
-    this.terceroSeleccionado = null;
   }
 
   irAtras() {

@@ -301,14 +301,23 @@ export function onlyNumbersPlus(e) {
   return true;
 }
 
-/*
-export function btnPrimary
-document.getElementById("cerdo").onclick = sonidoCerdo;
-function sonidoCerdo() {
-    //Añadimos la clase .rota, además de tener .animal.
-    var cerdo = document.getElementById("cerdo");
-    cerdo.className += " rota";
-    //Añadimos el sonido del animal.
-    var sonido_cerdo = document.getElementById("cerdo");
-    sonido_cerdo.play("./sounds/cerdo.wav");
-}*/
+// -- Funciones para carousel flickity --
+export function cargarCarousels() {
+  try {
+    var carouselFli = $('.carouselFL');
+    if (typeof carouselFli !== 'undefined' && carouselFli !== 'null' && carouselFli !== null && carouselFli.length > 0) {
+      $('.carouselFL').flickity({
+        cellAlign: 'left',
+        freeScroll: false,
+        contain: true,
+        prevNextButtons: true,
+        pageDots: false,
+        wrapAround: true,
+        autoPlay: 2000
+      });
+      $('.carouselFL').flickity('resize');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

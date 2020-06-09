@@ -139,15 +139,14 @@ export class Util {
   getEnum(enumerado) {
     if (enumerado == this.enums.sino.cod) {
       return this.enums.sino.valores;
-    }
-    else if (enumerado == this.enums.sexo.cod) {
+    } else if (enumerado == this.enums.sexo.cod) {
       return this.enums.sexo.valores;
-    }
-    else if (enumerado == this.enums.tipoUsuario.cod) {
+    } else if (enumerado == this.enums.tipoUsuario.cod) {
       return this.enums.tipoUsuario.valores;
-    }
-    else if (enumerado == this.enums.tipoDocumento.cod) {
+    } else if (enumerado == this.enums.tipoDocumento.cod) {
       return this.enums.tipoDocumento.valores;
+    } else if (enumerado == this.enums.tipoUbicacion.cod) {
+      return this.enums.tipoUbicacion.valores;
     }
 
     else if (enumerado == null) {
@@ -455,10 +454,10 @@ export class Util {
       Object.assign(this.mensaje, mensaje);
       mensaje.severity = exc.mensaje.length > 0 ? this.const.severity[2] : this.const.severity[3];
       mensaje.summary = exc.mensaje.length > 0 ? "ADVERTENCIA: " : "ERROR: ";
-      mensaje.detail = exc.mensaje.length > 0 ? exc.mensaje : "No se ha podido establecer la conexión con el Servidor";
+      mensaje.detail = exc.mensaje.length > 0 ? exc.mensaje : "No se ha podido establecer la conexión con el Servidor en algun proceso interno";
     }
     else {
-      return { severity: this.const.severity[3], summary: 'ERROR: ', detail: 'No se ha podido establecer la conexión con el Servidor' }
+      return { severity: this.const.severity[3], summary: 'ERROR DESCONOCIDO: ', detail: 'No hay detalles del error' }
     }
 
     let audio = new Audio();

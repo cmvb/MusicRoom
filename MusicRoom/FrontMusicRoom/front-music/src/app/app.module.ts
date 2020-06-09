@@ -20,6 +20,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxUiLoaderConfig, NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { CalendarModule } from 'primeng/calendar';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { DeferModule } from 'primeng/defer';
 import { DragDropModule } from 'primeng/dragdrop';
 import { CarouselModule } from 'primeng/carousel';
@@ -166,6 +167,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MessageModule,
     TableModule,
     CalendarModule,
+    ProgressBarModule,
     ToastModule,
     TabMenuModule,
     InputTextareaModule,

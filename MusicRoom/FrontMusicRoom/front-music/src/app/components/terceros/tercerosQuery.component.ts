@@ -86,7 +86,7 @@ export class TercerosQueryComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
   }
 
   consultarTerceros() {

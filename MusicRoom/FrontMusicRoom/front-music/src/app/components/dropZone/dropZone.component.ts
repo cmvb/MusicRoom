@@ -334,7 +334,7 @@ export class DropZoneComponent implements OnInit {
             $('#' + idModal).toggleClass('modalVisible');
           }
 
-          inputFileImage.form.reset()
+          inputFileImage.form.reset();
 
           return true;
         }).catch(data => {

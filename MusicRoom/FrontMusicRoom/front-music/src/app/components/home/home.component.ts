@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
 
   limpiarExcepcion() {
     console.clear();
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
     this.msgs = [];
   }
 

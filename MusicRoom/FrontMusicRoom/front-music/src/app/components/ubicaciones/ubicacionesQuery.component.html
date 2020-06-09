@@ -49,6 +49,13 @@
                             </ng-select>
                           </span>
                         </div>
+                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_ubicacion_tipo_ubicacion}}</label>
+                          <span class="ui-float-label">
+                            <ng-select id="txtTipoUbicacion" [(ngModel)]="tipoUbicacionSeleccionada" [items]="enumFiltroTipoUbicacion">
+                            </ng-select>
+                          </span>
+                        </div>
                       </div>
 
                       <br />
@@ -98,4 +105,3 @@
   <!-- Importamos el Footer -->
   <app-footer></app-footer>
 </div>
-

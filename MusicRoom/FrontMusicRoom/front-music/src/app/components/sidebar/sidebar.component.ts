@@ -73,7 +73,7 @@ export class SidebarComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion;
+    this.ex = this.util.limpiarExcepcion();
     this.msgs = [];
   }
 

@@ -1,5 +1,6 @@
 package com.proyectos.dao.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,6 +98,12 @@ public class UbicacionDaoImpl extends AbstractDao<UbicacionTB> implements IUbica
 			JPQL.append("AND LOWER(t.codigoCiudad) = LOWER(:CIUDAD) ");
 			pamameters.put("CIUDAD", ubicacionFiltro.getCodigoCiudad());
 		}
+		// Q. Tipo Ubicación
+		if (ubicacionFiltro.getTipoUbicacion() >= 0) {
+			JPQL.append("AND t.tipoUbicacion = :TIPO_UBICACION ");
+			pamameters.put("TIPO_UBICACION", ubicacionFiltro.getTipoUbicacion());
+		}
+
 		// Q. Order By
 		JPQL.append(" ORDER BY t.idUbicacion");
 		// END QUERY
@@ -123,7 +130,47 @@ public class UbicacionDaoImpl extends AbstractDao<UbicacionTB> implements IUbica
 	@Override
 	public UbicacionTB modificar(UbicacionTB ubicacion) {
 		ubicacion = colocarValoresDefecto(ubicacion);
-		super.update(ubicacion);
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+		String fechaActualizaStr = sdf.format(ubicacion.getFechaActualiza());
+		ETipoUbicacion tipoUbicacionGuardar = ETipoUbicacion.values()[ubicacion.getTipoUbicacion()];
+
+		// Ubicacion Anterior
+		UbicacionTB ubicacionOld = this.consultarPorId(ubicacion.getIdUbicacion());
+
+		// Actualizar registros relacionados
+		StringBuilder SQL = new StringBuilder("UPDATE musicroom.mra_ubicacion_tb ");
+		SQL.append("SET usuario_actualiza = '" + ubicacion.getUsuarioActualiza() + "', ");
+		SQL.append("fecha_actualiza = '" + fechaActualizaStr + "', ");
+
+		switch (tipoUbicacionGuardar) {
+		case PAIS:
+			SQL.append("ubi_codigo_pais = '" + ubicacion.getCodigoPais() + "', ");
+			SQL.append("ubi_nombre_pais = '" + ubicacion.getNombrePais() + "' ");
+
+			SQL.append("WHERE LOWER(ubi_codigo_pais) = LOWER('" + ubicacionOld.getCodigoPais() + "') ");
+			SQL.append("AND LOWER(ubi_nombre_pais) = LOWER('" + ubicacionOld.getNombrePais() + "') ");
+
+			break;
+		case DEPARTAMENTO:
+			SQL.append("ubi_codigo_departamento = '" + ubicacion.getCodigoDepartamento() + "', ");
+			SQL.append("ubi_nombre_departamento = '" + ubicacion.getNombreDepartamento() + "' ");
+
+			SQL.append("WHERE LOWER(ubi_codigo_departamento) = LOWER('" + ubicacionOld.getCodigoDepartamento() + "') ");
+			SQL.append("AND LOWER(ubi_nombre_departamento) = LOWER('" + ubicacionOld.getNombreDepartamento() + "') ");
+
+			break;
+		case CIUDAD:
+			SQL.append("ubi_codigo_ciudad = '" + ubicacion.getCodigoCiudad() + "', ");
+			SQL.append("ubi_nombre_ciudad = '" + ubicacion.getNombreCiudad() + "' ");
+
+			SQL.append("WHERE LOWER(ubi_codigo_ciudad) = LOWER('" + ubicacionOld.getCodigoCiudad() + "') ");
+			SQL.append("AND LOWER(ubi_nombre_ciudad) = LOWER('" + ubicacionOld.getNombreCiudad() + "') ");
+
+			break;
+		}
+		int registrosActualizados = em.createNativeQuery(SQL.toString()).executeUpdate();
+
+		// super.update(ubicacion);
 		return ubicacion;
 	}
 
