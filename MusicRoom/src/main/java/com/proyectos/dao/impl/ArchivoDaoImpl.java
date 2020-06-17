@@ -24,9 +24,22 @@ public class ArchivoDaoImpl extends AbstractDao<ArchivoTB> implements IArchivoDa
 
 	@Override
 	public ArchivoTB guardarArchivo(ArchivoTB archivo) {
-		archivo = colocarValoresDefecto(archivo);
-		super.create(archivo);
-		return archivo;
+		if (this.transferirArchivoSFTP(archivo)) {
+			archivo = colocarValoresDefecto(archivo);
+			super.create(archivo);
+			return archivo;
+		} else {
+			return null;
+		}
+	}
+	
+	private boolean transferirArchivoSFTP(ArchivoTB archivo) {
+		boolean result = false;
+		// Transferir Archivo Vía SFTP al servidor (carpeta pública) donde se alojará
+		result = true;
+		
+		
+		return result;
 	}
 
 	@Override

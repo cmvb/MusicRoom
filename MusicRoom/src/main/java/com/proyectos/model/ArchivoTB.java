@@ -31,6 +31,10 @@ public class ArchivoTB extends BaseEntidadTB implements Serializable {
 	private String tipoArchivo;
 
 	@NotNull
+	@Column(name = "arc_ruta_archivo", nullable = false, length = 150)
+	private String rutaArchivo;
+
+	@NotNull
 	@Column(name = "arc_valor", nullable = false)
 	private byte[] valor;
 
@@ -56,6 +60,14 @@ public class ArchivoTB extends BaseEntidadTB implements Serializable {
 
 	public void setTipoArchivo(String tipoArchivo) {
 		this.tipoArchivo = tipoArchivo;
+	}
+
+	public String getRutaArchivo() {
+		return rutaArchivo;
+	}
+
+	public void setRutaArchivo(String rutaArchivo) {
+		this.rutaArchivo = rutaArchivo;
 	}
 
 	public byte[] getValor() {

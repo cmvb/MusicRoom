@@ -28,6 +28,20 @@ input {
   text-transform: uppercase;
 }
 
+input:focus{
+  border-bottom: 1px solid orange !important;
+  box-shadow: 0px 1px 1px #FFB300 !important;
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-input>input{
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container, .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  margin-top: -5px;
+}
+
 body .ui-inputtext{
   background: #ffffff !important;
   border: 1px solid #a6a6a6 !important;  
@@ -1141,6 +1155,28 @@ body .ui-dialog {
   border-radius: 50px;
   margin-top: 5px;
   min-width: 20px !important;
+}
+
+.info{
+  color: #6982fd !important;
+}
+
+.success{
+  color: #227522 !important;
+}
+
+.warning{
+  color: #ffe399 !important;
+}
+
+.error{
+  color:#d21717 !important;
+}
+
+.mdl-button--fab.mdl-button--mini-fab {
+  height: 40px;
+  min-width: 40px !important;
+  width: 40px;
 }
 
 // Estilos Msgs Info

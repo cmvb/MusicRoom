@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import com.proyectos.dao.IArchivoDao;
 import com.proyectos.dao.ISalaDao;
 import com.proyectos.dao.IUsuarioDao;
 import com.proyectos.model.SalaTB;
@@ -27,6 +28,9 @@ public class SalaServiceImpl implements ISalaService {
 
 	@Autowired
 	private ISalaDao salaDAO;
+	
+	@Autowired
+	private IArchivoDao archivoDAO;
 
 	@Autowired
 	private IUsuarioDao usuarioDAO;
@@ -49,6 +53,8 @@ public class SalaServiceImpl implements ISalaService {
 	@Transactional
 	@Override
 	public SalaTB crear(SalaTB sala) {
+		
+		
 		sala.setIdSala(salaDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_SALA_TB));
 		return salaDAO.crear(sala);
 	}

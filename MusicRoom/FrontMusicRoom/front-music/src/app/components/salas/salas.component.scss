@@ -27,7 +27,10 @@
 
 .imagenPrincipal{
     width: 100%;
-    height: 263px;
+    height: 246px;
+    padding: 2px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #c4c4c4;
 }
 
 .imagenSecundaria{
@@ -103,6 +106,9 @@
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    height: 250px;
+    margin-top: 5px;
+    cursor: pointer;
 }
 
 .espacio10px{
@@ -118,42 +124,69 @@
     cursor: pointer !important;
 }
 
+.order-card {
+    color: #424242;
+}
 
-.banner {
-    position: relative;
-    display: block;
-    width: 370px;
-    height: 60px;
-    border: 1px solid darkorange;
-    font: normal 30px/60px 'Rye';
-    text-align: center;
-    color: darkorange;
-    background: rgb(255,171,64);
-    border-radius: 4px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15) inset, 0 6px 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  .banner::before,
-  .banner::after {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    left: -70px;
-    top: 24px;
-    display: block;
-    width: 40px;
-    height: 0px;
-    border: 30px solid darkorange;
-    border-right: 20px solid darkorange;
-    border-bottom-color: rgb(255,171,64);
-    border-left-color: transparent;
-    transform: rotate(-5deg);
-  }
-  
-  .banner::after {
-    left: auto;
-    right: -70px;
-    border-left: 20px solid darkorange;
-    border-right: 30px solid transparent;
-    transform: rotate(5deg);
-  }
+.bg-c-blue {
+    background: linear-gradient(45deg,#4099ff,#73b4ff);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+}
+
+.bg-c-gray {
+    color: white;
+    background: linear-gradient(45deg, #000000, #222222);
+}
+
+.bg-c-orange {
+    color: #222222;
+    background: linear-gradient(45deg, #ffab40, rgb(255, 199, 128));
+}
+
+.bg-c-pink {
+    background: linear-gradient(45deg,#FF5370,#ff869a);
+}
+
+.card {
+    width: 100%;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    border: none;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+
+.card:hover {
+    box-shadow: 1px 1px 1px black;
+}
+
+.card .card-block {
+    padding: 10px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+.font-b-500 {
+    font-weight: 500 !important;
+}
+
+.font-bolder{
+    font-weight: bolder !important;
+}

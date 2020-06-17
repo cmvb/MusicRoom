@@ -171,7 +171,14 @@ export class DataObjects {
       codigo: '',
       descripcion: '',
       path: '',
-      subPath: ''
+      subPath: '',
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
     }
   }
 
@@ -180,7 +187,15 @@ export class DataObjects {
       idArchivo: '',
       nombreArchivo: '',
       tipoArchivo: '',
+      rutaArchivo: '',
       valor: '',
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
     }
   }
 
@@ -499,6 +514,7 @@ export class DataObjects {
       lbl_mtto_sala_2: idioma == constant.idiomaEs ? '2' : '2',
       lbl_mtto_sala_3: idioma == constant.idiomaEs ? '3' : '3',
       lbl_mtto_sala_4: idioma == constant.idiomaEs ? '4' : '4',
+      lbl_mtto_sala_escoger_foto: idioma == constant.idiomaEs ? 'Escoger Foto' : 'Choose Photo',
 
 
     }

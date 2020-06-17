@@ -50,6 +50,13 @@ export class SalasEditComponent implements OnInit {
 
   // Archivos
   imagenData: any;
+  labelEscogido: any;
+  acceptStr: any;
+  srcFotoPrincipal: any;
+  srcFoto1: any;
+  srcFoto2: any;
+  srcFoto3: any;
+  srcFoto4: any;
 
   // Constructor o Inicializador de Variables
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService, private sanitizer: DomSanitizer) {
@@ -63,6 +70,7 @@ export class SalasEditComponent implements OnInit {
     this.objeto.terceroTb = datasObject.getDataTercero();
     this.enums = datasObject.getEnumerados();
     this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
+    this.acceptStr = "image/*";
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -89,6 +97,36 @@ export class SalasEditComponent implements OnInit {
     this.objeto.foto2Tb.valor = null;
     this.objeto.foto3Tb.valor = null;
     this.objeto.foto4Tb.valor = null;
+
+    this.inicializarCombos();
+    this.activarFoto(0);
+  }
+
+  activarFoto(i) {
+    $('.seccionFoto').hide();
+    $('.card-af').removeClass('bg-c-orange');
+    switch (i.toString()) {
+      case '0':
+        $('#idActivarFotoPrincipal').addClass('bg-c-orange');
+        $('#sectionFotoPrincipal').show();
+        break;
+      case '1':
+        $('#idActivarFoto1').addClass('bg-c-orange');
+        $('#sectionFoto1').show();
+        break;
+      case '2':
+        $('#idActivarFoto2').addClass('bg-c-orange');
+        $('#sectionFoto2').show();
+        break;
+      case '3':
+        $('#idActivarFoto3').addClass('bg-c-orange');
+        $('#sectionFoto3').show();
+        break;
+      case '4':
+        $('#idActivarFoto4').addClass('bg-c-orange');
+        $('#sectionFoto4').show();
+        break;
+    }
   }
 
   dataGenericaArchivo() {
@@ -96,12 +134,20 @@ export class SalasEditComponent implements OnInit {
       idArchivo: '',
       nombreArchivo: '',
       tipoArchivo: '',
+      rutaArchivo: '',
       valor: '',
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
     };
   }
 
-  clickFileUpPrincipal() {
-    $('#fileUpPrincipal').click();
+  clickFileUp(id) {
+    $('#' + id).click();
   }
 
   onUpload(event, i) {
@@ -116,7 +162,7 @@ export class SalasEditComponent implements OnInit {
           let file = files[0];
           if (file !== null) {
             // Validaciones de archivo
-            if (this.validarArchivo(file, event.target.accept)) {
+            if (this.validarArchivo(file)) {
               // Si el tipo de archivo es aceptado
               let flag = false;
               switch (i.toString()) {
@@ -158,6 +204,9 @@ export class SalasEditComponent implements OnInit {
               }
 
               if (flag) {
+                if (flagDragAndDrop) {
+                  event.preventDefault();
+                }
                 this.sanitizarUrl(file, i, event);
               }
             }
@@ -183,13 +232,13 @@ export class SalasEditComponent implements OnInit {
     }
   }
 
-  validarArchivo(archivo: any, acceptStr) {
+  validarArchivo(archivo: any) {
     let valido = true;
     try {
       this.messageService.clear();
-      let flagRegex = acceptStr.includes('*');
-      let flagRegexOpc1 = flagRegex && archivo.type.toUpperCase().includes(acceptStr.toUpperCase().replace('*', ''));
-      let flagRegexOpc2 = !flagRegex && archivo.type.toUpperCase() === acceptStr.toUpperCase();
+      let flagRegex = this.acceptStr.includes('*');
+      let flagRegexOpc1 = flagRegex && archivo.type.toUpperCase().includes(this.acceptStr.toUpperCase().replace('*', ''));
+      let flagRegexOpc2 = !flagRegex && archivo.type.toUpperCase() === this.acceptStr.toUpperCase();
 
       // Validar Tipo
       if (!flagRegexOpc1 && !flagRegexOpc2) {
@@ -221,19 +270,24 @@ export class SalasEditComponent implements OnInit {
         let flag = false;
         switch (i.toString()) {
           case '0':
-            this.objeto.fotoPrincipalTb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            this.objeto.fotoPrincipalTb.valor = this.base64ToArrayBuffer(dato.toString());
+            this.srcFotoPrincipal = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
             break;
           case '1':
-            this.objeto.foto1Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            this.objeto.foto1Tb.valor = this.base64ToArrayBuffer(dato.toString());
+            this.srcFoto1 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
             break;
           case '2':
-            this.objeto.foto2Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            this.objeto.foto2Tb.valor = this.base64ToArrayBuffer(dato.toString());
+            this.srcFoto2 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
             break;
           case '3':
-            this.objeto.foto3Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            this.objeto.foto3Tb.valor = this.base64ToArrayBuffer(dato.toString());
+            this.srcFoto3 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
             break;
           case '4':
-            this.objeto.foto4Tb.valor = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+            this.objeto.foto4Tb.valor = this.base64ToArrayBuffer(dato.toString());
+            this.srcFoto4 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
             break;
         }
 
@@ -254,28 +308,33 @@ export class SalasEditComponent implements OnInit {
 
   irGuardar() {
     try {
-      this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerSala + (this.phase === this.const.phaseAdd ? 'crearSala' : 'modificarSala');
-      this.ajustarCombos();
-      let obj = this.objeto;
+      if (this.objeto.fotoPrincipalTb.valor != null) {
+        this.limpiarExcepcion();
+        let url = this.const.urlRestService + this.const.urlControllerSala + (this.phase === this.const.phaseAdd ? 'crearSala' : 'modificarSala');
+        this.ajustarCombos();
+        let obj = this.objeto;
 
-      this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
-        .subscribe(resp => {
-          console.log(resp, "res");
-          this.data = resp;
-          let mensajeConfirmacion = 'La Sala #' + this.data.idSala + ' fue ' + (this.phase === this.const.phaseAdd ? 'creada' : 'actualizada') + ' satisfactoriamente.';
-          this.util.agregarSesionXItem([{ item: 'mensajeConfirmacion', valor: mensajeConfirmacion }]);
-          this.irAtras();
-        },
-          error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
-            this.messageService.clear();
-            this.messageService.add(mensaje);
+        this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
+          .subscribe(resp => {
+            console.log(resp, "res");
+            this.data = resp;
+            let mensajeConfirmacion = 'La Sala #' + this.data.idSala + ' fue ' + (this.phase === this.const.phaseAdd ? 'creada' : 'actualizada') + ' satisfactoriamente.';
+            this.util.agregarSesionXItem([{ item: 'mensajeConfirmacion', valor: mensajeConfirmacion }]);
+            this.irAtras();
+          },
+            error => {
+              this.ex = error.error;
+              let mensaje = this.util.mostrarNotificacion(this.ex);
+              this.messageService.clear();
+              this.messageService.add(mensaje);
 
-            this.inicializarCombos();
-            console.log(error, "error");
-          })
+              this.inicializarCombos();
+              console.log(error, "error");
+            });
+      } else {
+        this.messageService.clear();
+        this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_seleccione_archivo_para_subir });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -290,15 +349,25 @@ export class SalasEditComponent implements OnInit {
     else {
       this.objeto.terceroTb = {};
     }
-    this.objeto.fotoPrincipalTb.tipoArchivo = this.objeto.fotoPrincipalTb.tipoArchivo.value;
-    this.objeto.foto1Tb.tipoArchivo = this.objeto.foto1Tb.tipoArchivo.value;
-    this.objeto.foto2Tb.tipoArchivo = this.objeto.foto2Tb.tipoArchivo.value;
-    this.objeto.foto3Tb.tipoArchivo = this.objeto.foto3Tb.tipoArchivo.value;
-    this.objeto.foto4Tb.tipoArchivo = this.objeto.foto4Tb.tipoArchivo.value;
+  }
+
+  base64ToArrayBuffer(base64) {
+    try {
+      var binary_string = window.atob(base64);
+      var len = binary_string.length;
+      var bytes = new Uint8Array(len);
+      for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+      }
+
+      return bytes.buffer;
+    } catch (e) {
+      return '';
+    }
   }
 
   inicializarCombos() {
-    this.objeto.estado = this.util.getValorEnumerado(this.enumSiNo, this.objeto.estado);
+    this.objeto.estado = this.util.getValorEnumerado(this.enumSiNo, this.objeto.estado.value);
   }
 
   irAtras() {
