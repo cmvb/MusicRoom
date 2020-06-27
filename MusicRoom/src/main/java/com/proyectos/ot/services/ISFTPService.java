@@ -23,7 +23,7 @@ public interface ISFTPService {
 	/**
 	 * Método para guardar un archivo físico en el Servidor SFTP
 	 */
-	public boolean guardarArchivoServidor(byte[] bytesFile, String rutaSftp);
+	public boolean guardarArchivoServidor(byte[] bytesFile, String rutaLocal, String rutaSftp);
 
 	/**
 	 * Método para borrar un archivo guardado en el Servidor SFTP

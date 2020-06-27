@@ -1,4 +1,4 @@
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { Util } from '../Util';
 import { DataObjects } from '../ObjectGeneric';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';

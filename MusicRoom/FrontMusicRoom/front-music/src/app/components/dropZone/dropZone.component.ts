@@ -1,4 +1,4 @@
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { Util } from '../Util';
 import { DataObjects } from '../ObjectGeneric';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
@@ -101,7 +101,6 @@ export class DropZoneComponent implements OnInit {
   }
 
   public onUploadError(args: any): void {
-    debugger;
     console.log('onUploadError:', args);
   }
 
@@ -110,7 +109,6 @@ export class DropZoneComponent implements OnInit {
   }
 
   importar(objetoFile): Observable<Response> {
-    debugger;
     return this.http.post(this.apiUrl, objetoFile, this.options);
   }
 
@@ -166,7 +164,6 @@ export class DropZoneComponent implements OnInit {
             let i = 1;
             temporal.errores.forEach(function (linea) {
               console.log(linea);
-              debugger;
               salida = salida + linea + '\n';
               i++;
             });
@@ -297,7 +294,6 @@ export class DropZoneComponent implements OnInit {
             let i = 1;
             temporal.errores.forEach(function (linea) {
               console.log(linea);
-              debugger;
               salida = salida + linea + '\n';
               i++;
             });

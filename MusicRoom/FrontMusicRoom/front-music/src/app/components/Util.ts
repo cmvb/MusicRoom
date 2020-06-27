@@ -61,11 +61,11 @@ export class Util {
   }
 
   readOnlyXphase(listaPhases) {
-    if (listaPhases == null || listaPhases.length <= 0) {
+    if (listaPhases === null || listaPhases.length <= 0) {
       return false;
     }
     for (let item in listaPhases) {
-      if (listaPhases[item].toString().toUpperCase() == JSON.parse(localStorage.getItem('phase').toString().toUpperCase())) {
+      if (listaPhases[item].toString().toUpperCase() === JSON.parse(localStorage.getItem('phase').toString().toUpperCase())) {
         return true;
       }
     }
@@ -78,11 +78,11 @@ export class Util {
   }
 
   visebleXphase(listaPhases) {
-    if (listaPhases == null || listaPhases.length <= 0) {
+    if (listaPhases === null || listaPhases.length <= 0) {
       return false;
     }
     for (let item in listaPhases) {
-      if (listaPhases[item].toString().toUpperCase() == JSON.parse(localStorage.getItem('phase').toString().toUpperCase())) {
+      if (listaPhases[item].toString().toUpperCase() === JSON.parse(localStorage.getItem('phase').toString().toUpperCase())) {
         return true;
       }
     }
@@ -97,7 +97,7 @@ export class Util {
   }
 
   limpiarSesionXItem(listaItems) {
-    if (listaItems == null || listaItems.length <= 0) {
+    if (listaItems === null || listaItems.length <= 0) {
       return false;
     }
     for (let item in listaItems) {
@@ -108,7 +108,7 @@ export class Util {
 
   // Subir variables a la sesión
   agregarSesionXItem(listaItems) {
-    if (listaItems == null || listaItems.length <= 0) {
+    if (listaItems === null || listaItems.length <= 0) {
       return false;
     }
     listaItems.forEach(function (element, index) {
@@ -128,7 +128,7 @@ export class Util {
 
   // Bajar variables a la sesión
   getSesionXItem(item) {
-    if (item == null) {
+    if (item === null) {
       return null;
     }
 
@@ -137,19 +137,19 @@ export class Util {
   }
 
   getEnum(enumerado) {
-    if (enumerado == this.enums.sino.cod) {
+    if (enumerado === this.enums.sino.cod) {
       return this.enums.sino.valores;
-    } else if (enumerado == this.enums.sexo.cod) {
+    } else if (enumerado === this.enums.sexo.cod) {
       return this.enums.sexo.valores;
-    } else if (enumerado == this.enums.tipoUsuario.cod) {
+    } else if (enumerado === this.enums.tipoUsuario.cod) {
       return this.enums.tipoUsuario.valores;
-    } else if (enumerado == this.enums.tipoDocumento.cod) {
+    } else if (enumerado === this.enums.tipoDocumento.cod) {
       return this.enums.tipoDocumento.valores;
-    } else if (enumerado == this.enums.tipoUbicacion.cod) {
+    } else if (enumerado === this.enums.tipoUbicacion.cod) {
       return this.enums.tipoUbicacion.valores;
     }
 
-    else if (enumerado == null) {
+    else if (enumerado === null) {
       return false;
     }
     return false;
@@ -169,7 +169,7 @@ export class Util {
   getEmunName(enumerado, id) {
     let name = '';
     enumerado.forEach(function (obj) {
-      if (obj.value == id) {
+      if (obj.value === id) {
         name = obj.label;
       }
     })
@@ -181,7 +181,7 @@ export class Util {
 
     for (var key in enumerado) {
       let obj = enumerado[key];
-      if (obj.value == id) {
+      if (obj.value === id) {
         valor = enumerado[key];
         break;
       }
@@ -190,119 +190,9 @@ export class Util {
     return valor;
   }
 
-  validaciones(objeto, path) {
-    let flag = true;
-    let texto = '';
-
-    if (path == 'usuario') {
-      if (objeto.nombre.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[First Name] ';
-      }
-      if (objeto.apellido.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Last Name] ';
-      }
-      if (objeto.usuario.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[User] ';
-      }
-      if (objeto.email.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Email] ';
-      }
-
-      if (objeto.swAdministrador.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Admin] ';
-      }
-      if (objeto.swActivo.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Active] ';
-      }
-      if (objeto.estado.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[State] ';
-      }
-      if (objeto.rol.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Role] ';
-      }
-    }
-    else if (path == 'articulo') {
-      if (objeto.titulo.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Title] ';
-      }
-      if (objeto.resumen.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Summary] ';
-      }
-      if (objeto.autor.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Author] ';
-      }
-      if (objeto.tags.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Tags] ';
-      }
-      if (typeof objeto.date != 'undefined') {
-        if (objeto.date.toString().length <= 0) {
-          flag = false;
-          texto = texto + '[Date] ';
-        }
-      }
-      else {
-        flag = false;
-        texto = texto + '[Date] ';
-      }
-      if (typeof objeto.time != 'undefined') {
-        if (objeto.time.toString().length <= 0) {
-          flag = false;
-          texto = texto + '[Time] ';
-        }
-      }
-      else {
-        flag = false;
-        texto = texto + '[Time] ';
-      }
-    }
-    else if (path == 'categoria') {
-      if (objeto.descripcion.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Description] ';
-      }
-    }
-    else if (path == 'personal') {
-      if (objeto.nombre.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[First Name] ';
-      }
-      if (objeto.apellido.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Last Name] ';
-      }
-      if (objeto.clave.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Password] ';
-      }
-      if (objeto.email.toString().length <= 0) {
-        flag = false;
-        texto = texto + '[Email] ';
-      }
-    }
-
-    if (!flag) {
-      texto = texto + '-> Empty Values.';
-      this.ocultarMostrarModal(this.const.idModal.warning, texto);
-    }
-
-    return flag;
-  }
-
   //mostrar o ocultar un modal
   ocultarMostrarModal(idModal, cuerpoModal) {
-    if (cuerpoModal != null) {
+    if (cuerpoModal !== null) {
       this.cambiarTextoModal(idModal, cuerpoModal)
     }
     this.classToggleModalParam(idModal);
@@ -359,7 +249,6 @@ export class Util {
   }
 
   abrirDropButton(event) {
-    debugger;
     let element = $(event.target);
 
     while (element.get(0).tagName.toString().toUpperCase() !== 'BUTTON') {
@@ -397,7 +286,7 @@ export class Util {
     let enumerado = [];
     for (let i in lista) {
       let ubicacion = lista[i];
-      let nombreUbicacion = tipoUbicacion == 0 ? ubicacion.nombrePais : (tipoUbicacion == 1 ? ubicacion.nombreDepartamento + ' - (' + ubicacion.nombrePais + ')' : ubicacion.nombreCiudad + ' - (' + ubicacion.nombreDepartamento + ')');
+      let nombreUbicacion = tipoUbicacion === 0 ? ubicacion.nombrePais : (tipoUbicacion === 1 ? ubicacion.nombreDepartamento + ' - (' + ubicacion.nombrePais + ')' : ubicacion.nombreCiudad + ' - (' + ubicacion.nombreDepartamento + ')');
       let enumObj = { value: ubicacion, label: nombreUbicacion };
       enumerado.push(enumObj);
     }
@@ -422,7 +311,7 @@ export class Util {
   armarTabla(cabeceras, lista) {
     let cols = [];
 
-    if (lista != null && lista.length > 0) {
+    if (lista !== null && lista.length > 0) {
       let rows = Object.keys(lista[0]);
       for (let j in rows) {
         for (let c in cabeceras) {
@@ -445,19 +334,35 @@ export class Util {
 
   // Funcion que muestra notificaciones de errores, advertencias o informativos
   mostrarNotificacion(exc) {
-    let mensaje = { severity: '', summary: '', detail: '' };
-    if (exc != null) {
-      if (exc.mensaje == null || exc.mensaje === undefined) {
-        exc.mensaje = "";
-      }
+    let listaMensajes: any = [];
+    if (exc !== null && exc.mensaje !== null && typeof exc.mensaje !== 'undefined' && exc.mensaje.length > 0) {
+      let title = exc.mensaje.split(":")[0];
+      let validaciones = exc.mensaje.split(":")[1].split("<br>");
 
-      Object.assign(this.mensaje, mensaje);
-      mensaje.severity = exc.mensaje.length > 0 ? this.const.severity[2] : this.const.severity[3];
-      mensaje.summary = exc.mensaje.length > 0 ? "ADVERTENCIA: " : "ERROR: ";
-      mensaje.detail = exc.mensaje.length > 0 ? exc.mensaje : "No se ha podido establecer la conexión con el Servidor en algun proceso interno";
+      let mensajeTitulo = { severity: '', summary: '', detail: '' };
+      Object.assign(this.mensaje, mensajeTitulo);
+      mensajeTitulo.severity = title.length > 0 ? this.const.severity[2] : this.const.severity[3];
+      mensajeTitulo.summary = title.length > 0 ? this.msg.lbl_summary_warning : this.msg.lbl_summary_unknown_danger;
+      mensajeTitulo.detail = title.length > 0 ? title : this.msg.lbl_mensaje_sin_detalles_error;
+      listaMensajes.push(mensajeTitulo);
+
+      for (let valid of validaciones) {
+        let validacion = valid.trim();
+        if (validacion.length > 0) {
+          let campo = validacion.split("-")[0];
+          let mensaje = validacion.split("-")[1];
+
+          let msgValidacion = { severity: '', summary: '', detail: '' };
+          Object.assign(this.mensaje, msgValidacion);
+          msgValidacion.severity = mensajeTitulo.severity;
+          msgValidacion.summary = campo;
+          msgValidacion.detail = mensaje;
+          listaMensajes.push(msgValidacion);
+        }
+      }
     }
     else {
-      return { severity: this.const.severity[3], summary: 'ERROR DESCONOCIDO: ', detail: 'No hay detalles del error' }
+      return [{ severity: this.const.severity[3], summary: this.msg.lbl_summary_danger, detail: this.msg.lbl_mensaje_no_conexion_servidor }];
     }
 
     let audio = new Audio();
@@ -465,7 +370,7 @@ export class Util {
     audio.load();
     audio.play();
 
-    return mensaje;
+    return listaMensajes;
   }
 
   // Reproducir sonido error
@@ -491,7 +396,7 @@ export class Util {
     let ubicacion: any;
     for (let i in listaUbicaciones) {
       let ubi = listaUbicaciones[i];
-      if (ubi.idUbicacion == idUbicacionEnum) {
+      if (ubi.idUbicacion === idUbicacionEnum) {
         ubicacion = ubi;
         break;
       }
@@ -507,22 +412,22 @@ export class Util {
     for (let i in listaUbicaciones) {
       let ubi = listaUbicaciones[i];
 
-      if (tipoUbicacion == 0) {
-        if (ubi.codigoPais == codigoUbicacion) {
+      if (tipoUbicacion === 0) {
+        if (ubi.codigoPais === codigoUbicacion) {
           label = ubi.nombrePais;
           ubicacion = ubi;
           break;
         }
       }
-      else if (tipoUbicacion == 1) {
-        if (ubi.codigoDepartamento == codigoUbicacion) {
+      else if (tipoUbicacion === 1) {
+        if (ubi.codigoDepartamento === codigoUbicacion) {
           label = ubi.nombreDepartamento;
           ubicacion = ubi;
           break;
         }
       }
-      else if (tipoUbicacion == 2) {
-        if (ubi.codigoCiudad == codigoUbicacion) {
+      else if (tipoUbicacion === 2) {
+        if (ubi.codigoCiudad === codigoUbicacion) {
           label = ubi.nombreCiudad;
           ubicacion = ubi;
           break;
@@ -537,7 +442,7 @@ export class Util {
     let tercero: any;
     for (let i in listaTerceros) {
       let ter = listaTerceros[i];
-      if (ter.idTercero == idTerceroEnum) {
+      if (ter.idTercero === idTerceroEnum) {
         tercero = ter;
         break;
       }

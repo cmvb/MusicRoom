@@ -3,7 +3,7 @@ import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { RestService } from '../../services/rest.service';
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
@@ -270,7 +270,10 @@ export class SalasEditComponent implements OnInit {
         let flag = false;
         switch (i.toString()) {
           case '0':
-            this.objeto.fotoPrincipalTb.valor = this.base64ToArrayBuffer(dato.toString());
+            //let byteArr = this.str2ByteArr(dato.toString());
+            //let x = this.base64ToArrayBuffer(this.arrayBufferToBase64(byteArr));
+            this.objeto.fotoPrincipalTb.valor = this.str2ByteArr(dato.toString());
+            //this.objeto.fotoPrincipalTb.valor = this.base64ToArrayBuffer(dato.toString());
             this.srcFotoPrincipal = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
             break;
           case '1':
@@ -351,11 +354,31 @@ export class SalasEditComponent implements OnInit {
     }
   }
 
+  arrayBufferToBase64(buffer) {
+    let binary = '';
+    let bytes = new Uint8Array(buffer);
+    let len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+
+  str2ByteArr(str) {
+    let bytes = [];
+
+    for (let i = 0; i < str.length; ++i) {
+      bytes.push(str.charCodeAt(i));
+      bytes.push(0);
+    }
+    return bytes;
+  }
+
   base64ToArrayBuffer(base64) {
     try {
-      var binary_string = window.atob(base64);
-      var len = binary_string.length;
-      var bytes = new Uint8Array(len);
+      let binary_string = window.atob(base64);
+      let len = binary_string.length;
+      let bytes = new Uint8Array(len);
       for (var i = 0; i < len; i++) {
         bytes[i] = binary_string.charCodeAt(i);
       }

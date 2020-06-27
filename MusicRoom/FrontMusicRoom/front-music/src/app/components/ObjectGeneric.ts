@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 export var HOST = 'http://localhost:9002';
+//export var HOST = 'http://10.176.56.211:9002';
 //export var HOST = 'http://10.108.2.66:9002';
 //export var HOST = 'http://192.168.1.15:9002';
 //export var HOST = 'http://185.224.139.43:9002/music-room';
 
 export var SYSTEM = 'http://localhost:4200';
+//export var SYSTEM = 'http://10.176.56.211:7001';
 //export var SYSTEM = 'http://10.108.2.66:4200';
 //export var SYSTEM = 'http://192.168.1.15:4200';
 //export var SYSTEM = 'http://185.224.139.43:8080/music-room';
@@ -337,6 +339,7 @@ export class DataObjects {
       lbl_summary_success: idioma == constant.idiomaEs ? '¡Exitoso!' : 'Success!',
       lbl_summary_warning: idioma == constant.idiomaEs ? '¡Advertencia!' : 'Warning!',
       lbl_summary_danger: idioma == constant.idiomaEs ? '¡Error!' : 'Error!',
+      lbl_summary_unknown_danger: idioma == constant.idiomaEs ? '¡Error Desconocido!' : 'Unknown Error!',
 
       // Generales
       lbl_info_sin_resultados: idioma == constant.idiomaEs ? 'Sin Resultados' : 'Without Results',
@@ -369,6 +372,9 @@ export class DataObjects {
       lbl_mensaje_tipo_archivos_permitidos_detalle: idioma == constant.idiomaEs ? 'El tipo del archivo no es permitido. Se permiten {0}.' : 'The file type is not allowed. Allowed file types {0}.',
       lbl_mensaje_archivo_no_subido: idioma == constant.idiomaEs ? 'El archivo no pudo ser procesado.' : 'The file could not be processed.',
       lbl_mensaje_seleccione_archivo_para_subir: idioma == constant.idiomaEs ? 'Seleccione un archivo.' : 'Select a file.',
+      lbl_mensaje_no_conexion_servidor: idioma == constant.idiomaEs ? 'No se ha podido establecer la conexión con el Servidor en algun proceso interno' : 'The connection to the Server could not be established in some internal process',
+      lbl_mensaje_login_invalido: idioma == constant.idiomaEs ? 'El Usuario y/o la Contraseña son incorrectos' : 'The User and/or Password are incorrect',
+      lbl_mensaje_sin_detalles_error: idioma == constant.idiomaEs ? 'No hay detalles del error' : 'No error details',
 
       // Modales
       lbl_info_titulo_modal_error: idioma == constant.idiomaEs ? 'ERROR' : 'ERROR',

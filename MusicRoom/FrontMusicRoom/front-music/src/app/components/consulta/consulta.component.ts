@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
 

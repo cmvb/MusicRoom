@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { DataObjects } from '../.././components/ObjectGeneric';
 import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { bypassSanitizationTrustResourceUrl } from '@angular/core/src/sanitization/bypass';
 
 declare var $: any;
 

@@ -3,7 +3,7 @@ import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { RestService } from '../../services/rest.service';
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
@@ -71,7 +71,7 @@ export class UsuarioQueryComponent implements OnInit {
     if (this.util.getSesionXItem('mensajeConfirmacion') != null) {
       let mensajeConfirmacion = JSON.parse(localStorage.getItem('mensajeConfirmacion'));
       this.messageService.clear();
-      this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: mensajeConfirmacion });
+      this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: mensajeConfirmacion });
       this.ex.mensaje = mensajeConfirmacion;
     }
   }
@@ -137,7 +137,7 @@ export class UsuarioQueryComponent implements OnInit {
           this.limpiar();
           this.consultarUsuarios();
           this.messageService.clear();
-          this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: 'El Usuario fue eliminado satisfactoriamente.' });
+          this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: 'El Usuario fue eliminado satisfactoriamente.' });
           this.ex.mensaje = 'El Usuario fue eliminado satisfactoriamente.';
         },
           error => {

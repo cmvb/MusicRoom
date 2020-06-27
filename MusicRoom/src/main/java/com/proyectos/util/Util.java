@@ -991,20 +991,6 @@ public abstract class Util {
 		}
 		if (sala.getFotoPrincipalTb() == null) {
 			errores.add(PropertiesUtil.getProperty("lbl_mtto_sala_foto_principal") + VALOR_INCORRECTO);
-		} else {
-			// Validar archivo foto principal
-		}
-		if (sala.getFoto1Tb() != null) {
-			// Validar archivo foto 1
-		}
-		if (sala.getFoto2Tb() != null) {
-			// Validar archivo foto 2
-		}
-		if (sala.getFoto3Tb() != null) {
-			// Validar archivo foto 3
-		}
-		if (sala.getFoto4Tb() != null) {
-			// Validar archivo foto 4
 		}
 
 		return errores;

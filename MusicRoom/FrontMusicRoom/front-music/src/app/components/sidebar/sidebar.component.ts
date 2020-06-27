@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { DataObjects } from '../.././components/ObjectGeneric';
 import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';

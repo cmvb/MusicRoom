@@ -18,8 +18,7 @@ export class LoginGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    //let LOCALHOST = 'http://localhost:4200/';
-    let LOCALHOST = 'http://185.224.139.43:8080/music-room';
+    let LOCALHOST = 'localhost:7001/';
 
 
     let URLactual = window.location.href;

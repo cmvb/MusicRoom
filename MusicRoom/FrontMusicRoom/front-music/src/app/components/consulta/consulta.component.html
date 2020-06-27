@@ -15,7 +15,7 @@
 		<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad floatRight hidden-sm">
 			<mdl-icon class="floatRight textRight">search</mdl-icon>
 			<input class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad inputTabla floatRight" type="text"
-				pInputText size="50" placeholder="Filtrar..." (input)="dt.filterGlobal($event.target.value, 'contains')"
+				pInputText size="50" (input)="dt.filterGlobal($event.target.value, 'contains')"
 				style="width:90%">
 		</div>
 	</ng-template>

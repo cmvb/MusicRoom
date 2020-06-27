@@ -36,9 +36,5 @@ public interface ISalaService {
 	 */
 	public void eliminar(long idSala);
 
-	/*
-	 * Metodo de prueba para generar un reporte
-	 */
-	public byte[] generarReporteEJM(String nombreArchivoJasper);
 
 }

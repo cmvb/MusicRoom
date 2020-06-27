@@ -1,5 +1,6 @@
 // Imports de Material
 import { MdlModule } from '@angular-mdl/core';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -96,8 +97,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   "hasProgressBar": true,
   "text": "",
   "textColor": "#FFFFFF",
-  "textPosition": "center-center",
-  "threshold": 500
+  "textPosition": "center-center"
 };
 
 
@@ -177,7 +177,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     StepsModule,
     PdfViewerModule
   ],
-  providers: [DataObjects, LoginGuard, Util, Functions],
+  providers: [DataObjects, LoginGuard, Util, Functions, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

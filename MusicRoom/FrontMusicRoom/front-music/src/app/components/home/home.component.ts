@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { DataObjects } from '../.././components/ObjectGeneric';
 import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
+import { MessageService } from 'primeng/api';
 
 declare var $: any;
 
@@ -12,7 +13,7 @@ declare var $: any;
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [RestService]
+  providers: [RestService, MessageService]
 })
 
 export class HomeComponent implements OnInit {
@@ -23,7 +24,6 @@ export class HomeComponent implements OnInit {
   // Objetos de Datos
   ex: any;
   usuario: any;
-  msgs = [];
   logueado: boolean;
 
   // Utilidades
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   msg: any;
   const: any;
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
     this.usuario = datasObject.getDataUsuario();
     this.sesion = datasObject.getDataSesion();
     this.ex = datasObject.getDataException();
@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
   limpiarExcepcion() {
     console.clear();
     this.ex = this.util.limpiarExcepcion();
-    this.msgs = [];
+    this.messageService.clear();
   }
 
   login() {
@@ -62,20 +62,32 @@ export class HomeComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'login';
       let urlAuth = this.const.urlRestOauth;
       let obj = this.usuario;
-      
-      this.restService.postOauthREST(urlAuth, this.usuario.usuario, this.usuario.password)
-      .subscribe(resp => {
-        if (resp) {
-          let token = JSON.stringify(resp);
-          sessionStorage.setItem(this.const.tokenNameAUTH, token);
-        }
-      }, 
-      error => {
-        this.ex = error.error;
-        this.msgs.push(this.util.mostrarNotificacion(this.ex));
-        console.log(error, "error");
-      });
 
+      this.restService.postOauthREST(urlAuth, this.usuario.usuario, this.usuario.password)
+        .subscribe(resp => {
+          if (resp) {
+            let token = JSON.stringify(resp);
+            sessionStorage.setItem(this.const.tokenNameAUTH, token);
+            this.loguear(url, obj);
+          }
+        },
+          error => {
+            debugger;
+            if (error.error.error === 'invalid_grant' && error.error.error_description === 'Bad credentials') {
+              this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_login_invalido });
+            } else {
+              this.messageService.add({ severity: this.const.severity[3], summary: this.msg.lbl_summary_danger, detail: this.msg.lbl_mensaje_no_conexion_servidor });
+            }
+
+            console.log(error, "error");
+          });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  loguear(url, obj) {
+    try {
       this.restService.postREST(url, obj)
         .subscribe(resp => {
           console.log(resp, "res");
@@ -84,11 +96,12 @@ export class HomeComponent implements OnInit {
           // Procesamiento o Lógica Específica
           this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
           this.irDashboard();
-        }, 
+        },
           error => {
-            this.msgs = [];
             this.ex = error.error;
-            this.msgs.push(this.util.mostrarNotificacion(this.ex));
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.add(mensaje);
+
             console.log(error, "error");
           });
     } catch (e) {

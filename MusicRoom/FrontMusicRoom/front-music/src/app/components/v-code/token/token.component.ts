@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MenuItem, MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { DataObjects } from '../../.././components/ObjectGeneric';
 import { Util } from '../../.././components/Util';
 import { RestService } from '../../.././services/rest.service';
-import { debug } from 'util';
+
 
 declare var $: any;
 
@@ -116,7 +116,7 @@ export class TokenComponent implements OnInit {
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       },
@@ -136,7 +136,7 @@ export class TokenComponent implements OnInit {
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       },
@@ -158,7 +158,7 @@ export class TokenComponent implements OnInit {
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       }
@@ -240,7 +240,7 @@ export class TokenComponent implements OnInit {
 
       this.restService.getREST(url)
         .subscribe(resp => {
-          this.messageService.add({ severity: this.const.severity[0], summary: "INFORMACIÓN: ", detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
+          this.messageService.add({ severity: this.const.severity[0], summary: this.msg.lbl_summary_info, detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
         });
 
     } catch (e) {

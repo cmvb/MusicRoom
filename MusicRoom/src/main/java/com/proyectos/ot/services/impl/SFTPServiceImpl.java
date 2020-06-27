@@ -2,7 +2,7 @@
 package com.proyectos.ot.services.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,15 +66,17 @@ public class SFTPServiceImpl implements ISFTPService {
 	}
 
 	@Override
-	public boolean guardarArchivoServidor(byte[] bytesFile, String rutaSftp) {
+	public boolean guardarArchivoServidor(byte[] bytesFile, String rutaLocal, String rutaSFTP) {
 		boolean resultado = false;
 		try {
 			if (this.channelSftp != null) {
-				File f = new File(rutaSftp);
-				FileInputStream fis = new FileInputStream(f);
-				fis.read(bytesFile);
-				this.channelSftp.put(fis, rutaSftp);
+				File file = new File(rutaLocal);
+				FileOutputStream fos = new FileOutputStream(file);
+				fos.write(bytesFile);
+				this.borrarArchivoServidor(rutaSFTP);
+				this.channelSftp.put(rutaLocal, rutaSFTP);
 				resultado = true;
+				file.delete();
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -151,11 +153,8 @@ public class SFTPServiceImpl implements ISFTPService {
 		boolean resultado = false;
 		try {
 			if (this.channelSftp != null) {
-				SftpATTRS stat = this.channelSftp.stat(rutaSFTP);
-				if (stat == null) {
-					this.channelSftp.mkdir(rutaSFTP);
-					resultado = true;
-				}
+				this.channelSftp.mkdir(rutaSFTP);
+				resultado = true;
 			}
 		} catch (SftpException e) {
 			System.out.println(e.getMessage());

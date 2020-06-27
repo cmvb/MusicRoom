@@ -3,7 +3,7 @@ import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators'
 import { RestService } from '../../services/rest.service';
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
@@ -101,7 +101,7 @@ export class UbicacionesQueryComponent implements OnInit {
     if (this.util.getSesionXItem('mensajeConfirmacion') != null) {
       let mensajeConfirmacion = JSON.parse(localStorage.getItem('mensajeConfirmacion'));
       this.messageService.clear();
-      this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: mensajeConfirmacion });
+      this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: mensajeConfirmacion });
       this.ex.mensaje = mensajeConfirmacion;
     }
   }
@@ -267,7 +267,7 @@ export class UbicacionesQueryComponent implements OnInit {
           this.limpiar();
           this.consultarUbicaciones();
           this.messageService.clear();
-          this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: 'La Ubicación fue eliminada satisfactoriamente.' });
+          this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: 'La Ubicación fue eliminada satisfactoriamente.' });
           this.ex.mensaje = 'La Ubicación fue eliminada satisfactoriamente.';
         },
           error => {
