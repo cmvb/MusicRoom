@@ -26,9 +26,24 @@ public interface ISFTPService {
 	public boolean guardarArchivoServidor(byte[] bytesFile, String rutaLocal, String rutaSftp);
 
 	/**
+	 * Método para guardar un inputStream en el Servidor SFTP
+	 */
+	public boolean guardarArchivoServidor(InputStream inputStreamFile, String rutaSFTP);
+
+	/**
+	 * Método para mover un archivo en el Servidor SFTP de un directorio a otro
+	 */
+	public boolean moverArchivoServidor(String rutaOrigenSFTP, String rutaDestinoSFTP);
+
+	/**
 	 * Método para borrar un archivo guardado en el Servidor SFTP
 	 */
 	public boolean borrarArchivoServidor(String rutaServidor);
+
+	/**
+	 * Método para borrar un directorio guardado en el Servidor SFTP
+	 */
+	public void borrarDirectorioServidor(String rutaServidor);
 
 	/**
 	 * Método para descargar un archivo directamente de un Servidor SFTP

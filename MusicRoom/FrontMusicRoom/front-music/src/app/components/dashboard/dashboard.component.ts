@@ -17,6 +17,7 @@ declare var $: any;
   providers: [RestService, MessageService]
 })
 export class DashboardComponent implements OnInit {
+  ACCESS_TOKEN: any;
   availableCars: any[];
   selectedCars: any[];
   draggedCar: any;
@@ -56,6 +57,7 @@ export class DashboardComponent implements OnInit {
     this.util = util;
     this.srcImg = 'assets/images/icons/';
     this.selectedFiles = undefined;
+    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
   }
 
   ngOnInit() {
@@ -98,11 +100,6 @@ export class DashboardComponent implements OnInit {
     }
     return index;
   }
-
-
-
-
-
 
   limpiarExcepcion() {
     this.ex = this.util.limpiarExcepcion();
@@ -183,7 +180,7 @@ export class DashboardComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerReporte + 'guardarArchivo';
       let obj = this.currentFileUpload;
 
-      this.restService.postFileREST(url, obj)
+      this.restService.postSecureFileREST(url, this.currentFileUpload, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;

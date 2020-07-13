@@ -1,5 +1,7 @@
 package com.proyectos.service;
 
+import java.io.InputStream;
+
 import com.proyectos.model.ArchivoTB;
 
 public interface IArchivosService {
@@ -7,7 +9,7 @@ public interface IArchivosService {
 	/*
 	 * Método para guardar un archivo
 	 */
-	public ArchivoTB guardarArchivo(ArchivoTB archivo);
+	public ArchivoTB guardarArchivo(ArchivoTB archivo, InputStream inputStream);
 
 	/*
 	 * Método para leer un archivo

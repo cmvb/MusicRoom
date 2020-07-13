@@ -4,6 +4,7 @@ package com.proyectos.ot.services.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +31,7 @@ public class SFTPServiceImpl implements ISFTPService {
 	private Session session;
 	private ChannelSftp channelSftp;
 	private Properties config;
+	final private String SEPARADOR = "/";
 
 	@Override
 	public boolean conectarServidor(String Servidor, int puerto, String usuario, String clave) {
@@ -71,12 +73,43 @@ public class SFTPServiceImpl implements ISFTPService {
 		try {
 			if (this.channelSftp != null) {
 				File file = new File(rutaLocal);
-				FileOutputStream fos = new FileOutputStream(file);
+				OutputStream fos = new FileOutputStream(file);
 				fos.write(bytesFile);
 				this.borrarArchivoServidor(rutaSFTP);
 				this.channelSftp.put(rutaLocal, rutaSFTP);
+				fos.close();
 				resultado = true;
 				file.delete();
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return resultado;
+	}
+
+	@Override
+	public boolean guardarArchivoServidor(InputStream inputStreamFile, String rutaSFTP) {
+		boolean resultado = false;
+		try {
+			if (this.channelSftp != null) {
+				this.borrarArchivoServidor(rutaSFTP);
+				this.channelSftp.put(inputStreamFile, rutaSFTP);
+				resultado = true;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return resultado;
+	}
+
+	@Override
+	public boolean moverArchivoServidor(String rutaOrigenSFTP, String rutaDestinoSFTP) {
+		boolean resultado = false;
+		try {
+			if (this.channelSftp != null) {
+				this.channelSftp.rename(rutaOrigenSFTP, rutaDestinoSFTP);
+				this.borrarArchivoServidor(rutaOrigenSFTP);
+				resultado = true;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -102,9 +135,35 @@ public class SFTPServiceImpl implements ISFTPService {
 	}
 
 	@Override
+	public void borrarDirectorioServidor(String rutaServidor) {
+		try {
+			if (this.channelSftp != null) {
+				if (this.channelSftp.realpath(rutaServidor) != null) {
+					List<DirectorioDTO> directoriosSFTP = this.listarDirectoriosSFTP(rutaServidor);
+					if (directoriosSFTP != null && !directoriosSFTP.isEmpty()) {
+						for (DirectorioDTO dirDto : directoriosSFTP) {
+							if (dirDto.getTipoDirectorio().ordinal() == ETipoDirectorio.ARCHIVO.ordinal()) {
+								this.borrarArchivoServidor(dirDto.getRuta() + dirDto.getNombre());
+								if (directoriosSFTP.size() == 1) {
+									this.channelSftp.rmdir(rutaServidor);
+								}
+							} else {
+								this.borrarDirectorioServidor(dirDto.getRuta() + dirDto.getNombre() + this.SEPARADOR);
+							}
+						}
+					} else {
+						this.channelSftp.rmdir(rutaServidor);
+					}
+				}
+			}
+		} catch (SftpException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	@Override
 	public boolean descargarArchivo(String rutaSFTP, String rutaLocal) {
 		boolean resultado = false;
-
 		try {
 			if (this.channelSftp != null) {
 				this.channelSftp.get(rutaSFTP, rutaLocal);
@@ -165,7 +224,6 @@ public class SFTPServiceImpl implements ISFTPService {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<DirectorioDTO> listarDirectoriosSFTP(String rutaSFTP) {
-
 		List<DirectorioDTO> listaCarpetas = new ArrayList<>();
 		try {
 			if (this.channelSftp != null) {

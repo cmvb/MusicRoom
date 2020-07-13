@@ -1,15 +1,17 @@
 package com.proyectos.service.impl;
 
-import java.io.File;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.proyectos.dao.IArchivoDao;
 import com.proyectos.dao.ISalaDao;
+import com.proyectos.model.ArchivoTB;
 import com.proyectos.model.SalaTB;
 import com.proyectos.ot.services.ISFTPService;
 import com.proyectos.service.ISalaService;
@@ -19,17 +21,20 @@ import com.proyectos.util.ConstantesTablasNombre;
 public class SalaServiceImpl implements ISalaService {
 
 	final private String SEPARADOR = "/";
-	final private String SERVIDOR_SFTP = "100.126.0.150";
+	final private String PUNTO = ".";
 	final private String RUTA_SFTP = "/data/desplieguesQA/EAP-C7/dist-angular/Pagos-EAF/pruebaSFTP/";
-	final private int PUERTO_SFTP = 22;
-	final private String USUARIO_SFTP = "oracle";
-	final private String PASSWORD_SFTP = "oracle2";
-	final private String RAIZ_USER_HOME_SFTP = System.getProperty("user.home") + File.separator;
-	final private String RAIZ_M_SFTP = File.separator + "Users";
-	final private String RAIZ_L_SFTP = File.separator + "home";
-	final private String RAIZ_W_SFTP = this.RAIZ_USER_HOME_SFTP + File.separator + "Desktop" + File.separator
-			+ "CargaArchivos" + File.separator;
-	final private static String OS = System.getProperty("os.name").toUpperCase();
+
+	@Value("${sftp.servidor}")
+	private String SERVIDOR_SFTP;
+
+	@Value("${sftp.puerto}")
+	private int PUERTO_SFTP;
+
+	@Value("${sftp.usuario}")
+	private String USUARIO_SFTP;
+
+	@Value("${sftp.password}")
+	private String PASSWORD_SFTP;
 
 	@Autowired
 	private ISalaDao salaDAO;
@@ -58,90 +63,78 @@ public class SalaServiceImpl implements ISalaService {
 	@Transactional
 	@Override
 	public SalaTB crear(SalaTB sala) {
-		// Definiendo rutas locales
-		String rutaCliente = "";
-		if (this.OS.indexOf("WIN") >= 0) {
-			rutaCliente = this.RAIZ_W_SFTP;
-		} else if (this.OS.indexOf("MAC") >= 0) {
-			rutaCliente = this.RAIZ_M_SFTP;
-		} else if (this.OS.indexOf("NIX") >= 0 || OS.indexOf("NUX") >= 0 || OS.indexOf("AIX") > 0) {
-			rutaCliente = this.RAIZ_L_SFTP;
-		} else if (this.OS.indexOf("SUNOS") >= 0) {
-			rutaCliente = this.RAIZ_L_SFTP;
-		}
-
 		// Conectando con servidor SFTP
 		boolean conectadoSFTP = this.sftpService.conectarServidor(this.SERVIDOR_SFTP, this.PUERTO_SFTP,
 				this.USUARIO_SFTP, this.PASSWORD_SFTP);
 
 		if (conectadoSFTP) {
-			// Validar existencia del directorio en servidor SFTP
-			if (!this.sftpService.esValidaRuta(this.RUTA_SFTP + sala.getNombreSala().toUpperCase())) {
-				// Se crea el directorio para los archivos de la sala en servidor SFTP
-				this.sftpService.crearDirectorio(this.RUTA_SFTP + sala.getNombreSala().toUpperCase());
+			// Definir rutas sala
+			String rutaSFTPSala = this.RUTA_SFTP + sala.getNombreSala().toUpperCase();
+			String rutaSFTPFilePrincipal = this.RUTA_SFTP + sala.getFotoPrincipalTb().getNombreArchivo() + this.PUNTO
+					+ sala.getFotoPrincipalTb().getTipoArchivo();
+			String rutaSFTPFile1 = sala.getFoto1Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto1Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto1Tb().getTipoArchivo();
+			String rutaSFTPFile2 = sala.getFoto2Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto2Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto2Tb().getTipoArchivo();
+			String rutaSFTPFile3 = sala.getFoto3Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto3Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto3Tb().getTipoArchivo();
+			String rutaSFTPFile4 = sala.getFoto4Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto4Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto4Tb().getTipoArchivo();
 
-				// Definir rutas de los archivos
-				String rutaSFTPPrincipal = this.RUTA_SFTP + sala.getNombreSala().toUpperCase() + this.SEPARADOR
-						+ sala.getFotoPrincipalTb().getNombreArchivo();
-				String rutaSFTP1 = sala.getFoto1Tb() == null ? ""
-						: this.RUTA_SFTP + sala.getNombreSala().toUpperCase() + this.SEPARADOR
-								+ sala.getFoto1Tb().getNombreArchivo();
-				String rutaSFTP2 = sala.getFoto2Tb() == null ? ""
-						: this.RUTA_SFTP + sala.getNombreSala().toUpperCase() + this.SEPARADOR
-								+ sala.getFoto2Tb().getNombreArchivo();
-				String rutaSFTP3 = sala.getFoto3Tb() == null ? ""
-						: this.RUTA_SFTP + sala.getNombreSala().toUpperCase() + this.SEPARADOR
-								+ sala.getFoto3Tb().getNombreArchivo();
-				String rutaSFTP4 = sala.getFoto4Tb() == null ? ""
-						: this.RUTA_SFTP + sala.getNombreSala().toUpperCase() + this.SEPARADOR
-								+ sala.getFoto4Tb().getNombreArchivo();
+			// Validar existencia del directorio en servidor SFTP
+			if (!this.sftpService.esValidaRuta(rutaSFTPSala)) {
+				// Se crea el directorio para los archivos de la sala en servidor SFTP
+				this.sftpService.crearDirectorio(rutaSFTPSala);
 
 				// Transferir archivos
-				boolean crearArchivoPrincipal = this.sftpService.guardarArchivoServidor(
-						sala.getFotoPrincipalTb().getValor(),
-						rutaCliente + sala.getFotoPrincipalTb().getNombreArchivo(), rutaSFTPPrincipal);
-				boolean crearArchivo1 = sala.getFoto1Tb() == null ? true
-						: this.sftpService.guardarArchivoServidor(sala.getFoto1Tb().getValor(),
-								rutaCliente + sala.getFoto1Tb().getNombreArchivo(), rutaSFTP1);
-				boolean crearArchivo2 = sala.getFoto2Tb() == null ? true
-						: this.sftpService.guardarArchivoServidor(sala.getFoto2Tb().getValor(),
-								rutaCliente + sala.getFoto2Tb().getNombreArchivo(), rutaSFTP2);
-				boolean crearArchivo3 = sala.getFoto3Tb() == null ? true
-						: this.sftpService.guardarArchivoServidor(sala.getFoto3Tb().getValor(),
-								rutaCliente + sala.getFoto3Tb().getNombreArchivo(), rutaSFTP3);
-				boolean crearArchivo4 = sala.getFoto4Tb() == null ? true
-						: this.sftpService.guardarArchivoServidor(sala.getFoto4Tb().getValor(),
-								rutaCliente + sala.getFoto4Tb().getNombreArchivo(), rutaSFTP4);
+				boolean crearArchivoPrincipal = this.sftpService.moverArchivoServidor(rutaSFTPFilePrincipal,
+						rutaSFTPSala + this.SEPARADOR + sala.getFotoPrincipalTb().getNombreArchivo() + this.PUNTO
+								+ sala.getFotoPrincipalTb().getTipoArchivo());
+				boolean crearArchivo1 = sala.getFoto1Tb() == null ? false
+						: this.sftpService.moverArchivoServidor(rutaSFTPFile1,
+								rutaSFTPSala + this.SEPARADOR + sala.getFoto1Tb().getNombreArchivo() + this.PUNTO
+										+ sala.getFoto1Tb().getTipoArchivo());
+				boolean crearArchivo2 = sala.getFoto2Tb() == null ? false
+						: this.sftpService.moverArchivoServidor(rutaSFTPFile2,
+								rutaSFTPSala + this.SEPARADOR + sala.getFoto2Tb().getNombreArchivo() + this.PUNTO
+										+ sala.getFoto2Tb().getTipoArchivo());
+				boolean crearArchivo3 = sala.getFoto3Tb() == null ? false
+						: this.sftpService.moverArchivoServidor(rutaSFTPFile3,
+								rutaSFTPSala + this.SEPARADOR + sala.getFoto3Tb().getNombreArchivo() + this.PUNTO
+										+ sala.getFoto3Tb().getTipoArchivo());
+				boolean crearArchivo4 = sala.getFoto4Tb() == null ? false
+						: this.sftpService.moverArchivoServidor(rutaSFTPFile4,
+								rutaSFTPSala + this.SEPARADOR + sala.getFoto4Tb().getNombreArchivo() + this.PUNTO
+										+ sala.getFoto4Tb().getTipoArchivo());
 
 				// Cerrar conexión con servidor SFTP
 				this.sftpService.cerrarConexion();
 
 				if (crearArchivoPrincipal) {
-					sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPPrincipal);
-					sala.getFotoPrincipalTb().setIdArchivo(archivoDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_ARCHIVO_TB));
-					sala.setFotoPrincipalTb(archivoDAO.guardarArchivo(sala.getFotoPrincipalTb()));
-
+					sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSala);
+					this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
 					if (crearArchivo1) {
-						sala.getFoto1Tb().setRutaArchivo(rutaSFTP1);
-						sala.getFoto1Tb().setIdArchivo(archivoDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_ARCHIVO_TB));
-						sala.setFoto1Tb(archivoDAO.guardarArchivo(sala.getFoto1Tb()));
+						sala.getFoto1Tb().setRutaArchivo(rutaSFTPSala);
+						this.archivoDAO.modificarArchivo(sala.getFoto1Tb());
 					}
 					if (crearArchivo2) {
-						sala.getFoto2Tb().setRutaArchivo(rutaSFTP2);
-						sala.getFoto2Tb().setIdArchivo(archivoDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_ARCHIVO_TB));
-						sala.setFoto2Tb(archivoDAO.guardarArchivo(sala.getFoto2Tb()));
+						sala.getFoto2Tb().setRutaArchivo(rutaSFTPSala);
+						this.archivoDAO.modificarArchivo(sala.getFoto2Tb());
 					}
 					if (crearArchivo3) {
-						sala.getFoto3Tb().setRutaArchivo(rutaSFTP3);
-						sala.getFoto3Tb().setIdArchivo(archivoDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_ARCHIVO_TB));
-						sala.setFoto3Tb(archivoDAO.guardarArchivo(sala.getFoto3Tb()));
+						sala.getFoto3Tb().setRutaArchivo(rutaSFTPSala);
+						this.archivoDAO.modificarArchivo(sala.getFoto3Tb());
 					}
 					if (crearArchivo4) {
-						sala.getFoto4Tb().setRutaArchivo(rutaSFTP4);
-						sala.getFoto4Tb().setIdArchivo(archivoDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_ARCHIVO_TB));
-						sala.setFoto4Tb(archivoDAO.guardarArchivo(sala.getFoto4Tb()));
+						sala.getFoto4Tb().setRutaArchivo(rutaSFTPSala);
+						this.archivoDAO.modificarArchivo(sala.getFoto4Tb());
 					}
 
+					this.archivoDAO.flushCommitEM();
 					sala.setIdSala(salaDAO.obtenerConsecutivo(ConstantesTablasNombre.MRA_SALA_TB));
 					return salaDAO.crear(sala);
 				} else {
@@ -158,7 +151,236 @@ public class SalaServiceImpl implements ISalaService {
 	@Transactional
 	@Override
 	public SalaTB modificar(SalaTB sala) {
-		return salaDAO.modificar(sala);
+		SalaTB salaAnterior = this.salaDAO.consultarPorId(sala.getIdSala());
+
+		// Conectando con servidor SFTP
+		boolean conectadoSFTP = this.sftpService.conectarServidor(this.SERVIDOR_SFTP, this.PUERTO_SFTP,
+				this.USUARIO_SFTP, this.PASSWORD_SFTP);
+
+		if (conectadoSFTP) {
+			// Definir rutas sala
+			String rutaSFTPSalaNueva = this.RUTA_SFTP + sala.getNombreSala().toUpperCase();
+			String rutaSFTPSalaAnterior = this.RUTA_SFTP + salaAnterior.getNombreSala().toUpperCase();
+
+			// Rutas Principal
+			String rutaSFTPFilePrincipalNuevo = this.RUTA_SFTP + sala.getFotoPrincipalTb().getNombreArchivo()
+					+ this.PUNTO + sala.getFotoPrincipalTb().getTipoArchivo();
+			String rutaSFTPFilePrincipalAnterior = rutaSFTPSalaAnterior + this.SEPARADOR
+					+ salaAnterior.getFotoPrincipalTb().getNombreArchivo() + this.PUNTO
+					+ salaAnterior.getFotoPrincipalTb().getTipoArchivo();
+
+			// Rutas 1
+			String rutaSFTPFile1Nuevo = sala.getFoto1Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto1Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto1Tb().getTipoArchivo();
+			String rutaSFTPFile1Anterior = salaAnterior.getFoto1Tb() == null ? ""
+					: rutaSFTPSalaAnterior + this.SEPARADOR + salaAnterior.getFoto1Tb().getNombreArchivo() + this.PUNTO
+							+ salaAnterior.getFoto1Tb().getTipoArchivo();
+
+			// Rutas 2
+			String rutaSFTPFile2Nuevo = sala.getFoto2Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto2Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto2Tb().getTipoArchivo();
+			String rutaSFTPFile2Anterior = salaAnterior.getFoto2Tb() == null ? ""
+					: rutaSFTPSalaAnterior + this.SEPARADOR + salaAnterior.getFoto2Tb().getNombreArchivo() + this.PUNTO
+							+ salaAnterior.getFoto2Tb().getTipoArchivo();
+
+			// Rutas 3
+			String rutaSFTPFile3Nuevo = sala.getFoto3Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto3Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto3Tb().getTipoArchivo();
+			String rutaSFTPFile3Anterior = salaAnterior.getFoto3Tb() == null ? ""
+					: rutaSFTPSalaAnterior + this.SEPARADOR + salaAnterior.getFoto3Tb().getNombreArchivo() + this.PUNTO
+							+ salaAnterior.getFoto3Tb().getTipoArchivo();
+
+			// Rutas 4
+			String rutaSFTPFile4Nuevo = sala.getFoto4Tb() == null ? ""
+					: this.RUTA_SFTP + sala.getFoto4Tb().getNombreArchivo() + this.PUNTO
+							+ sala.getFoto4Tb().getTipoArchivo();
+			String rutaSFTPFile4Anterior = salaAnterior.getFoto4Tb() == null ? ""
+					: rutaSFTPSalaAnterior + this.SEPARADOR + salaAnterior.getFoto4Tb().getNombreArchivo() + this.PUNTO
+							+ salaAnterior.getFoto4Tb().getTipoArchivo();
+
+			if (!rutaSFTPSalaNueva.equalsIgnoreCase(rutaSFTPSalaAnterior)) {
+				// Validar existencia del directorio en servidor SFTP
+				if (!this.sftpService.esValidaRuta(rutaSFTPSalaNueva)) {
+					// Se crea el directorio para los archivos de la sala en servidor SFTP
+					this.sftpService.crearDirectorio(rutaSFTPSalaNueva);
+
+					// Transferir archivo principal
+					if (salaAnterior.getFotoPrincipalTb().getIdArchivo() != sala.getFotoPrincipalTb().getIdArchivo()) {
+						boolean crearArchivoPrincipal = this.sftpService
+								.moverArchivoServidor(rutaSFTPFilePrincipalNuevo,
+										rutaSFTPSalaNueva + this.SEPARADOR
+												+ sala.getFotoPrincipalTb().getNombreArchivo() + this.PUNTO
+												+ sala.getFotoPrincipalTb().getTipoArchivo());
+
+						if (crearArchivoPrincipal) {
+							if (salaAnterior.getFotoPrincipalTb().getIdArchivo() != sala.getFotoPrincipalTb()
+									.getIdArchivo()) {
+								this.archivoDAO.eliminar(salaAnterior.getFotoPrincipalTb().getIdArchivo());
+							}
+							sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaNueva);
+							this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
+						}
+					} else {
+						boolean crearArchivoPrincipal = this.sftpService
+								.moverArchivoServidor(rutaSFTPFilePrincipalAnterior,
+										rutaSFTPSalaNueva + this.SEPARADOR
+												+ sala.getFotoPrincipalTb().getNombreArchivo() + this.PUNTO
+												+ sala.getFotoPrincipalTb().getTipoArchivo());
+
+						if (crearArchivoPrincipal) {
+							if (salaAnterior.getFotoPrincipalTb().getIdArchivo() != sala.getFotoPrincipalTb()
+									.getIdArchivo()) {
+								this.archivoDAO.eliminar(salaAnterior.getFotoPrincipalTb().getIdArchivo());
+							}
+							sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaNueva);
+							this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
+						}
+					}
+
+					// Transferir archivo 1
+					this.transferirArchivoNuevaSala(rutaSFTPSalaNueva, rutaSFTPFile1Anterior, rutaSFTPFile1Nuevo,
+							salaAnterior.getFoto1Tb(), sala.getFoto1Tb());
+
+					// Transferir archivo 2
+					this.transferirArchivoNuevaSala(rutaSFTPSalaNueva, rutaSFTPFile2Anterior, rutaSFTPFile2Nuevo,
+							salaAnterior.getFoto2Tb(), sala.getFoto2Tb());
+
+					// Transferir archivo 3
+					this.transferirArchivoNuevaSala(rutaSFTPSalaNueva, rutaSFTPFile3Anterior, rutaSFTPFile3Nuevo,
+							salaAnterior.getFoto3Tb(), sala.getFoto3Tb());
+
+					// Transferir archivo 4
+					this.transferirArchivoNuevaSala(rutaSFTPSalaNueva, rutaSFTPFile4Anterior, rutaSFTPFile4Nuevo,
+							salaAnterior.getFoto4Tb(), sala.getFoto4Tb());
+
+					// Borrar directorio anterior en el servidor SFTP
+					this.sftpService.borrarDirectorioServidor(rutaSFTPSalaAnterior + this.SEPARADOR);
+
+					// Cerrar conexión con servidor SFTP
+					this.sftpService.cerrarConexion();
+
+					return salaDAO.modificar(sala);
+				} else {
+					return null;
+				}
+			} else {
+				// Transferir archivo principal
+				if (salaAnterior.getFotoPrincipalTb().getIdArchivo() != sala.getFotoPrincipalTb().getIdArchivo()) {
+					// Se borra el directorio anterior
+					this.sftpService.borrarArchivoServidor(rutaSFTPFilePrincipalAnterior);
+
+					boolean crearArchivoPrincipal = this.sftpService.moverArchivoServidor(rutaSFTPFilePrincipalNuevo,
+							rutaSFTPSalaAnterior + this.SEPARADOR + sala.getFotoPrincipalTb().getNombreArchivo()
+									+ this.PUNTO + sala.getFotoPrincipalTb().getTipoArchivo());
+
+					if (crearArchivoPrincipal) {
+						this.archivoDAO.eliminar(salaAnterior.getFotoPrincipalTb().getIdArchivo());
+						sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaAnterior);
+						this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
+					}
+				}
+
+				// Transferir archivo 1
+				this.transferirArchivoMismaSala(rutaSFTPSalaAnterior, rutaSFTPFile1Anterior, rutaSFTPFile1Nuevo,
+						salaAnterior.getFoto1Tb(), sala.getFoto1Tb());
+
+				// Transferir archivo 2
+				this.transferirArchivoMismaSala(rutaSFTPSalaAnterior, rutaSFTPFile2Anterior, rutaSFTPFile2Nuevo,
+						salaAnterior.getFoto2Tb(), sala.getFoto2Tb());
+
+				// Transferir archivo 3
+				this.transferirArchivoMismaSala(rutaSFTPSalaAnterior, rutaSFTPFile3Anterior, rutaSFTPFile3Nuevo,
+						salaAnterior.getFoto3Tb(), sala.getFoto3Tb());
+
+				// Transferir archivo 4
+				this.transferirArchivoMismaSala(rutaSFTPSalaAnterior, rutaSFTPFile4Anterior, rutaSFTPFile4Nuevo,
+						salaAnterior.getFoto4Tb(), sala.getFoto4Tb());
+
+				// Cerrar conexión con servidor SFTP
+				this.sftpService.cerrarConexion();
+
+				return salaDAO.modificar(sala);
+			}
+		} else {
+			return null;
+		}
+	}
+
+	private void transferirArchivoNuevaSala(String rutaSFTPSalaNueva, String rutaSFTPFileAnterior,
+			String rutaSFTPFileNuevo, ArchivoTB fotoAnteriorTB, ArchivoTB fotoNuevaTB) {
+		if (!StringUtils.isBlank(rutaSFTPFileAnterior) && !StringUtils.isBlank(rutaSFTPFileNuevo)) {
+			if (fotoAnteriorTB.getIdArchivo() != fotoNuevaTB.getIdArchivo()) {
+				boolean crearArchivo2 = this.sftpService.moverArchivoServidor(rutaSFTPFileNuevo, rutaSFTPSalaNueva
+						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
+
+				if (crearArchivo2) {
+					if (fotoAnteriorTB.getIdArchivo() != fotoNuevaTB.getIdArchivo()) {
+						this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
+					}
+					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
+					this.archivoDAO.modificarArchivo(fotoNuevaTB);
+				}
+			} else {
+				boolean crearArchivo2 = this.sftpService.moverArchivoServidor(rutaSFTPFileAnterior, rutaSFTPSalaNueva
+						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
+
+				if (crearArchivo2) {
+					if (fotoAnteriorTB.getIdArchivo() != fotoNuevaTB.getIdArchivo()) {
+						this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
+					}
+					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
+					this.archivoDAO.modificarArchivo(fotoNuevaTB);
+				}
+			}
+		} else {
+			if (!StringUtils.isBlank(rutaSFTPFileAnterior)) {
+				this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
+			}
+			if (fotoNuevaTB != null) {
+				boolean crearArchivo2 = this.sftpService.moverArchivoServidor(rutaSFTPFileNuevo, rutaSFTPSalaNueva
+						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
+
+				if (crearArchivo2) {
+					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
+					this.archivoDAO.modificarArchivo(fotoNuevaTB);
+				}
+			}
+		}
+	}
+
+	private void transferirArchivoMismaSala(String rutaSFTPSalaAnterior, String rutaSFTPFileAnterior,
+			String rutaSFTPFileNuevo, ArchivoTB fotoAnteriorTB, ArchivoTB fotoNuevaTB) {
+		if (!StringUtils.isBlank(rutaSFTPFileAnterior) && !StringUtils.isBlank(rutaSFTPFileNuevo)) {
+			if (fotoAnteriorTB.getIdArchivo() != fotoNuevaTB.getIdArchivo()) {
+				// Se borra el directorio anterior
+				this.sftpService.borrarArchivoServidor(rutaSFTPFileAnterior);
+
+				boolean crearArchivo1 = this.sftpService.moverArchivoServidor(rutaSFTPFileNuevo, rutaSFTPSalaAnterior
+						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
+
+				if (crearArchivo1) {
+					this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
+					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaAnterior);
+					this.archivoDAO.modificarArchivo(fotoNuevaTB);
+				}
+			}
+		} else {
+			if (!StringUtils.isBlank(rutaSFTPFileAnterior)) {
+				this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
+			}
+			if (fotoNuevaTB != null) {
+				boolean crearArchivo1 = this.sftpService.moverArchivoServidor(rutaSFTPFileNuevo, rutaSFTPSalaAnterior
+						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
+
+				if (crearArchivo1) {
+					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaAnterior);
+					this.archivoDAO.modificarArchivo(fotoNuevaTB);
+				}
+			}
+		}
 	}
 
 	@Transactional

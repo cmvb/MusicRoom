@@ -45,7 +45,8 @@ export class SalasQueryComponent implements OnInit {
   btnEliminar = true;
   listaCabeceras = [
     { 'campoLista': 'nombreSala', 'nombreCabecera': 'Sala' },
-    { 'campoLista': 'infoAdicional', 'nombreCabecera': 'Información' }
+    { 'campoLista': 'infoAdicional', 'nombreCabecera': 'Información' },
+    { 'campoLista': 'fotoPrincipalTb', 'nombreCabecera': 'Foto Principal' },
   ];
 
   // Propiedades de las peticiones REST
@@ -100,10 +101,6 @@ export class SalasQueryComponent implements OnInit {
           console.log(resp, "res");
           this.data = resp;
           this.listaConsulta = this.data;
-
-          /*for (let i in this.listaConsulta) {
-            this.listaConsulta[i].ubicacionTabla = this.listaConsulta[i].ubicacionTb.nombreCiudad + " (" + this.listaConsulta[i].ubicacionTb.nombreDepartamento + ")";
-          }*/
         },
           error => {
             this.ex = error.error;

@@ -57,6 +57,11 @@ export class SalasEditComponent implements OnInit {
   srcFoto2: any;
   srcFoto3: any;
   srcFoto4: any;
+  currentFileUploadPrincipal: File;
+  currentFileUpload1: File;
+  currentFileUpload2: File;
+  currentFileUpload3: File;
+  currentFileUpload4: File;
 
   // Constructor o Inicializador de Variables
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService, private sanitizer: DomSanitizer) {
@@ -66,7 +71,7 @@ export class SalasEditComponent implements OnInit {
     this.const = datasObject.getConst();
     this.util = util;
     this.objeto = datasObject.getDataSala();
-    this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
+    this.objeto.estado = 1;
     this.objeto.terceroTb = datasObject.getDataTercero();
     this.enums = datasObject.getEnumerados();
     this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
@@ -89,17 +94,93 @@ export class SalasEditComponent implements OnInit {
 
     if (this.util.getSesionXItem('editParam') != null) {
       this.objeto = JSON.parse(localStorage.getItem('editParam'));
-      this.terceroSeleccionado = this.objeto.terceroTb;
+      this.terceroSeleccionado = { value: this.objeto.terceroTb, label: this.objeto.terceroTb.razonSocial };
     }
 
-    this.objeto.fotoPrincipalTb.valor = null;
-    this.objeto.foto1Tb.valor = null;
-    this.objeto.foto2Tb.valor = null;
-    this.objeto.foto3Tb.valor = null;
-    this.objeto.foto4Tb.valor = null;
-
+    this.inicializarFotos();
     this.inicializarCombos();
     this.activarFoto(0);
+  }
+
+  inicializarFotos() {
+    if (this.phase === this.const.phaseAdd) {
+      this.objeto.fotoPrincipalTb = this.dataGenericaArchivo();
+      this.objeto.foto1Tb = this.dataGenericaArchivo();
+      this.objeto.foto2Tb = this.dataGenericaArchivo();
+      this.objeto.foto3Tb = this.dataGenericaArchivo();
+      this.objeto.foto4Tb = this.dataGenericaArchivo();
+      this.srcFotoPrincipal = null;
+      this.srcFoto1 = null;
+      this.srcFoto2 = null;
+      this.srcFoto3 = null;
+      this.srcFoto4 = null;
+    } else {
+      this.sanitizarUrlImgCargada(this.objeto.fotoPrincipalTb.valor, 0);
+      if (this.objeto.foto1Tb !== null) {
+        this.sanitizarUrlImgCargada(this.objeto.foto1Tb.valor, 1);
+      } else {
+        this.objeto.foto1Tb = this.dataGenericaArchivo();
+        this.srcFoto1 = null;
+      }
+      if (this.objeto.foto2Tb !== null) {
+        this.sanitizarUrlImgCargada(this.objeto.foto2Tb.valor, 2);
+      } else {
+        this.objeto.foto2Tb = this.dataGenericaArchivo();
+        this.srcFoto2 = null;
+      }
+      if (this.objeto.foto3Tb !== null) {
+        this.sanitizarUrlImgCargada(this.objeto.foto3Tb.valor, 3);
+      } else {
+        this.objeto.foto3Tb = this.dataGenericaArchivo();
+        this.srcFoto3 = null;
+      }
+      if (this.objeto.foto4Tb !== null) {
+        this.sanitizarUrlImgCargada(this.objeto.foto4Tb.valor, 4);
+      } else {
+        this.objeto.foto4Tb = this.dataGenericaArchivo();
+        this.srcFoto4 = null;
+      }
+    }
+  }
+
+  cargarImagen(data: any, i) {
+    let reader = new FileReader();
+
+
+    var binary = '';
+    var bytes = new Uint8Array(data);
+    var len = bytes.byteLength;
+    for (let k = 0; k < len; k++) {
+      binary += String.fromCharCode(bytes[k]);
+    }
+    let base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(data)));
+
+
+    reader.readAsDataURL(data);
+    reader.onloadend = () => {
+      let dato = reader.result;
+      this.sanitizarUrlImgCargada(dato, i);
+    }
+  }
+  
+  sanitizarUrlImgCargada(dato: any, i) {
+    switch (i.toString()) {
+      case '0':
+        this.srcFotoPrincipal = 'data:image/png;base64,' + dato;
+        break;
+      case '1':
+        this.srcFoto1 = 'data:image/png;base64,' + dato;
+        break;
+      case '2':
+        this.srcFoto2 = 'data:image/png;base64,' + dato;
+        break;
+      case '3':
+        this.srcFoto3 = 'data:image/png;base64,' + dato;
+        break;
+      case '4':
+        this.srcFoto4 = 'data:image/png;base64,' + dato;
+        break;
+    }
   }
 
   activarFoto(i) {
@@ -143,7 +224,7 @@ export class SalasEditComponent implements OnInit {
       fechaCreacion: '',
       usuarioActualiza: '',
       fechaActualiza: ''
-    };
+    }
   }
 
   clickFileUp(id) {
@@ -162,42 +243,38 @@ export class SalasEditComponent implements OnInit {
           let file = files[0];
           if (file !== null) {
             // Validaciones de archivo
+            debugger;
             if (this.validarArchivo(file)) {
               // Si el tipo de archivo es aceptado
               let flag = false;
               switch (i.toString()) {
                 case '0':
-                  this.objeto.fotoPrincipalTb = this.dataGenericaArchivo();
                   this.objeto.fotoPrincipalTb.nombreArchivo = file.name;
-                  this.objeto.fotoPrincipalTb.tipoArchivo = file.name.split('.')[1];
+                  this.currentFileUploadPrincipal = file;
                   flag = true;
 
                   break;
                 case '1':
-                  this.objeto.foto1Tb = this.dataGenericaArchivo();
                   this.objeto.foto1Tb.nombreArchivo = file.name;
-                  this.objeto.foto1Tb.tipoArchivo = file.name.split('.')[1];
+                  this.currentFileUpload1 = file;
                   flag = true;
 
                   break;
                 case '2':
-                  this.objeto.foto2Tb = this.dataGenericaArchivo();
                   this.objeto.foto2Tb.nombreArchivo = file.name;
-                  this.objeto.foto2Tb.tipoArchivo = file.name.split('.')[1];
+                  this.currentFileUpload2 = file;
                   flag = true;
 
                   break;
                 case '3':
-                  this.objeto.foto3Tb = this.dataGenericaArchivo();
                   this.objeto.foto3Tb.nombreArchivo = file.name;
-                  this.objeto.foto3Tb.tipoArchivo = file.name.split('.')[1];
+                  this.currentFileUpload3 = file;
                   flag = true;
 
                   break;
                 case '4':
-                  this.objeto.foto4Tb = this.dataGenericaArchivo();
                   this.objeto.foto4Tb.nombreArchivo = file.name;
-                  this.objeto.foto4Tb.tipoArchivo = file.name.split('.')[1];
+                  this.currentFileUpload4 = file;
                   flag = true;
 
                   break;
@@ -267,36 +344,7 @@ export class SalasEditComponent implements OnInit {
       reader.readAsDataURL(data);
       reader.onloadend = () => {
         let dato = reader.result;
-        let flag = false;
-        switch (i.toString()) {
-          case '0':
-            //let byteArr = this.str2ByteArr(dato.toString());
-            //let x = this.base64ToArrayBuffer(this.arrayBufferToBase64(byteArr));
-            this.objeto.fotoPrincipalTb.valor = this.str2ByteArr(dato.toString());
-            //this.objeto.fotoPrincipalTb.valor = this.base64ToArrayBuffer(dato.toString());
-            this.srcFotoPrincipal = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-            break;
-          case '1':
-            this.objeto.foto1Tb.valor = this.base64ToArrayBuffer(dato.toString());
-            this.srcFoto1 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-            break;
-          case '2':
-            this.objeto.foto2Tb.valor = this.base64ToArrayBuffer(dato.toString());
-            this.srcFoto2 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-            break;
-          case '3':
-            this.objeto.foto3Tb.valor = this.base64ToArrayBuffer(dato.toString());
-            this.srcFoto3 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-            break;
-          case '4':
-            this.objeto.foto4Tb.valor = this.base64ToArrayBuffer(dato.toString());
-            this.srcFoto4 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
-            break;
-        }
-
-        this.messageService.clear();
-        this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_mensaje_archivo_subido });
-        localStorage.setItem('fileUploadTo', null);
+        this.guardarArchivoServidor(i, dato);
       }
     } catch (error) { console.log(error) }
   }
@@ -354,43 +402,8 @@ export class SalasEditComponent implements OnInit {
     }
   }
 
-  arrayBufferToBase64(buffer) {
-    let binary = '';
-    let bytes = new Uint8Array(buffer);
-    let len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  }
-
-  str2ByteArr(str) {
-    let bytes = [];
-
-    for (let i = 0; i < str.length; ++i) {
-      bytes.push(str.charCodeAt(i));
-      bytes.push(0);
-    }
-    return bytes;
-  }
-
-  base64ToArrayBuffer(base64) {
-    try {
-      let binary_string = window.atob(base64);
-      let len = binary_string.length;
-      let bytes = new Uint8Array(len);
-      for (var i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
-      }
-
-      return bytes.buffer;
-    } catch (e) {
-      return '';
-    }
-  }
-
   inicializarCombos() {
-    this.objeto.estado = this.util.getValorEnumerado(this.enumSiNo, this.objeto.estado.value);
+    this.objeto.estado = this.util.getValorEnumerado(this.enumSiNo, this.objeto.estado);
   }
 
   irAtras() {
@@ -401,6 +414,107 @@ export class SalasEditComponent implements OnInit {
   guardaTeclaEnter(event) {
     if (event.which === 13) {
       this.irGuardar();
+    }
+  }
+
+  guardarArchivoServidor(i, dato) {
+    try {
+      this.limpiarExcepcion();
+      let url = this.const.urlRestService + this.const.urlControllerReporte + 'guardarArchivo';
+      let obj: File;
+      switch (i.toString()) {
+        case '0':
+          this.srcFotoPrincipal = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          obj = this.currentFileUploadPrincipal;
+
+          break;
+        case '1':
+          this.srcFoto1 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          obj = this.currentFileUpload1;
+
+          break;
+        case '2':
+          this.srcFoto2 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          obj = this.currentFileUpload2;
+
+          break;
+        case '3':
+          this.srcFoto3 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          obj = this.currentFileUpload3;
+
+          break;
+        case '4':
+          this.srcFoto4 = this.sanitizer.bypassSecurityTrustResourceUrl(dato.toString());
+          obj = this.currentFileUpload4;
+
+          break;
+      }
+
+      this.restService.postSecureFileREST(url, obj, this.ACCESS_TOKEN)
+        .subscribe(resp => {
+          console.log(resp, "res");
+          this.data = resp;
+
+          switch (i.toString()) {
+            case '0':
+              this.objeto.fotoPrincipalTb = this.data;
+              break;
+            case '1':
+              this.objeto.foto1Tb = this.data;
+              break;
+            case '2':
+              this.objeto.foto2Tb = this.data;
+              break;
+            case '3':
+              this.objeto.foto3Tb = this.data;
+              break;
+            case '4':
+              this.objeto.foto4Tb = this.data;
+              break;
+          }
+
+          this.messageService.clear();
+          this.messageService.add({ severity: this.const.severity[0], summary: this.msg.lbl_summary_info, detail: this.msg.lbl_mensaje_archivo_subido });
+          localStorage.setItem('fileUploadTo', null);
+        },
+          error => {
+            this.ex = error.error;
+            let mensaje = this.util.mostrarNotificacion(this.ex);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
+            switch (i.toString()) {
+              case '0':
+                this.objeto.fotoPrincipalTb = this.dataGenericaArchivo();
+                this.srcFotoPrincipal = null;
+
+                break;
+              case '1':
+                this.objeto.foto1Tb = this.dataGenericaArchivo();
+                this.srcFoto1 = null;
+
+                break;
+              case '2':
+                this.objeto.foto2Tb = this.dataGenericaArchivo();
+                this.srcFoto2 = null;
+
+                break;
+              case '3':
+                this.objeto.foto3Tb = this.dataGenericaArchivo();
+                this.srcFoto3 = null;
+
+                break;
+              case '4':
+                this.objeto.foto4Tb = this.dataGenericaArchivo();
+                this.srcFoto4 = null;
+
+                break;
+            }
+
+            console.log(error, "error");
+          });
+    } catch (e) {
+      console.log(e);
     }
   }
 }

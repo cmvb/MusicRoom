@@ -164,6 +164,12 @@ public class ControladorRestSala {
 			if (errores.isEmpty()) {
 				salaNueva = new SalaTB();
 				salaNueva = salaService.modificar(sala);
+				if (salaNueva == null) {
+					String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+					String mensajeError = PropertiesUtil.getProperty("lbl_mtto_sala_foto_principal")
+							+ PropertiesUtil.getProperty("lbl_mtto_sala_error_transferir_sftp_foto_principal");
+					throw new ModelNotFoundException(erroresTitle + mensajeError);
+				}
 			} else {
 				StringBuilder mensajeErrores = new StringBuilder();
 				String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");

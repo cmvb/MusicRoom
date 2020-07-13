@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -17,21 +17,16 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -209,41 +204,6 @@ public abstract class Util {
 		String result = new String(BUFFER) + new String(BUF_USUARIO);
 
 		return result.substring(5, 15);
-	}
-
-	/**
-	 * Encripta un texto dada una llave (Para los casos sera el usuario)
-	 *
-	 * @param texto
-	 * @param llave
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static String encriptar(String texto, String llave) {
-
-		// llave para encriptar datos
-		String secretKey = llave;
-		String base64EncryptedString = "";
-
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
-
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-			Cipher cipher = Cipher.getInstance("DESede");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-
-			byte[] plainTextBytes = texto.getBytes("utf-8");
-			byte[] buf = cipher.doFinal(plainTextBytes);
-			byte[] base64Bytes = Base64.encodeBase64(buf);
-			base64EncryptedString = new String(base64Bytes);
-
-		} catch (Exception ex) {
-			LOG.error((Supplier<String>) ex);
-			return null;
-		}
-		return base64EncryptedString;
 	}
 
 	/**
@@ -598,74 +558,6 @@ public abstract class Util {
 	 */
 	public static boolean esNumero(String cadena) {
 		return cadena.matches("[0-9]*");
-	}
-
-	/**
-	 * Encripta un texto dada una llave (Para los casos sera el usuario)
-	 *
-	 * @param texto
-	 * @param llave
-	 * @return
-	 */
-	public static String Encriptar(String texto, String llave) {
-
-		String secretKey = llave; // llave para encriptar datos
-		String base64EncryptedString = "";
-
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
-
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-			Cipher cipher = Cipher.getInstance("DESede");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-
-			byte[] plainTextBytes = texto.getBytes("utf-8");
-			byte[] buf = cipher.doFinal(plainTextBytes);
-			byte[] base64Bytes = Base64.encodeBase64(buf);
-			base64EncryptedString = new String(base64Bytes);
-
-		} catch (Exception ex) {
-			LOG.error("Error al Encriptar Texto", ex);
-			return null;
-		}
-		return base64EncryptedString;
-	}
-
-	/**
-	 * Des-Encripta un texto dada una llave (Para los casos sera el usuario)
-	 *
-	 * @param textoEncriptado
-	 * @param llave
-	 * @return
-	 * @throws java.lang.Exception
-	 *
-	 */
-	public static String Desencriptar(String textoEncriptado, String llave) throws Exception {
-
-		String secretKey = llave; // llave para encriptar datos
-		String base64EncryptedString = "";
-
-		try {
-			byte[] message = Base64.decodeBase64(textoEncriptado.getBytes("utf-8"));
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-
-			Cipher decipher = Cipher.getInstance("DESede");
-			decipher.init(Cipher.DECRYPT_MODE, key);
-
-			byte[] plainText = decipher.doFinal(message);
-
-			base64EncryptedString = new String(plainText, "UTF-8");
-
-		} catch (Exception ex) {
-			LOG.error("Error al Encriptar Texto", ex);
-			return null;
-		}
-		return base64EncryptedString;
 	}
 
 	/**
@@ -1045,5 +937,15 @@ public abstract class Util {
 
 		return listaRoles;
 
+	}
+
+	public static byte[] b64ToBytesArray(String b64) {
+		try {
+			byte[] name = Base64.getEncoder().encode(b64.getBytes());
+			byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes("UTF-8"));
+			return decodedString;
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
 	}
 }

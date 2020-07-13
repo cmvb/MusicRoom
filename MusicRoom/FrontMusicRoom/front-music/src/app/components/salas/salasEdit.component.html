@@ -21,7 +21,8 @@
     </mdl-layout-drawer>
 
     <mdl-layout-content>
-      <p-scrollPanel [style]="{width: '100%', height: '100vh'}" styleClass="custom">
+      <p-scrollPanel [style]="{width: '100%', height: '100vh', background: 'url(assets/images/modulos/salas.jpg)'}"
+        styleClass="custom fondo-cover">
         <div class="body-content">
           <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
           <div class="content-page">
@@ -62,12 +63,14 @@
                         <div class="ui-g-7 ui-lg-7 ui-md-7 ui-sm-12 ui-xs-12 ui-g-nopad">
                           <section id="sectionFotoPrincipal" class="seccionFoto">
                             <label class="obligatorio" for="float-input">{{msg.lbl_mtto_sala_foto_principal}}</label>
-                            <div class="dropzoneC" mdl-tooltip-position="bottom" mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}"
-                              (click)="clickFileUp('fileUpPrincipal');" (drop)="onUpload($event, 0)" (dragover)="dragOver($event)">
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}"
+                              (click)="clickFileUp('fileUpPrincipal');" (drop)="onUpload($event, 0)"
+                              (dragover)="dragOver($event)">
                               <div class="dz-message">
-                                <img *ngIf="objeto.fotoPrincipalTb.valor != null; else mensajeSubirArchivos"
-                                  class="imagenPrincipal" [src]="srcFotoPrincipal"
-                                  alt="{{objeto.fotoPrincipalTb.nombreArchivo}}" />
+                                <img *ngIf="srcFotoPrincipal != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFotoPrincipal"
+                                  alt="{{objeto.fotoPrincipalTb != null ? objeto.fotoPrincipalTb.nombreArchivo : ''}}" />
                                 <ng-template #mensajeSubirArchivos>
                                   <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
                                   <br>{{msg.lbl_mensaje_dropzone_secundario}}
@@ -83,12 +86,13 @@
 
                           <section id="sectionFoto1" class="seccionFoto displayNone">
                             <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_1}}</label>
-                            <div class="dropzoneC" mdl-tooltip-position="bottom" mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}"
-                            (click)="clickFileUp('fileUp1');" (drop)="onUpload($event, 1)" (dragover)="dragOver($event)">
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp1');"
+                              (drop)="onUpload($event, 1)" (dragover)="dragOver($event)">
                               <div class="dz-message">
-                                <img *ngIf="objeto.foto1Tb.valor != null; else mensajeSubirArchivos"
-                                  class="imagenPrincipal" [src]="srcFoto1"
-                                  alt="{{objeto.foto1Tb.nombreArchivo}}" />
+                                <img *ngIf="srcFoto1 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto1"
+                                  alt="{{objeto.foto1Tb != null ? objeto.foto1Tb.nombreArchivo : ''}}" />
                                 <ng-template #mensajeSubirArchivos>
                                   <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
                                   <br>{{msg.lbl_mensaje_dropzone_secundario}}
@@ -104,12 +108,13 @@
 
                           <section id="sectionFoto2" class="seccionFoto displayNone">
                             <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_2}}</label>
-                            <div class="dropzoneC" mdl-tooltip-position="bottom" mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}"
-                              (click)="clickFileUp('fileUp2');" (drop)="onUpload($event, 2)" (dragover)="dragOver($event)">
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp2');"
+                              (drop)="onUpload($event, 2)" (dragover)="dragOver($event)">
                               <div class="dz-message">
-                                <img *ngIf="objeto.foto2Tb.valor != null; else mensajeSubirArchivos"
-                                  class="imagenPrincipal" [src]="srcFoto2"
-                                  alt="{{objeto.foto2Tb.nombreArchivo}}" />
+                                <img *ngIf="srcFoto2 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto2"
+                                  alt="{{objeto.foto2Tb != null ? objeto.foto2Tb.nombreArchivo : ''}}" />
                                 <ng-template #mensajeSubirArchivos>
                                   <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
                                   <br>{{msg.lbl_mensaje_dropzone_secundario}}
@@ -125,12 +130,13 @@
 
                           <section id="sectionFoto3" class="seccionFoto displayNone">
                             <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_3}}</label>
-                            <div class="dropzoneC" mdl-tooltip-position="bottom" mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}"
-                              (click)="clickFileUp('fileUp3');" (drop)="onUpload($event, 3)" (dragover)="dragOver($event)">
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp3');"
+                              (drop)="onUpload($event, 3)" (dragover)="dragOver($event)">
                               <div class="dz-message">
-                                <img *ngIf="objeto.foto3Tb.valor != null; else mensajeSubirArchivos"
-                                  class="imagenPrincipal" [src]="srcFoto3"
-                                  alt="{{objeto.foto3Tb.nombreArchivo}}" />
+                                <img *ngIf="srcFoto3 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto3"
+                                  alt="{{objeto.foto3Tb != null ? objeto.foto3Tb.nombreArchivo : ''}}" />
                                 <ng-template #mensajeSubirArchivos>
                                   <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
                                   <br>{{msg.lbl_mensaje_dropzone_secundario}}
@@ -146,12 +152,13 @@
 
                           <section id="sectionFoto4" class="seccionFoto displayNone">
                             <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_4}}</label>
-                            <div class="dropzoneC" mdl-tooltip-position="bottom" mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}"
-                              (click)="clickFileUp('fileUp4');" (drop)="onUpload($event, 4)" (dragover)="dragOver($event)">
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp4');"
+                              (drop)="onUpload($event, 4)" (dragover)="dragOver($event)">
                               <div class="dz-message">
-                                <img *ngIf="objeto.foto4Tb.valor != null; else mensajeSubirArchivos"
-                                  class="imagenPrincipal" [src]="srcFoto4"
-                                  alt="{{objeto.foto4Tb.nombreArchivo}}" />
+                                <img *ngIf="srcFoto4 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto4"
+                                  alt="{{objeto.foto4Tb != null ? objeto.foto4Tb.nombreArchivo : ''}}" />
                                 <ng-template #mensajeSubirArchivos>
                                   <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
                                   <br>{{msg.lbl_mensaje_dropzone_secundario}}
@@ -169,13 +176,17 @@
                         <div class="ui-g-5 ui-lg-5 ui-md-5 ui-sm-12 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_sala_escoger_foto}}</label>
                           <div class="ui-g center">
-                            <div id="idActivarFotoPrincipal" (click)="activarFoto(0)" class="card card-af bg-c-gray order-card">
+                            <div id="idActivarFotoPrincipal" (click)="activarFoto(0)"
+                              class="card card-af bg-c-gray order-card">
                               <div class="card-block">
                                 <p class="font-b-500">
-                                  <span class="f-left"><i class="material-icons {{objeto.fotoPrincipalTb.valor != null ? 'success' : ''}}">star</i></span>
+                                  <span class="f-left"><i
+                                      class="material-icons {{srcFotoPrincipal != null ? 'success' : ''}}">star</i></span>
                                   {{msg.lbl_mtto_sala_foto_principal}}
-                                  <span *ngIf="objeto.fotoPrincipalTb.valor == null" class="f-right"><i class="material-icons">publish</i></span>
-                                  <span *ngIf="objeto.fotoPrincipalTb.valor != null" class="f-right success"><i class="font-bolder material-icons">check</i></span>
+                                  <span *ngIf="srcFotoPrincipal == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFotoPrincipal != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
                                 </p>
                               </div>
                             </div>
@@ -185,8 +196,10 @@
                               <div class="card-block">
                                 <p class="font-b-500">
                                   {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_1}}
-                                  <span *ngIf="objeto.foto1Tb.valor == null" class="f-right"><i class="material-icons">publish</i></span>
-                                  <span *ngIf="objeto.foto1Tb.valor != null" class="f-right success"><i class="font-bolder material-icons">check</i></span>
+                                  <span *ngIf="srcFoto1 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto1 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
                                 </p>
                               </div>
                             </div>
@@ -195,9 +208,11 @@
                             <div id="idActivarFoto2" (click)="activarFoto(2)" class="card card-af bg-c-gray order-card">
                               <div class="card-block">
                                 <p class="font-b-500">
-                                  {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_2}}                                  
-                                  <span *ngIf="objeto.foto2Tb.valor == null" class="f-right"><i class="material-icons">publish</i></span>
-                                  <span *ngIf="objeto.foto2Tb.valor != null" class="f-right success"><i class="font-bolder material-icons">check</i></span>
+                                  {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_2}}
+                                  <span *ngIf="srcFoto2 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto2 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
                                 </p>
                               </div>
                             </div>
@@ -207,8 +222,10 @@
                               <div class="card-block">
                                 <p class="font-b-500">
                                   {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_3}}
-                                  <span *ngIf="objeto.foto3Tb.valor == null" class="f-right"><i class="material-icons">publish</i></span>
-                                  <span *ngIf="objeto.foto3Tb.valor != null" class="f-right success"><i class="font-bolder material-icons">check</i></span>
+                                  <span *ngIf="srcFoto3 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto3 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
                                 </p>
                               </div>
                             </div>
@@ -218,8 +235,10 @@
                               <div class="card-block">
                                 <p class="font-b-500">
                                   {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_4}}
-                                  <span *ngIf="objeto.foto4Tb.valor == null" class="f-right"><i class="material-icons">publish</i></span>
-                                  <span *ngIf="objeto.foto4Tb.valor != null" class="f-right success"><i class="font-bolder material-icons">check</i></span>
+                                  <span *ngIf="srcFoto4 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto4 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
                                 </p>
                               </div>
                             </div>
