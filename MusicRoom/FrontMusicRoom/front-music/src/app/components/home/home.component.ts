@@ -72,7 +72,6 @@ export class HomeComponent implements OnInit {
           }
         },
           error => {
-            debugger;
             if (error.error.error === 'invalid_grant' && error.error.error_description === 'Bad credentials') {
               this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mensaje_login_invalido });
             } else {

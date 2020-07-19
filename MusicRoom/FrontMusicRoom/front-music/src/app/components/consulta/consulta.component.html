@@ -49,7 +49,7 @@
 			<td *ngFor="let col of cols">
 				{{rowData[col.field].valor != null ? '' : rowData[col.field]}}
 				<img *ngIf="rowData[col.field].valor != null" class="imagenPrincipalTabla"
-					[src]="'data:image/png;base64,' + rowData[col.field].valor"
+					[src]="cargarImagen(rowData[col.field].valor, rowData[col.field].tipoArchivo)"
 					alt="{{rowData[col.field] != null ? rowData[col.field].nombreArchivo : ''}}" />
 			</td>
 		</tr>

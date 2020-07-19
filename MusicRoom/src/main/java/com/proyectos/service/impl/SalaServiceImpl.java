@@ -216,12 +216,12 @@ public class SalaServiceImpl implements ISalaService {
 												+ sala.getFotoPrincipalTb().getTipoArchivo());
 
 						if (crearArchivoPrincipal) {
+							sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaNueva);
+							this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
 							if (salaAnterior.getFotoPrincipalTb().getIdArchivo() != sala.getFotoPrincipalTb()
 									.getIdArchivo()) {
 								this.archivoDAO.eliminar(salaAnterior.getFotoPrincipalTb().getIdArchivo());
 							}
-							sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaNueva);
-							this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
 						}
 					} else {
 						boolean crearArchivoPrincipal = this.sftpService
@@ -231,12 +231,12 @@ public class SalaServiceImpl implements ISalaService {
 												+ sala.getFotoPrincipalTb().getTipoArchivo());
 
 						if (crearArchivoPrincipal) {
+							sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaNueva);
+							this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
 							if (salaAnterior.getFotoPrincipalTb().getIdArchivo() != sala.getFotoPrincipalTb()
 									.getIdArchivo()) {
 								this.archivoDAO.eliminar(salaAnterior.getFotoPrincipalTb().getIdArchivo());
 							}
-							sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaNueva);
-							this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
 						}
 					}
 
@@ -257,7 +257,7 @@ public class SalaServiceImpl implements ISalaService {
 							salaAnterior.getFoto4Tb(), sala.getFoto4Tb());
 
 					// Borrar directorio anterior en el servidor SFTP
-					this.sftpService.borrarDirectorioServidor(rutaSFTPSalaAnterior + this.SEPARADOR);
+					this.sftpService.borrarDirectorioServidor(rutaSFTPSalaAnterior);
 
 					// Cerrar conexión con servidor SFTP
 					this.sftpService.cerrarConexion();
@@ -277,9 +277,9 @@ public class SalaServiceImpl implements ISalaService {
 									+ this.PUNTO + sala.getFotoPrincipalTb().getTipoArchivo());
 
 					if (crearArchivoPrincipal) {
-						this.archivoDAO.eliminar(salaAnterior.getFotoPrincipalTb().getIdArchivo());
 						sala.getFotoPrincipalTb().setRutaArchivo(rutaSFTPSalaAnterior);
 						this.archivoDAO.modificarArchivo(sala.getFotoPrincipalTb());
+						this.archivoDAO.eliminar(salaAnterior.getFotoPrincipalTb().getIdArchivo());
 					}
 				}
 
@@ -317,28 +317,25 @@ public class SalaServiceImpl implements ISalaService {
 						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
 
 				if (crearArchivo2) {
+					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
+					this.archivoDAO.modificarArchivo(fotoNuevaTB);
 					if (fotoAnteriorTB.getIdArchivo() != fotoNuevaTB.getIdArchivo()) {
 						this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
 					}
-					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
-					this.archivoDAO.modificarArchivo(fotoNuevaTB);
 				}
 			} else {
 				boolean crearArchivo2 = this.sftpService.moverArchivoServidor(rutaSFTPFileAnterior, rutaSFTPSalaNueva
 						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
 
 				if (crearArchivo2) {
+					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
+					this.archivoDAO.modificarArchivo(fotoNuevaTB);
 					if (fotoAnteriorTB.getIdArchivo() != fotoNuevaTB.getIdArchivo()) {
 						this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
 					}
-					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
-					this.archivoDAO.modificarArchivo(fotoNuevaTB);
 				}
 			}
 		} else {
-			if (!StringUtils.isBlank(rutaSFTPFileAnterior)) {
-				this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
-			}
 			if (fotoNuevaTB != null) {
 				boolean crearArchivo2 = this.sftpService.moverArchivoServidor(rutaSFTPFileNuevo, rutaSFTPSalaNueva
 						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
@@ -347,6 +344,10 @@ public class SalaServiceImpl implements ISalaService {
 					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaNueva);
 					this.archivoDAO.modificarArchivo(fotoNuevaTB);
 				}
+			}
+
+			if (!StringUtils.isBlank(rutaSFTPFileAnterior)) {
+				this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
 			}
 		}
 	}
@@ -362,15 +363,12 @@ public class SalaServiceImpl implements ISalaService {
 						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
 
 				if (crearArchivo1) {
-					this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
 					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaAnterior);
 					this.archivoDAO.modificarArchivo(fotoNuevaTB);
+					this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
 				}
 			}
 		} else {
-			if (!StringUtils.isBlank(rutaSFTPFileAnterior)) {
-				this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
-			}
 			if (fotoNuevaTB != null) {
 				boolean crearArchivo1 = this.sftpService.moverArchivoServidor(rutaSFTPFileNuevo, rutaSFTPSalaAnterior
 						+ this.SEPARADOR + fotoNuevaTB.getNombreArchivo() + this.PUNTO + fotoNuevaTB.getTipoArchivo());
@@ -379,6 +377,10 @@ public class SalaServiceImpl implements ISalaService {
 					fotoNuevaTB.setRutaArchivo(rutaSFTPSalaAnterior);
 					this.archivoDAO.modificarArchivo(fotoNuevaTB);
 				}
+			}
+
+			if (!StringUtils.isBlank(rutaSFTPFileAnterior)) {
+				this.archivoDAO.eliminar(fotoAnteriorTB.getIdArchivo());
 			}
 		}
 	}

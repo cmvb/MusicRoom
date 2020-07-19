@@ -8,9 +8,11 @@ import { RestService } from '../../services/rest.service';
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LocationService } from 'src/app/services/location.service';
+import { MapsAPILoader, GoogleMapsAPIWrapper, AgmMap } from "@agm/core";
 
+declare var google: any;
 declare var $: any;
-declare function cargarCarousels(): any;
 
 @Component({
   selector: 'app-salas-edit',
@@ -63,8 +65,32 @@ export class SalasEditComponent implements OnInit {
   currentFileUpload3: File;
   currentFileUpload4: File;
 
+  // Mapa
+  optionsMap: any;
+  overlays: any[];
+  dialogVisible: boolean;
+  markerTitle: string;
+  selectedPosition: any;
+  infoWindow: any;
+  draggable: boolean;
+  API_GOOGLE_KEY_MAP = 'AIzaSyBaNBQN5zBRz7h5lUKB4GGZQHhakKrajSA';
+  map: google.maps.Map;
+
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService, private sanitizer: DomSanitizer) {
+  constructor(private router: Router, private route: ActivatedRoute, public locationService: LocationService, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService, private sanitizer: DomSanitizer, private mapsAPILoader: MapsAPILoader) {
+    this.optionsMap = null;
+    this.mapsAPILoader.load().then(() => {
+      this.locationService.getLocation().subscribe(resp => {
+        // Tomar Geo Location del usuario
+        this.optionsMap = {
+          center: { lat: resp.coords.latitude, lng: resp.coords.longitude },
+          zoom: 12
+        };
+
+        this.infoWindow = new google.maps.InfoWindow();
+        this.initOverlays();
+      });
+    });
     this.usuarioSesion = datasObject.getDataUsuario();
     this.sesion = datasObject.getDataSesion();
     this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
@@ -78,8 +104,14 @@ export class SalasEditComponent implements OnInit {
     this.acceptStr = "image/*";
   }
 
+  // Cuando el mapa esté listo para usarse
+  setMap(event) {
+
+  }
+
   // Procesos que se ejecutan cuando algo en el DOM cambia
   ngDoCheck() {
+
   }
 
   // Procesos que se ejecutan al cargar el componente
@@ -115,27 +147,27 @@ export class SalasEditComponent implements OnInit {
       this.srcFoto3 = null;
       this.srcFoto4 = null;
     } else {
-      this.sanitizarUrlImgCargada(this.objeto.fotoPrincipalTb.valor, 0);
+      this.sanitizarUrlImgCargada(this.objeto.fotoPrincipalTb.valor, 0, this.objeto.fotoPrincipalTb.tipoArchivo);
       if (this.objeto.foto1Tb !== null) {
-        this.sanitizarUrlImgCargada(this.objeto.foto1Tb.valor, 1);
+        this.sanitizarUrlImgCargada(this.objeto.foto1Tb.valor, 1, this.objeto.foto1Tb.tipoArchivo);
       } else {
         this.objeto.foto1Tb = this.dataGenericaArchivo();
         this.srcFoto1 = null;
       }
       if (this.objeto.foto2Tb !== null) {
-        this.sanitizarUrlImgCargada(this.objeto.foto2Tb.valor, 2);
+        this.sanitizarUrlImgCargada(this.objeto.foto2Tb.valor, 2, this.objeto.foto2Tb.tipoArchivo);
       } else {
         this.objeto.foto2Tb = this.dataGenericaArchivo();
         this.srcFoto2 = null;
       }
       if (this.objeto.foto3Tb !== null) {
-        this.sanitizarUrlImgCargada(this.objeto.foto3Tb.valor, 3);
+        this.sanitizarUrlImgCargada(this.objeto.foto3Tb.valor, 3, this.objeto.foto3Tb.tipoArchivo);
       } else {
         this.objeto.foto3Tb = this.dataGenericaArchivo();
         this.srcFoto3 = null;
       }
       if (this.objeto.foto4Tb !== null) {
-        this.sanitizarUrlImgCargada(this.objeto.foto4Tb.valor, 4);
+        this.sanitizarUrlImgCargada(this.objeto.foto4Tb.valor, 4, this.objeto.foto4Tb.tipoArchivo);
       } else {
         this.objeto.foto4Tb = this.dataGenericaArchivo();
         this.srcFoto4 = null;
@@ -143,43 +175,43 @@ export class SalasEditComponent implements OnInit {
     }
   }
 
-  cargarImagen(data: any, i) {
-    let reader = new FileReader();
-
-
-    var binary = '';
-    var bytes = new Uint8Array(data);
-    var len = bytes.byteLength;
-    for (let k = 0; k < len; k++) {
-      binary += String.fromCharCode(bytes[k]);
-    }
-    let base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(data)));
-
-
-    reader.readAsDataURL(data);
-    reader.onloadend = () => {
-      let dato = reader.result;
-      this.sanitizarUrlImgCargada(dato, i);
-    }
-  }
-  
-  sanitizarUrlImgCargada(dato: any, i) {
-    switch (i.toString()) {
-      case '0':
-        this.srcFotoPrincipal = 'data:image/png;base64,' + dato;
-        break;
-      case '1':
-        this.srcFoto1 = 'data:image/png;base64,' + dato;
-        break;
-      case '2':
-        this.srcFoto2 = 'data:image/png;base64,' + dato;
-        break;
-      case '3':
-        this.srcFoto3 = 'data:image/png;base64,' + dato;
-        break;
-      case '4':
-        this.srcFoto4 = 'data:image/png;base64,' + dato;
-        break;
+  sanitizarUrlImgCargada(dato: any, i, tipoArchivo) {
+    if (tipoArchivo === 'svg') {
+      switch (i.toString()) {
+        case '0':
+          this.srcFotoPrincipal = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,' + dato);
+        case '1':
+          this.srcFoto1 = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,' + dato);
+          break;
+        case '2':
+          this.srcFoto2 = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,' + dato);
+          break;
+        case '3':
+          this.srcFoto3 = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,' + dato);
+          break;
+        case '4':
+          this.srcFoto4 = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,' + dato);
+          break;
+      }
+    } else {
+      tipoArchivo = tipoArchivo + ';base64,';
+      switch (i.toString()) {
+        case '0':
+          this.srcFotoPrincipal = 'data:image/' + tipoArchivo + dato;
+          break;
+        case '1':
+          this.srcFoto1 = 'data:image/' + tipoArchivo + dato;
+          break;
+        case '2':
+          this.srcFoto2 = 'data:image/' + tipoArchivo + dato;
+          break;
+        case '3':
+          this.srcFoto3 = 'data:image/' + tipoArchivo + dato;
+          break;
+        case '4':
+          this.srcFoto4 = 'data:image/' + tipoArchivo + dato;
+          break;
+      }
     }
   }
 
@@ -243,7 +275,6 @@ export class SalasEditComponent implements OnInit {
           let file = files[0];
           if (file !== null) {
             // Validaciones de archivo
-            debugger;
             if (this.validarArchivo(file)) {
               // Si el tipo de archivo es aceptado
               let flag = false;
@@ -516,5 +547,65 @@ export class SalasEditComponent implements OnInit {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  handleMapClick(event) {
+    this.dialogVisible = true;
+    this.selectedPosition = event.latLng;
+  }
+
+  handleOverlayClick(event) {
+    let isMarker = event.overlay.getTitle != undefined;
+
+    if (isMarker) {
+      let title = event.overlay.getTitle();
+      this.infoWindow.setContent('' + title + '');
+      this.infoWindow.open(event.map, event.overlay);
+      event.map.setCenter(event.overlay.getPosition());
+
+      this.messageService.add({ severity: 'info', summary: 'Marker Selected', detail: title });
+    }
+    else {
+      this.messageService.add({ severity: 'info', summary: 'Shape Selected', detail: '' });
+    }
+  }
+
+  addMarker() {
+    this.overlays.push(new google.maps.Marker({ position: { lat: this.selectedPosition.lat(), lng: this.selectedPosition.lng() }, title: this.markerTitle, draggable: this.draggable }));
+    this.markerTitle = null;
+    this.dialogVisible = false;
+  }
+
+  handleDragEnd(event) {
+    this.messageService.add({ severity: 'info', summary: 'Marker Dragged', detail: event.overlay.getTitle() });
+  }
+
+  initOverlays() {
+    if (!this.overlays || !this.overlays.length) {
+      this.overlays = [
+        new google.maps.Marker({ position: { lat: 36.879466, lng: 30.667648 }, title: "Konyaalti" }),
+        new google.maps.Marker({ position: { lat: 36.883707, lng: 30.689216 }, title: "Ataturk Park" }),
+        new google.maps.Marker({ position: { lat: 36.885233, lng: 30.702323 }, title: "Oldtown" }),
+        new google.maps.Polygon({
+          paths: [
+            { lat: 36.9177, lng: 30.7854 }, { lat: 36.8851, lng: 30.7802 }, { lat: 36.8829, lng: 30.8111 }, { lat: 36.9177, lng: 30.8159 }
+          ], strokeOpacity: 0.5, strokeWeight: 1, fillColor: '#1976D2', fillOpacity: 0.35
+        }),
+        new google.maps.Circle({ center: { lat: 36.90707, lng: 30.56533 }, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500 }),
+        new google.maps.Polyline({ path: [{ lat: 36.86149, lng: 30.63743 }, { lat: 36.86341, lng: 30.72463 }], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2 })
+      ];
+    }
+  }
+
+  zoomIn(map) {
+    map.setZoom(map.getZoom() + 1);
+  }
+
+  zoomOut(map) {
+    map.setZoom(map.getZoom() - 1);
+  }
+
+  clear() {
+    this.overlays = [];
   }
 }

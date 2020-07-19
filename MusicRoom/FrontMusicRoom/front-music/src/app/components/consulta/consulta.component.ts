@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators'
 import { DataObjects } from '../ObjectGeneric';
 import { Util } from '../Util';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-consulta',
@@ -28,7 +29,7 @@ export class ConsultaComponent implements OnInit {
   const: any;
   util: any;
 
-  constructor(private http: Http, private router: Router, datasObject: DataObjects, util: Util) {
+  constructor(private http: Http, private router: Router, datasObject: DataObjects, util: Util, private sanitizer: DomSanitizer) {
     this.const = datasObject.getConst();
     this.msg = datasObject.getProperties(this.const.idiomaEs);
     this.util = util;
@@ -51,5 +52,14 @@ export class ConsultaComponent implements OnInit {
   eliminar(obj) {
     this.enviarObjetoEliminar.emit(obj);
     return true;
+  }
+
+  cargarImagen(dato: any, tipoArchivo) {
+    if (tipoArchivo === 'svg') {
+      return this.sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,' + dato);
+    } else {
+      tipoArchivo = tipoArchivo + ';base64,';
+      return 'data:image/' + tipoArchivo + dato;
+    }
   }
 }

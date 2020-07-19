@@ -248,6 +248,49 @@
 
                       <div class="ui-g center">
                         <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad">
+                          <p-gmap #gmap *ngIf='optionsMap !== null' [style]="{'width':'100%','height':'320px', 'margin-bottom': '1em'}"
+                            [options]="optionsMap" [overlays]="overlays" (onMapClick)="handleMapClick($event)"
+                            (onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)">
+                          </p-gmap>
+
+                          <button type="button" pButton label="Clear" icon="pi pi-times" (click)="clear()"
+                            style="margin-right:.25em"></button>
+                          <button type="button" pButton label="Zoom In" icon="pi pi-plus"
+                            (click)="zoomIn(gmap.getMap())" style="margin-right:.25em"></button>
+                          <button type="button" pButton label="Zoom Out" icon="pi pi-minus"
+                            (click)="zoomOut(gmap.getMap())"></button>
+
+                          <p-dialog showEffect="fade" [(visible)]="dialogVisible" header="New Location"
+                            [style]="{width: '300px'}">>
+                            <div class="p-grid ui-fluid" *ngIf="selectedPosition">
+                              <div class="p-col-2"><label for="title">Label</label></div>
+                              <div class="p-col-10"><input type="text" pInputText id="title" [(ngModel)]="markerTitle">
+                              </div>
+
+                              <div class="p-col-2"><label for="lat">Lat</label></div>
+                              <div class="p-col-10"><input id="lat" type="text" readonly pInputText
+                                  [ngModel]="selectedPosition.lat()"></div>
+
+                              <div class="p-col-2"><label for="lng">Lng</label></div>
+                              <div class="p-col-10"><input id="lng" type="text" readonly pInputText
+                                  [ngModel]="selectedPosition.lng()"></div>
+
+                              <div class="p-col-2"><label for="drg">Drag</label></div>
+                              <div class="p-col-10">
+                                <p-checkbox [(ngModel)]="draggable" binary="true" [style]="{'margin-top':'.25em'}">
+                                </p-checkbox>
+                              </div>
+                            </div>
+                            <p-footer>
+                              <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                <button type="button" pButton label="Add Marker" icon="pi-plus"
+                                  (click)="addMarker()"></button>
+                              </div>
+                            </p-footer>
+                          </p-dialog>
+                        </div>
+
+                        <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad">
                           <label for="float-input">{{msg.lbl_mtto_sala_info_adicional}}</label>
                           <span class="ui-float-label">
                             <textarea class="w100" id="txtInfoAdicional" pInputTextarea

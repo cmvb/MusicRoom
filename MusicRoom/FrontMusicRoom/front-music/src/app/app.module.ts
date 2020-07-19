@@ -12,14 +12,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserModule } from '@angular/platform-browser';
-// Imports Esenciales
-import { AppRoutingModule } from './components/app.routing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { NgxUiLoaderConfig, NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+import { AgmCoreModule } from '@agm/core';
+
+// Imports PrimeNG
 import { CalendarModule } from 'primeng/calendar';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DeferModule } from 'primeng/defer';
@@ -38,21 +33,25 @@ import { StepsModule } from 'primeng/steps';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ToastModule } from 'primeng/toast';
-// Imports Componentes Internos
-import { HeaderComponent } from './components/header/header.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { ConsultaComponent } from './components/consulta/consulta.component';
-import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
-import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
-import { ModalsComponent } from './components/modals/modals.component';
-import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
+import { GMapModule } from 'primeng/gmap';
+
 // Imports Utilidades
 import { DataObjects } from './components/ObjectGeneric';
 import { DropZoneComponent } from './components/dropZone/dropZone.component';
 import { PdfViewerthis } from './components/pdf-viewerthis.util/pdf-viewerthis.util.component';
 import { Functions } from './components/Functions';
 import { Util } from './components/Util';
+import { GoogleMapsModule } from '@angular/google-maps'
+
+// Imports Esenciales
+import { AppRoutingModule } from './components/app.routing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxUiLoaderConfig, NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+
 // Imports Componentes
 import { AppComponent } from './app.component';
 import { LoginGuard } from './components/login.guard';
@@ -73,13 +72,23 @@ import { TercerosQueryComponent } from './components/terceros/tercerosQuery.comp
 import { SalasEditComponent } from './components/salas/salasEdit.component';
 import { SalasQueryComponent } from './components/salas/salasQuery.component';
 
+// Imports Componentes Internos
+import { HeaderComponent } from './components/header/header.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ConsultaComponent } from './components/consulta/consulta.component';
+import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
+import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
+import { ModalsComponent } from './components/modals/modals.component';
+import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
+
 // Constantes
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   "bgsColor": "#ffab40",
   "bgsOpacity": 0.5,
   "bgsPosition": "bottom-right",
   "bgsSize": 60,
-  "bgsType": "ball-spin-clockwise",
+  "bgsType": "three-strings",
   "blur": 5,
   "fgsColor": "#ffab40",
   "fgsPosition": "center-center",
@@ -124,7 +133,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     UbicacionesQueryComponent,
     UbicacionesEditComponent,
     TercerosQueryComponent,
-    TercerosEditComponent,    
+    TercerosEditComponent,
     SalasQueryComponent,
     SalasEditComponent,
     PdfViewerthis,
@@ -136,7 +145,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     DropZoneComponent
   ],
   imports: [
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyBaNBQN5zBRz7h5lUKB4GGZQHhakKrajSA' }),
     BrowserModule,
+    GoogleMapsModule,
     BrowserAnimationsModule,
     FormsModule,
     RouterModule,
@@ -169,6 +180,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CalendarModule,
     ProgressBarModule,
     ToastModule,
+    GMapModule,
     TabMenuModule,
     InputTextareaModule,
     DragDropModule,
@@ -177,7 +189,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     StepsModule,
     PdfViewerModule
   ],
-  providers: [DataObjects, LoginGuard, Util, Functions, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [DataObjects, LoginGuard, Util, Functions, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
