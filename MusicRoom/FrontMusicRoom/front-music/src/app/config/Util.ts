@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
-import { Functions } from '.././components/Functions';
-import { DataObjects } from '.././components/ObjectGeneric';
+import { Functions } from './Functions';
+import { TextProperties } from './TextProperties';
+import { ObjectModelInitializer } from './ObjectModelInitializer';
+import { Enumerados } from './Enumerados';
+import { SesionService } from '../services/sesionService/sesion.service';
+import { MessageService } from 'primeng/api';
 
 declare var $: any;
 
@@ -9,7 +13,6 @@ export var objs: any;
 
 @Injectable()
 export class Util {
-  ex: any;
   msg: any;
   mensaje: any;
   const: any;
@@ -21,20 +24,19 @@ export class Util {
   headers = new Headers({ 'Content-Type': 'application/json' });
   options = new RequestOptions({ headers: this.headers });
 
-  constructor(private http: Http, dataObject: DataObjects, dataFunctions: Functions) {
-    this.ex = dataObject.getDataException();
-    this.usuarioEjemplo = dataObject.getDataUsuario();
-    this.mensaje = dataObject.getDataMessage();
-    this.const = dataObject.getConst();
-    this.msg = dataObject.getProperties(this.const.idiomaEs);
+  constructor(private http: Http, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, dataFunctions: Functions, private messageService: MessageService) {
+    this.usuarioEjemplo = this.objectModelInitializer.getDataUsuario();
+    this.mensaje = this.objectModelInitializer.getDataMessage();
+    this.const = this.objectModelInitializer.getConst();
+    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
     this.func = dataFunctions;
-    this.enums = dataObject.getEnumerados();
-    this.modeloTablas = dataObject.getDataModeloTablas();
+    this.enums = this.enumerados.getEnumerados();
+    this.modeloTablas = this.objectModelInitializer.getDataModeloTablas();
   }
 
   limpiarExcepcion() {
     console.clear;
-    return this.ex;
+    this.messageService.clear();
   }
 
   actualizarLista(listaRemover, listaActualizar) {
@@ -65,7 +67,7 @@ export class Util {
       return false;
     }
     for (let item in listaPhases) {
-      if (listaPhases[item].toString().toUpperCase() === JSON.parse(localStorage.getItem('phase').toString().toUpperCase())) {
+      if (listaPhases[item].toString().toUpperCase() === this.sesionService.phase.toString().toUpperCase()) {
         return true;
       }
     }
@@ -82,58 +84,18 @@ export class Util {
       return false;
     }
     for (let item in listaPhases) {
-      if (listaPhases[item].toString().toUpperCase() === JSON.parse(localStorage.getItem('phase').toString().toUpperCase())) {
+      if (listaPhases[item].toString().toUpperCase() === this.sesionService.phase.toString().toUpperCase()) {
         return true;
       }
     }
     return false;
   }
 
-  limpiarSesion() {
+  limpiarConsolaStorage() {
     localStorage.clear();
     sessionStorage.clear();
     console.clear();
     return true;
-  }
-
-  limpiarSesionXItem(listaItems) {
-    if (listaItems === null || listaItems.length <= 0) {
-      return false;
-    }
-    for (let item in listaItems) {
-      localStorage.setItem(listaItems[item], null);
-    }
-    return true;
-  }
-
-  // Subir variables a la sesión
-  agregarSesionXItem(listaItems) {
-    if (listaItems === null || listaItems.length <= 0) {
-      return false;
-    }
-    listaItems.forEach(function (element, index) {
-      localStorage.setItem(element.item, JSON.stringify(element.valor));
-    });
-    return true;
-  }
-
-  //limpiar las variables en sesion
-  limpiarVariableSesion() {
-    let sesion = JSON.parse(localStorage.getItem("usuarioSesion"));
-    localStorage.clear();
-    localStorage.setItem("usuarioSesion", JSON.stringify(sesion));
-
-    return true;
-  }
-
-  // Bajar variables a la sesión
-  getSesionXItem(item) {
-    if (item === null) {
-      return null;
-    }
-
-    let temp = localStorage.getItem(item);
-    return JSON.parse(temp);
   }
 
   getEnum(enumerado) {

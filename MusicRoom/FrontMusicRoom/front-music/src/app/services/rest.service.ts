@@ -1,9 +1,7 @@
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Util } from '.././components/Util';
-import { DataObjects } from '.././components/ObjectGeneric';
-import { RequestOptions } from '@angular/http';
+import { ObjectModelInitializer } from '../config/ObjectModelInitializer';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,14 +16,13 @@ const httpFileOptions = {
 })
 export class RestService {
   // Utilidades
-  util: any;
   AUTH: any;
 
-  constructor(private http: HttpClient, private router: Router, datasObject: DataObjects, util: Util,) {
+  constructor(private http: HttpClient, private router: Router, public objectModelInitializer: ObjectModelInitializer) {
     this.AUTH = {
-      TOKEN_AUTH_USERNAME: datasObject.getConst().tokenUsernameAUTH,
-      TOKEN_AUTH_PASSWORD: datasObject.getConst().tokenPasswordAUTH,
-      TOKEN_AUTH_NAME: datasObject.getConst().tokenNameAUTH
+      TOKEN_AUTH_USERNAME: this.objectModelInitializer.getConst().tokenUsernameAUTH,
+      TOKEN_AUTH_PASSWORD: this.objectModelInitializer.getConst().tokenPasswordAUTH,
+      TOKEN_AUTH_NAME: this.objectModelInitializer.getConst().tokenNameAUTH
     };
   }
 

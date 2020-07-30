@@ -1,9 +1,6 @@
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Util } from '.././components/Util';
-import { DataObjects } from '.././components/ObjectGeneric';
-import { RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 
 const httpOptions = {
@@ -18,11 +15,7 @@ const httpFileOptions = {
   providedIn: 'root'
 })
 export class LocationService {
-  // Utilidades
-  util: any;
-
-  constructor(private http: HttpClient, private router: Router, datasObject: DataObjects, util: Util) {
-    this.util = util;
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   getLocation(): Observable<any> {

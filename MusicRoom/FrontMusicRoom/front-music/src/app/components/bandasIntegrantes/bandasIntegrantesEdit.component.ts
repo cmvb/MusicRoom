@@ -12,18 +12,18 @@ import { Util } from 'src/app/config/Util';
 import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
 import { Enumerados } from 'src/app/config/Enumerados';
 import { SesionService } from 'src/app/services/sesionService/sesion.service';
-import { SalaService } from 'src/app/services/salaService/sala.service';
+import { BandaIntegranteService } from 'src/app/services/bandaIntegranteService/bandaIntegrante.service';
 
 declare var google: any;
 declare var $: any;
 
 @Component({
-  selector: 'app-salas-edit',
-  templateUrl: './salasEdit.component.html',
-  styleUrls: ['./salas.component.scss'],
+  selector: 'app-bandas-integrantes-edit',
+  templateUrl: './bandasIntegrantesEdit.component.html',
+  styleUrls: ['./bandasIntegrantes.component.scss'],
   providers: [RestService, MessageService]
 })
-export class SalasEditComponent implements OnInit {
+export class BandasIntegrantesEditComponent implements OnInit {
   // Objetos de Sesion
   ACCESS_TOKEN: any;
   usuarioSesion: any;
@@ -78,7 +78,7 @@ export class SalasEditComponent implements OnInit {
   map: google.maps.Map;
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public salaService: SalaService, public locationService: LocationService, private sanitizer: DomSanitizer, private mapsAPILoader: MapsAPILoader) {
+  constructor(private router: Router, private route: ActivatedRoute, public locationService: LocationService, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public bandaIntegranteService: BandaIntegranteService, private sanitizer: DomSanitizer, private mapsAPILoader: MapsAPILoader) {
     this.optionsMap = null;
     this.mapsAPILoader.load().then(() => {
       this.locationService.getLocation().subscribe(resp => {
@@ -118,14 +118,14 @@ export class SalasEditComponent implements OnInit {
   ngOnInit() {
     this.sesionService.mensajeConfirmacion = undefined;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
-    this.listaTerceros = this.salaService.listaTerceros;
+    this.listaTerceros = this.bandaIntegranteService.listaTerceros;
     this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
 
     this.phase = this.sesionService.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
 
-    if (typeof this.salaService.editParam !== 'undefined' && this.salaService.editParam !== null) {
-      this.objeto = this.salaService.editParam;
+    if (typeof this.bandaIntegranteService.editParam !== 'undefined' && this.bandaIntegranteService.editParam !== null) {
+      this.objeto = this.bandaIntegranteService.editParam;
       this.terceroSeleccionado = { value: this.objeto.terceroTb, label: this.objeto.terceroTb.razonSocial };
     }
 
@@ -435,7 +435,7 @@ export class SalasEditComponent implements OnInit {
   }
 
   irAtras() {
-    this.salaService.listaConsulta = undefined;
+    this.bandaIntegranteService.listaConsulta = undefined;
     this.router.navigate(['/salaQuery']);
   }
 

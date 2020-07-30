@@ -81,47 +81,7 @@ export class Functions {
   tipoDeVariable(obj) {
     return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
   }
-
-  revisarPermisos(url) {
-    /* if (url.indexOf('ipsResetPass') < 0) {
-       let objeto = JSON.parse(localStorage.getItem('usuario'));
-       for (let i in objeto.permisos) {
-         if (objeto.permisos[i].url.indexOf(url) > 0) {
-           if (objeto.permisos[i].swSearch == 0) {
-             inhabilitarAcciones("swBuscar");
-           }
-           if (objeto.permisos[i].swEdit == 0) {
-             inhabilitarAcciones("swEditar");
-           }
-           if (objeto.permisos[i].swDelete == 0) {
-             inhabilitarAcciones("swEliminar");
-           }
-           if (objeto.permisos[i].swAdd == 0) {
-             inhabilitarAcciones("swCrear");
-           }
-           if (objeto.permisos[i].swExtra == 0) {
-             inhabilitarAcciones("swExtra");
-           }
-         }
-       }
-     }*/
-  }
-
-  initEnums() {
-    $('ng-select').each(function (index, element) {
-      let select = $(element);
-      /*if(!select.value){
-        select.value = select.find('option')[0].value;
-        select.attr('ng-reflect-model',select.find('option')[0].value);
-        console.log(select.find('option')[0]);
-        let option = select.find('option')[0];
-        $(option).attr('ng-selected',true);
-      }*/
-    })
-  };
 }
-
-
 
 export function inhabilitarAcciones(clase) {
   var listaElementos = $('.' + clase);

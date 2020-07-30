@@ -8,18 +8,17 @@ import { Util } from 'src/app/config/Util';
 import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
 import { Enumerados } from 'src/app/config/Enumerados';
 import { SesionService } from 'src/app/services/sesionService/sesion.service';
-import { UsuarioService } from 'src/app/services/usuarioService/usuario.service';
+import { BandaIntegranteService } from 'src/app/services/bandaIntegranteService/bandaIntegrante.service';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-usuario-query',
-  templateUrl: './usuarioQuery.component.html',
-  styleUrls: ['./usuarios.component.scss'],
+  selector: 'app-bandas-integrantes-query',
+  templateUrl: './bandasIntegrantesQuery.component.html',
+  styleUrls: ['./bandasIntegrantes.component.scss'],
   providers: [RestService, MessageService]
 })
-
-export class UsuarioQueryComponent implements OnInit {
+export class BandasIntegrantesQueryComponent implements OnInit {
   // Objetos de Sesion
   ACCESS_TOKEN: any;
   usuarioSesion: any;
@@ -31,16 +30,23 @@ export class UsuarioQueryComponent implements OnInit {
 
   // Objetos de Datos
   data: any;
+  dataC: any;
   listaConsulta = [];
   objetoFiltro: any;
+
+  // Enumerados
+  enums: any;
+  listaTerceros = [];
+  enumFiltroTerceros = [];
+  terceroSeleccionado: any;
 
   // Opciones del Componente Consulta
   btnEditar = true;
   btnEliminar = true;
   listaCabeceras = [
-    { 'campoLista': 'usuario', 'nombreCabecera': 'Usuario' },
-    { 'campoLista': 'nombre', 'nombreCabecera': 'Nombre' },
-    { 'campoLista': 'apellido', 'nombreCabecera': 'Apellido' },
+    { 'campoLista': 'nombreSala', 'nombreCabecera': 'Sala' },
+    { 'campoLista': 'infoAdicional', 'nombreCabecera': 'Información' },
+    { 'campoLista': 'fotoPrincipalTb', 'nombreCabecera': 'Foto Principal' },
   ];
 
   // Propiedades de las peticiones REST
@@ -48,12 +54,12 @@ export class UsuarioQueryComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public usuarioService: UsuarioService) {
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public bandaIntegranteService: BandaIntegranteService) {
     this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
     this.msg = this.textProperties.getProperties(this.sesionService.idioma);
     this.const = this.objectModelInitializer.getConst();
-    this.objetoFiltro = this.objectModelInitializer.getDataUsuario();
+    this.objetoFiltro = this.objectModelInitializer.getDataSala();
     this.ACCESS_TOKEN = this.sesionService.tokenSesion.token;
   }
 
@@ -63,7 +69,9 @@ export class UsuarioQueryComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    this.consultarUsuarios();
+    this.consultarSalas();
+    // Terceros
+    this.consultarTerceros();
   }
 
   ngAfterViewInit() {
@@ -79,16 +87,16 @@ export class UsuarioQueryComponent implements OnInit {
     this.messageService.clear();
   }
 
-  consultarUsuarios() {
+  consultarSalas() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'consultarPorFiltros';
+      let url = this.const.urlRestService + this.const.urlControllerSala + 'consultarPorFiltros';
+      this.ajustarCombos();
       let obj = this.objetoFiltro;
       obj.estado = this.const.estadoActivoNumString
 
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
-          console.log(resp, "res");
           this.data = resp;
           this.listaConsulta = this.data;
         },
@@ -96,8 +104,27 @@ export class UsuarioQueryComponent implements OnInit {
             let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
+          })
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-            console.log(error, "error");
+  consultarTerceros() {
+    try {
+      this.limpiarExcepcion();
+      let url = this.const.urlRestService + this.const.urlControllerTercero;
+
+      this.restService.getSecureREST(url, this.ACCESS_TOKEN)
+        .subscribe(resp => {
+          this.dataC = resp;
+          this.listaTerceros = this.dataC;
+          this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
+        },
+          error => {
+            let mensaje = this.util.mostrarNotificacion(error.error);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
           })
     } catch (e) {
       console.log(e);
@@ -113,33 +140,34 @@ export class UsuarioQueryComponent implements OnInit {
 
   editar(objetoEdit) {
     this.sesionService.phase = this.const.phaseEdit;
-    this.usuarioService.objetoFiltro = this.objetoFiltro;
-    this.usuarioService.listaConsulta = this.listaConsulta;
-    this.usuarioService.editParam = objetoEdit;
-    this.router.navigate(['/usuarioEdit']);
+    this.bandaIntegranteService.objetoFiltro = this.objetoFiltro;
+    this.bandaIntegranteService.listaConsulta = this.listaConsulta;
+    this.bandaIntegranteService.editParam = null;
+    this.bandaIntegranteService.listaTerceros = this.listaTerceros;
+    this.router.navigate(['/salaEdit']);
     return true;
   }
 
   irCrear() {
     this.sesionService.phase = this.const.phaseAdd;
-    this.usuarioService.objetoFiltro = this.objetoFiltro;
-    this.usuarioService.listaConsulta = this.listaConsulta;
-    this.usuarioService.editParam = null;
-    this.router.navigate(['/usuarioEdit']);
+    this.bandaIntegranteService.objetoFiltro = this.objetoFiltro;
+    this.bandaIntegranteService.listaConsulta = this.listaConsulta;
+    this.bandaIntegranteService.editParam = null;
+    this.bandaIntegranteService.listaTerceros = this.listaTerceros;
+    this.router.navigate(['/salaEdit']);
     return true;
   }
 
   eliminar(objetoEdit) {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'eliminarUsuario';
+      let url = this.const.urlRestService + this.const.urlControllerSala + 'eliminarSala';
 
       this.restService.postSecureREST(url, objetoEdit, this.ACCESS_TOKEN)
         .subscribe(resp => {
-          console.log(resp, "res");
           this.data = resp;
           this.limpiar();
-          this.consultarUsuarios();
+          this.consultarSalas();
           this.messageService.clear();
           this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_detail_el_registro_eliminado });
         },
@@ -147,8 +175,6 @@ export class UsuarioQueryComponent implements OnInit {
             let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
-
-            console.log(error, "error");
           })
     } catch (e) {
       console.log(e);
@@ -157,7 +183,17 @@ export class UsuarioQueryComponent implements OnInit {
 
   consultaTeclaEnter(event) {
     if (event.which === 13) {
-      this.consultarUsuarios();
+      this.consultarSalas();
+    }
+  }
+
+  ajustarCombos() {
+    if (this.terceroSeleccionado !== null) {
+      let tercero = this.util.obtenerTerceroDeEnum(this.terceroSeleccionado.value.idTercero, this.listaTerceros);
+      Object.assign(this.objetoFiltro.terceroTb, tercero);
+    }
+    else {
+      this.objetoFiltro.terceroTb = null;
     }
   }
 }

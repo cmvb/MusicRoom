@@ -1,351 +1,15 @@
 import { Injectable } from '@angular/core';
-export var HOST = 'http://localhost:9002';
-//export var HOST = 'http://10.176.56.211:9002';
-//export var HOST = 'http://10.108.2.66:9002';
-//export var HOST = 'http://192.168.1.15:9002';
-//export var HOST = 'http://185.224.139.43:9002/music-room';
-
-export var SYSTEM = 'http://localhost:4200';
-//export var SYSTEM = 'http://10.176.56.211:7001';
-//export var SYSTEM = 'http://10.108.2.66:4200';
-//export var SYSTEM = 'http://192.168.1.15:4200';
-//export var SYSTEM = 'http://185.224.139.43:8080/music-room';
+import { ObjectModelInitializer } from './ObjectModelInitializer';
 
 
 @Injectable()
-export class DataObjects {
+export class TextProperties {
 
-  getLocaleESForCalendar() {
-    return {
-      firstDayOfWeek: 1,
-      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-      dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-      today: 'Hoy',
-      clear: 'Borrar'
-    }
-  };
-
-  getLocaleEnForCalendar() {
-    return {
-      firstDayOfWeek: 1,
-      dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      dayNamesMin: ["S", "M", "T", "W", "T", "F", "S"],
-      monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      today: 'Today',
-      clear: 'Clear'
-    }
-  };
-
-  getConst() {
-    return {
-      // URL'S + Info del Sistema
-      urlDomain: `${SYSTEM}/`,
-      urlRestService: `${HOST}/`,
-      urlRestOauth: `${HOST}/oauth/token`,
-      urlVCode: `${SYSTEM}/vCode/`,
-      urlControllerUsuario: 'music-room/usuario/',
-      urlControllerUbicacion: 'music-room/ubicacion/',
-      urlControllerTercero: 'music-room/tercero/',
-      urlControllerReporte: 'music-room/reporte-archivo/',
-      urlControllerSala: 'music-room/sala/',
-      tokenUsernameAUTH: 'MusicRoomApp',
-      tokenPasswordAUTH: 'musicroom2019codex',
-      tokenNameAUTH: 'access_token',
-      codigoADMIN: 'RMRADM',
-
-      // Model rango de fechas para NGBDatePicker
-      minDate: { year: 1000, month: 1, day: 1 },
-      maxDate: new Date(),
-      formatoFecha: 'dd/mm/yy',
-      rangoYears: '1900:3000',
-
-      // Otras Variables
-      idiomaEs: 1,
-      idiomaEn: 2,
-      phaseAdd: 'add',
-      phaseDelete: 'delete',
-      phaseSearch: 'search',
-      phaseEdit: 'edit',
-      phasePlus: 'plus',
-      tipoCampoTexto: 1,
-      tipoCampoEnum: 2,
-      disabled: 'disabled',
-      readOnly: 'readOnly',
-      severity: ['info', 'success', 'warn', 'error'],
-      actionModal: { 'show': 1, 'hidde': 2 },
-      collectionSize: 0,
-      maxSize: 1,
-      rotate: true,
-      pageSize: 1,
-      menuConfiguracion: "C",
-      menuAdministracion: "A",
-      menuInventario: "I",
-      menuAgenda: "G",
-      menuMovimientos: "M",
-    }
-  };
-
-  getDataModeloTablas() {
-    return {
-      // Campo de la tabla
-      field: '',
-      // Encabezado
-      header: ''
-    }
-  };
-
-  getDataMessage() {
-    return {
-      // info, success, warning, danger
-      severity: '',
-      // Title of MSG
-      summary: '',
-      // Description of MSG
-      detail: ''
-    }
-  };
-
-  getDataException() {
-    return {
-      fecha: '',
-      mensaje: '',
-      detalles: ''
-    }
-  };
-
-  getDataUsuarioDTO() {
-    return {
-      //UsuarioDTO
-      usuario: '',
-      numeroDocumento: '',
-      tipoDocumento: '',
-      email: ''
-    }
-  };
-
-  getDataMailDTO() {
-    return {
-      //UsuarioDTO
-      from: '',
-      to: '',
-      subject: '',
-      model: {}
-    }
-  };
-
-  getDataUsuario() {
-    return {
-      //Usuario
-      idUsuario: '',
-      usuario: '',
-      password: '',
-      nombre: '',
-      apellido: '',
-      numeroDocumento: '',
-      tipoDocumento: '',
-      tipoUsuario: '',
-      email: '',
-      fechaNacimiento: '',
-      fotoTb: this.getDataArchivo(),
-      listaRoles: [this.getDataRol()],
-      codigoVerificacion: '',
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
-  };
-
-  getDataVCode() {
-    return {
-      idCodigoVerificacion: '',
-      token: '',
-      email: '',
-      expiracion: '',
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
-  };
-
-  getDataRol() {
-    return {
-      idRol: '',
-      codigo: '',
-      descripcion: '',
-      path: '',
-      subPath: '',
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
+  constructor(public objectModelInitializer: ObjectModelInitializer) {
   }
-
-  getDataArchivo() {
-    return {
-      idArchivo: '',
-      nombreArchivo: '',
-      tipoArchivo: '',
-      rutaArchivo: '',
-      valor: '',
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
-  }
-
-  getDataUbicacion() {
-    return {
-      idUbicacion: '',
-      codigoCiudad: '',
-      nombreCiudad: '',
-      codigoDepartamento: '',
-      nombreDepartamento: '',
-      codigoPais: '',
-      nombrePais: '',
-      tipoUbicacion: '',
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
-  };
-
-  getDataTercero() {
-    return {
-      //Usuario
-      idTercero: '',
-      razonSocial: '',
-      nit: '',
-      direccion: '',
-      telefono1: '',
-      telefono2: '',
-      infoAdicional: '',
-      ubicacionTb: this.getDataUbicacion(),
-      ubicacionTabla: '',
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
-  };
-
-  getDataSesion() {
-    return {
-      idSesion: '',
-      tokenSesion: '',
-      usuarioTb: this.getDataUsuario(),
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
-  };
-
-  getDataSala() {
-    return {
-      idSala: '',
-      terceroTb: this.getDataTercero(),
-      nombreSala: '',
-      infoAdicional: '',
-      fotoPrincipalTb: this.getDataArchivo(),
-      foto1Tb: this.getDataArchivo(),
-      foto2Tb: this.getDataArchivo(),
-      foto3Tb: this.getDataArchivo(),
-      foto4Tb: this.getDataArchivo(),
-
-      //Abstract
-      estado: '',
-      usuarioCreacion: '',
-      fechaCreacion: '',
-      usuarioActualiza: '',
-      fechaActualiza: ''
-    }
-  };
-
-  getEnumerados() {
-    let properties = this.getProperties(this.getConst().idiomaEs);
-
-    return {
-      sino: {
-        cod: 1, valores: [
-          { value: 1, label: properties.lbl_enum_si },
-          { value: 0, label: properties.lbl_enum_no }
-        ]
-      },
-      modulo: {
-        cod: 2, valores: [
-          { value: 1, label: properties.lbl_enum_modulo_tb_perfil },
-          { value: 2, label: properties.lbl_enum_modulo_tb_usuario },
-          { value: 3, label: properties.lbl_enum_modulo_tb_perfil_x_usuario }
-        ]
-      },
-      sexo: {
-        cod: 3, valores: [
-          { value: 1, label: properties.lbl_enum_sexo_valor_masculino },
-          { value: 2, label: properties.lbl_enum_sexo_valor_femenino },
-          { value: 3, label: properties.lbl_enum_sexo_valor_ambos }
-        ]
-      },
-      tipoUsuario: {
-        cod: 4, valores: [
-          { value: 0, label: properties.lbl_enum_generico_valor_vacio },
-          { value: 1, label: properties.lbl_enum_tipo_usuario_valor_cliente },
-          { value: 2, label: properties.lbl_enum_tipo_usuario_valor_empleado },
-          { value: 3, label: properties.lbl_enum_tipo_usuario_valor_administrador }
-        ]
-      },
-      tipoDocumento: {
-        cod: 5, valores: [
-          { value: 0, label: properties.lbl_enum_generico_valor_vacio },
-          { value: 1, label: properties.lbl_enum_tipo_documento_valor_cc },
-          { value: 2, label: properties.lbl_enum_tipo_documento_valor_ti },
-          { value: 3, label: properties.lbl_enum_tipo_documento_valor_ce }
-        ]
-      },
-      tipoUbicacion: {
-        cod: 6, valores: [
-          { value: -1, label: properties.lbl_enum_generico_valor_vacio },
-          { value: 0, label: properties.lbl_enum_tipo_ubicacion_valor_pais },
-          { value: 1, label: properties.lbl_enum_tipo_ubicacion_valor_departamento },
-          { value: 2, label: properties.lbl_enum_tipo_ubicacion_valor_ciudad }
-        ]
-      },
-      //valorIva: {cod: 25},
-    }
-  };
 
   getProperties(idioma) {
-    let constant = this.getConst();
+    let constant = this.objectModelInitializer.getConst();
     return {
       // Mensajes
       lbl_summary_info: idioma == constant.idiomaEs ? '¡Información!' : 'Info!',
@@ -353,6 +17,12 @@ export class DataObjects {
       lbl_summary_warning: idioma == constant.idiomaEs ? '¡Advertencia!' : 'Warning!',
       lbl_summary_danger: idioma == constant.idiomaEs ? '¡Error!' : 'Error!',
       lbl_summary_unknown_danger: idioma == constant.idiomaEs ? '¡Error Desconocido!' : 'Unknown Error!',
+      lbl_detail_fue: idioma == constant.idiomaEs ? ' fue ' : ' has ',
+      lbl_detail_el_registro: idioma == constant.idiomaEs ? 'El elemento #' : 'The element #',
+      lbl_detail_el_registro_eliminado: idioma == constant.idiomaEs ? 'El elemento fue eliminado satisfactoriamente.' : 'The element was deleted successfully.',
+      lbl_detail_creado: idioma == constant.idiomaEs ? 'creado' : 'created',
+      lbl_detail_actualizado: idioma == constant.idiomaEs ? 'actualizado' : 'updated',
+      lbl_detail_satisfactoriamente: idioma == constant.idiomaEs ? ' satisfactoriamente.' : ' successfully.',
 
       // Generales
       lbl_info_sin_resultados: idioma == constant.idiomaEs ? 'Sin Resultados' : 'Without Results',
@@ -365,6 +35,7 @@ export class DataObjects {
       lbl_mensaje_error_404: idioma == constant.idiomaEs ? 'La página que busca no ha sido encontrada.' : 'Page Not Found.',
       lbl_oops: idioma == constant.idiomaEs ? '¡Oops!' : 'Oops!',
       lbl_vencimiento_token_sesion: idioma == constant.idiomaEs ? 'Fecha de Vencimiento del Token: ' : 'Token Expiration Date',
+      lbl_vcode_expiro: idioma == constant.idiomaEs ? 'El Código de Verificación ya expiró.' : 'The Verification Code has expired.',
       lbl_ir_a: idioma == constant.idiomaEs ? 'Ir a: ' : 'Go to: ',
       lbl_ir_inicio: idioma == constant.idiomaEs ? 'Ir al Login' : 'Go to Login',
       lbl_btn_olvidaste_tu_clave: idioma == constant.idiomaEs ? '¿Olvidaste tu Clave?' : 'Do You forget your Password?',
@@ -388,12 +59,22 @@ export class DataObjects {
       lbl_mensaje_no_conexion_servidor: idioma == constant.idiomaEs ? 'No se ha podido establecer la conexión con el Servidor en algun proceso interno' : 'The connection to the Server could not be established in some internal process',
       lbl_mensaje_login_invalido: idioma == constant.idiomaEs ? 'El Usuario y/o la Contraseña son incorrectos' : 'The User and/or Password are incorrect',
       lbl_mensaje_sin_detalles_error: idioma == constant.idiomaEs ? 'No hay detalles del error' : 'No error details',
+      lbl_mensaje_error_403_ingresar_ruta: idioma == constant.idiomaEs ? 'Está intentando ingresar a la ruta: ' : '',
+      lbl_mensaje_error_403_no_permisos: idioma == constant.idiomaEs ? 'No cuenta con permisos para visualizar el contenido.' : 'You do not have permissions to view its content.',
+      lbl_mensaje_error_403_sesion_expirada: idioma == constant.idiomaEs ? 'Su sesión ha expirado. Debe ingresar de nuevo a la aplicación.' : 'Your session has expired. You must enter the application again.',
+      lbl_mensaje_error_500_no_sesion: idioma == constant.idiomaEs ? 'No tiene una Sesión Iniciada.' : 'You dont have a session started.',
 
       // Modales
       lbl_info_titulo_modal_error: idioma == constant.idiomaEs ? 'ERROR' : 'ERROR',
-      lbl_info_titulo_modal_informacion: idioma == constant.idiomaEs ? 'INFROMACION' : 'INFORMATION',
+      lbl_info_titulo_modal_informacion: idioma == constant.idiomaEs ? 'INFORMACION' : 'INFORMATION',
       lbl_info_titulo_modal_advertencia: idioma == constant.idiomaEs ? 'ADVERTECNIA' : 'WARNING',
       lbl_info_titulo_modal_proceso_exitoso: idioma == constant.idiomaEs ? 'PROCESO EXITOSO' : 'PROCESS COMPLETE',
+
+      // Steps
+      lbl_info_titulo_step_personal: idioma == constant.idiomaEs ? 'PERSONAL' : 'PERSONAL',
+      lbl_info_titulo_step_identificacion: idioma == constant.idiomaEs ? 'IDENTIFICACIÓN' : 'IDENTIFICATION',
+      lbl_info_titulo_step_seguridad: idioma == constant.idiomaEs ? 'SEGURIDAD' : 'SECURITY',
+      lbl_info_titulo_step_confirmacion: idioma == constant.idiomaEs ? 'CONFIRMACION' : 'CONFIRMATION',
 
       // Menu
       lbl_menu_parametrizacion: idioma == constant.idiomaEs ? 'Parametrización' : 'Parameterization',
@@ -480,7 +161,7 @@ export class DataObjects {
 
       lbl_enum_tipo_ubicacion_valor_pais: idioma == constant.idiomaEs ? 'País' : 'Country',
       lbl_enum_tipo_ubicacion_valor_departamento: idioma == constant.idiomaEs ? 'Departamento/Región/Estado' : 'Department/Region/State',
-      lbl_enum_tipo_ubicacion_valor_ciudad: idioma == constant.idiomaEs ? 'Ciudad' : 'CE',
+      lbl_enum_tipo_ubicacion_valor_ciudad: idioma == constant.idiomaEs ? 'Ciudad' : 'City',
 
       // Módulos Genéricos
       lbl_mtto_generico_activo: idioma == constant.idiomaEs ? 'Activo' : 'Active',
@@ -535,7 +216,14 @@ export class DataObjects {
       lbl_mtto_sala_4: idioma == constant.idiomaEs ? '4' : '4',
       lbl_mtto_sala_escoger_foto: idioma == constant.idiomaEs ? 'Escoger Foto' : 'Choose Photo',
 
-
+      // Módulo Banda/Integrante
+      lbl_mtto_banda_title: idioma == constant.idiomaEs ? 'Configuración de Banda/Grupo Musical' : 'Bands/Musical Group Settings',
+      lbl_mtto_banda_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
+      lbl_mtto_banda_fecha_inicio: idioma == constant.idiomaEs ? 'Tercero' : 'Company',
+      lbl_mtto_banda_genero: idioma == constant.idiomaEs ? 'Info. Adicional' : 'Additional Info.',
+      lbl_mtto_banda_foto_principal: idioma == constant.idiomaEs ? 'Foto Principal' : 'Main Photo',
+      lbl_mtto_banda_logo: idioma == constant.idiomaEs ? 'Foto Principal' : 'Main Photo',
+      lbl_mtto_banda_escoger_foto: idioma == constant.idiomaEs ? 'Escoger Foto' : 'Choose Photo',
     }
   };
 }

@@ -36,15 +36,14 @@ import { ToastModule } from 'primeng/toast';
 import { GMapModule } from 'primeng/gmap';
 
 // Imports Utilidades
-import { DataObjects } from './components/ObjectGeneric';
-import { DropZoneComponent } from './components/dropZone/dropZone.component';
+import { TextProperties } from './config/TextProperties';
 import { PdfViewerthis } from './components/pdf-viewerthis.util/pdf-viewerthis.util.component';
-import { Functions } from './components/Functions';
-import { Util } from './components/Util';
+import { Functions } from './config/Functions';
+import { Util } from './config/Util';
 import { GoogleMapsModule } from '@angular/google-maps'
 
 // Imports Esenciales
-import { AppRoutingModule } from './components/app.routing';
+import { AppRoutingModule } from './config/Routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -54,7 +53,7 @@ import { NgxUiLoaderConfig, NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoade
 
 // Imports Componentes
 import { AppComponent } from './app.component';
-import { LoginGuard } from './components/login.guard';
+import { Guardian } from './config/Guardian';
 import { TokenComponent } from './components/v-code/token/token.component';
 import { VCodeComponent } from './components/v-code/v-code.component';
 import { Error403Component } from './components/error/error403.component';
@@ -71,15 +70,15 @@ import { TercerosEditComponent } from './components/terceros/tercerosEdit.compon
 import { TercerosQueryComponent } from './components/terceros/tercerosQuery.component';
 import { SalasEditComponent } from './components/salas/salasEdit.component';
 import { SalasQueryComponent } from './components/salas/salasQuery.component';
+import { BandasIntegrantesEditComponent } from './components/bandasIntegrantes/bandasIntegrantesEdit.component';
+import { BandasIntegrantesQueryComponent } from './components/bandasIntegrantes/bandasIntegrantesQuery.component';
 
 // Imports Componentes Internos
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ConsultaComponent } from './components/consulta/consulta.component';
-import { IteradorMttoComponent } from './components/iteradorMtto/iteradormtto.component';
 import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
-import { ModalsComponent } from './components/modals/modals.component';
 import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
 
 // Constantes
@@ -123,11 +122,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     FooterComponent,
     DashboardComponent,
     ConsultaComponent,
-    IteradorMttoComponent,
 
     MultiUploadComponent,
     DualListBoxComponent,
-    ModalsComponent,
     UsuarioQueryComponent,
     UsuarioEditComponent,
     UbicacionesQueryComponent,
@@ -136,13 +133,14 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     TercerosEditComponent,
     SalasQueryComponent,
     SalasEditComponent,
+    BandasIntegrantesQueryComponent,
+    BandasIntegrantesEditComponent,
     PdfViewerthis,
     Error403Component,
     Error404Component,
     Error500Component,
     VCodeComponent,
-    TokenComponent,
-    DropZoneComponent
+    TokenComponent
   ],
   imports: [
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBaNBQN5zBRz7h5lUKB4GGZQHhakKrajSA' }),
@@ -189,7 +187,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     StepsModule,
     PdfViewerModule
   ],
-  providers: [DataObjects, LoginGuard, Util, Functions, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [TextProperties, Guardian, Util, Functions, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.proyectos.model.SalaTB;
 
 @EnableTransactionManagement
-public interface ISalaDao {
+public interface IBandaDao {
 
 	/*
-	 * Metodo para consultar todas las salas
+	 * Metodo para consultar todos los terceros
 	 */
 	List<SalaTB> consultarTodos();
 

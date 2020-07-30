@@ -1,0 +1,338 @@
+<script type="text/javascript">
+  window.addEventListener("dragover", function (e) {
+    e = e || event;
+    e.preventDefault();
+  }, false);
+  window.addEventListener("drop", function (e) {
+    e = e || event;
+    e.preventDefault();
+  }, false);
+</script>
+
+<div class="demo-container demo-layout-transparent">
+  <!-- Importamos el Header -->
+  <app-header></app-header>
+
+  <mdl-layout>
+    <mdl-layout-drawer>
+      <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo" />
+      <!-- Importamos el Sidebar o Menú Lateral -->
+      <app-sidebar></app-sidebar>
+    </mdl-layout-drawer>
+
+    <mdl-layout-content>
+      <p-scrollPanel [style]="{width: '100%', height: '100vh', background: 'url(assets/images/modulos/salas.jpg)'}"
+        styleClass="custom fondo-cover">
+        <div class="body-content">
+          <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
+          <div class="content-page">
+            <div class="ui-g">
+              <div class="ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad espacioFooter">
+                <h5 class="shadow mttoTitle shiny fontNosifer">{{msg.lbl_mtto_sala_title}} -
+                  {{phase === const.phaseAdd ? msg.lbl_btn_crear : msg.lbl_btn_editar}}
+                </h5>
+
+                <div class="ui-g center">
+                  <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__supporting-text">
+                      <div class="ui-g center">
+                        <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_sala_nombre}}</label>
+                          <span class="ui-float-label">
+                            <input pInputText id="txtNombreSala" (keydown)="guardaTeclaEnter($event)"
+                              [(ngModel)]="objeto.nombreSala" type="text" size="50">
+                          </span>
+                        </div>
+                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_sala_tercero}}</label>
+                          <span class="ui-float-label">
+                            <ng-select id="txtTercero" [(ngModel)]="terceroSeleccionado" [items]="enumFiltroTerceros">
+                            </ng-select>
+                          </span>
+                        </div>
+                        <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_generico_activo}}</label>
+                          <span class="ui-float-label">
+                            <ng-select id="txtEstado" [(ngModel)]="objeto.estado" [items]="enumSiNo">
+                            </ng-select>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="ui-g center">
+                        <div class="ui-g-7 ui-lg-7 ui-md-7 ui-sm-12 ui-xs-12 ui-g-nopad">
+                          <section id="sectionFotoPrincipal" class="seccionFoto">
+                            <label class="obligatorio" for="float-input">{{msg.lbl_mtto_sala_foto_principal}}</label>
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}"
+                              (click)="clickFileUp('fileUpPrincipal');" (drop)="onUpload($event, 0)"
+                              (dragover)="dragOver($event)">
+                              <div class="dz-message">
+                                <img *ngIf="srcFotoPrincipal != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFotoPrincipal"
+                                  alt="{{objeto.fotoPrincipalTb != null ? objeto.fotoPrincipalTb.nombreArchivo : ''}}" />
+                                <ng-template #mensajeSubirArchivos>
+                                  <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
+                                  <br>{{msg.lbl_mensaje_dropzone_secundario}}
+                                </ng-template>
+                              </div>
+                            </div>
+                            <div class="espacio10px"></div>
+                            <form id="formDropZoneFotoPrincipal" action="" method="POST" enctype="multipart/form-data">
+                              <input style="display: none" type="file" accept="{{acceptStr}}" id="fileUpPrincipal"
+                                (change)="onUpload($event, 0)" multiple="1">
+                            </form>
+                          </section>
+
+                          <section id="sectionFoto1" class="seccionFoto displayNone">
+                            <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_1}}</label>
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp1');"
+                              (drop)="onUpload($event, 1)" (dragover)="dragOver($event)">
+                              <div class="dz-message">
+                                <img *ngIf="srcFoto1 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto1"
+                                  alt="{{objeto.foto1Tb != null ? objeto.foto1Tb.nombreArchivo : ''}}" />
+                                <ng-template #mensajeSubirArchivos>
+                                  <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
+                                  <br>{{msg.lbl_mensaje_dropzone_secundario}}
+                                </ng-template>
+                              </div>
+                            </div>
+                            <div class="espacio10px"></div>
+                            <form id="formDropZoneFoto1" action="" method="POST" enctype="multipart/form-data">
+                              <input style="display: none" type="file" accept="{{acceptStr}}" id="fileUp1"
+                                (change)="onUpload($event, 1)" multiple="1">
+                            </form>
+                          </section>
+
+                          <section id="sectionFoto2" class="seccionFoto displayNone">
+                            <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_2}}</label>
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp2');"
+                              (drop)="onUpload($event, 2)" (dragover)="dragOver($event)">
+                              <div class="dz-message">
+                                <img *ngIf="srcFoto2 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto2"
+                                  alt="{{objeto.foto2Tb != null ? objeto.foto2Tb.nombreArchivo : ''}}" />
+                                <ng-template #mensajeSubirArchivos>
+                                  <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
+                                  <br>{{msg.lbl_mensaje_dropzone_secundario}}
+                                </ng-template>
+                              </div>
+                            </div>
+                            <div class="espacio10px"></div>
+                            <form id="formDropZoneFoto2" action="" method="POST" enctype="multipart/form-data">
+                              <input style="display: none" type="file" accept="{{acceptStr}}" id="fileUp2"
+                                (change)="onUpload($event, 2)" multiple="1">
+                            </form>
+                          </section>
+
+                          <section id="sectionFoto3" class="seccionFoto displayNone">
+                            <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_3}}</label>
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp3');"
+                              (drop)="onUpload($event, 3)" (dragover)="dragOver($event)">
+                              <div class="dz-message">
+                                <img *ngIf="srcFoto3 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto3"
+                                  alt="{{objeto.foto3Tb != null ? objeto.foto3Tb.nombreArchivo : ''}}" />
+                                <ng-template #mensajeSubirArchivos>
+                                  <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
+                                  <br>{{msg.lbl_mensaje_dropzone_secundario}}
+                                </ng-template>
+                              </div>
+                            </div>
+                            <div class="espacio10px"></div>
+                            <form id="formDropZoneFoto3" action="" method="POST" enctype="multipart/form-data">
+                              <input style="display: none" type="file" accept="{{acceptStr}}" id="fileUp3"
+                                (change)="onUpload($event, 3)" multiple="1">
+                            </form>
+                          </section>
+
+                          <section id="sectionFoto4" class="seccionFoto displayNone">
+                            <label for="float-input">{{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_4}}</label>
+                            <div class="dropzoneC" mdl-tooltip-position="bottom"
+                              mdl-tooltip-large="{{msg.lbl_tip_subir_archivos}}" (click)="clickFileUp('fileUp4');"
+                              (drop)="onUpload($event, 4)" (dragover)="dragOver($event)">
+                              <div class="dz-message">
+                                <img *ngIf="srcFoto4 != null; else mensajeSubirArchivos" class="imagenPrincipal"
+                                  [src]="srcFoto4"
+                                  alt="{{objeto.foto4Tb != null ? objeto.foto4Tb.nombreArchivo : ''}}" />
+                                <ng-template #mensajeSubirArchivos>
+                                  <span class="note">{{msg.lbl_mensaje_dropzone_principal}}</span>
+                                  <br>{{msg.lbl_mensaje_dropzone_secundario}}
+                                </ng-template>
+                              </div>
+                            </div>
+                            <div class="espacio10px"></div>
+                            <form id="formDropZoneFoto4" action="" method="POST" enctype="multipart/form-data">
+                              <input style="display: none" type="file" accept="{{acceptStr}}" id="fileUp4"
+                                (change)="onUpload($event, 4)" multiple="1">
+                            </form>
+                          </section>
+                        </div>
+
+                        <div class="ui-g-5 ui-lg-5 ui-md-5 ui-sm-12 ui-xs-12 ui-g-nopad">
+                          <label class="obligatorio" for="float-input">{{msg.lbl_mtto_sala_escoger_foto}}</label>
+                          <div class="ui-g center">
+                            <div id="idActivarFotoPrincipal" (click)="activarFoto(0)"
+                              class="card card-af bg-c-gray order-card">
+                              <div class="card-block">
+                                <p class="font-b-500">
+                                  <span class="f-left"><i
+                                      class="material-icons {{srcFotoPrincipal != null ? 'success' : ''}}">star</i></span>
+                                  {{msg.lbl_mtto_sala_foto_principal}}
+                                  <span *ngIf="srcFotoPrincipal == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFotoPrincipal != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="ui-g center">
+                            <div id="idActivarFoto1" (click)="activarFoto(1)" class="card card-af bg-c-gray order-card">
+                              <div class="card-block">
+                                <p class="font-b-500">
+                                  {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_1}}
+                                  <span *ngIf="srcFoto1 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto1 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="ui-g center">
+                            <div id="idActivarFoto2" (click)="activarFoto(2)" class="card card-af bg-c-gray order-card">
+                              <div class="card-block">
+                                <p class="font-b-500">
+                                  {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_2}}
+                                  <span *ngIf="srcFoto2 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto2 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="ui-g center">
+                            <div id="idActivarFoto3" (click)="activarFoto(3)" class="card card-af bg-c-gray order-card">
+                              <div class="card-block">
+                                <p class="font-b-500">
+                                  {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_3}}
+                                  <span *ngIf="srcFoto3 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto3 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="ui-g center">
+                            <div id="idActivarFoto4" (click)="activarFoto(4)" class="card card-af bg-c-gray order-card">
+                              <div class="card-block">
+                                <p class="font-b-500">
+                                  {{msg.lbl_mtto_sala_foto}} {{msg.lbl_mtto_sala_4}}
+                                  <span *ngIf="srcFoto4 == null" class="f-right"><i
+                                      class="material-icons">publish</i></span>
+                                  <span *ngIf="srcFoto4 != null" class="f-right success"><i
+                                      class="font-bolder material-icons">check</i></span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="ui-g center">
+                        <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad">
+                          <p-gmap #gmap *ngIf='optionsMap !== null' [style]="{'width':'100%','height':'320px', 'margin-bottom': '1em'}"
+                            [options]="optionsMap" [overlays]="overlays" (onMapClick)="handleMapClick($event)"
+                            (onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)">
+                          </p-gmap>
+
+                          <button type="button" pButton label="Clear" icon="pi pi-times" (click)="clear()"
+                            style="margin-right:.25em"></button>
+                          <button type="button" pButton label="Zoom In" icon="pi pi-plus"
+                            (click)="zoomIn(gmap.getMap())" style="margin-right:.25em"></button>
+                          <button type="button" pButton label="Zoom Out" icon="pi pi-minus"
+                            (click)="zoomOut(gmap.getMap())"></button>
+
+                          <p-dialog showEffect="fade" [(visible)]="dialogVisible" header="New Location"
+                            [style]="{width: '300px'}">>
+                            <div class="p-grid ui-fluid" *ngIf="selectedPosition">
+                              <div class="p-col-2"><label for="title">Label</label></div>
+                              <div class="p-col-10"><input type="text" pInputText id="title" [(ngModel)]="markerTitle">
+                              </div>
+
+                              <div class="p-col-2"><label for="lat">Lat</label></div>
+                              <div class="p-col-10"><input id="lat" type="text" readonly pInputText
+                                  [ngModel]="selectedPosition.lat()"></div>
+
+                              <div class="p-col-2"><label for="lng">Lng</label></div>
+                              <div class="p-col-10"><input id="lng" type="text" readonly pInputText
+                                  [ngModel]="selectedPosition.lng()"></div>
+
+                              <div class="p-col-2"><label for="drg">Drag</label></div>
+                              <div class="p-col-10">
+                                <p-checkbox [(ngModel)]="draggable" binary="true" [style]="{'margin-top':'.25em'}">
+                                </p-checkbox>
+                              </div>
+                            </div>
+                            <p-footer>
+                              <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                <button type="button" pButton label="Add Marker" icon="pi-plus"
+                                  (click)="addMarker()"></button>
+                              </div>
+                            </p-footer>
+                          </p-dialog>
+                        </div>
+
+                        <div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-12 ui-xs-12 ui-g-nopad">
+                          <label for="float-input">{{msg.lbl_mtto_sala_info_adicional}}</label>
+                          <span class="ui-float-label">
+                            <textarea class="w100" id="txtInfoAdicional" pInputTextarea
+                              (keydown)="guardaTeclaEnter($event)" [rows]="3"
+                              [(ngModel)]="objeto.infoAdicional"></textarea>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mdl-card__actions mdl-card--border">
+                      <div class="ui-g center">
+                        <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <button (click)="irAtras()" mdl-button mdl-tooltip-position="top"
+                            mdl-tooltip-large="{{msg.lbl_tip_anterior}}" type="button" mdl-button-type="raised"
+                            mdl-colored="primary">
+                            <i class="material-icons">arrow_back</i> {{msg.lbl_btn_atras}}
+                          </button>
+                        </div>
+                        <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                          <button (click)="irGuardar()" mdl-button mdl-tooltip-position="top"
+                            mdl-tooltip-large="{{msg.lbl_tip_guardar}}" type="button" mdl-button-type="raised"
+                            mdl-colored="accent">
+                            <i class="material-icons">save</i> {{msg.lbl_btn_guardar}}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="ui-g center">
+                        <p-messages class="w100"></p-messages>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-scrollPanel>
+    </mdl-layout-content>
+  </mdl-layout>
+
+  <!-- Importamos el Footer -->
+  <app-footer></app-footer>
+</div>

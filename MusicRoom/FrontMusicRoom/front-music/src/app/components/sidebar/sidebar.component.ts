@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators'
-import { DataObjects } from '../.././components/ObjectGeneric';
-import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
 import * as $ from 'jquery';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,9 +21,7 @@ export class SidebarComponent implements OnInit {
 
   // Objetos de Datos
   data: any;
-  ex: any;
   usuario: any;
-  msgs = [];
   logueado: boolean;
   verMenuConfiguracion: boolean;
   verMenuAdministracion: boolean;
@@ -32,17 +33,14 @@ export class SidebarComponent implements OnInit {
   isAdmin: boolean;
 
   // Utilidades
-  util: any;
   msg: any;
   const: any;
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util) {
-    this.usuario = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.ex = datasObject.getDataException();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
+    this.usuario = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.const = this.objectModelInitializer.getConst();
     this.isAdmin = false;
     this.mapaRolXMenuG = new Map();
     this.mapaRolXMenuG.set("RMRMPA", this.const.menuConfiguracion);
@@ -73,8 +71,8 @@ export class SidebarComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
-    this.msgs = [];
+    console.clear();
+    this.messageService.clear();
   }
 
   irMenu(menu) {
@@ -89,7 +87,7 @@ export class SidebarComponent implements OnInit {
 
   construirMapaURLS() {
     let mapaUrls = new Map();
-    let usuarioSesion = localStorage.getItem('usuarioSesion') === null ? null : JSON.parse(localStorage.getItem('usuarioSesion').toString());
+    let usuarioSesion = this.sesionService.usuarioSesion;
 
     if (usuarioSesion !== undefined && usuarioSesion !== null && usuarioSesion.usuarioTb !== undefined && usuarioSesion.usuarioTb !== null && usuarioSesion.usuarioTb.listaRoles !== undefined && usuarioSesion.usuarioTb.listaRoles !== null) {
       for (let i in usuarioSesion.usuarioTb.listaRoles) {

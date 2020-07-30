@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MenuItem, MessageService } from 'primeng/api';
-import { map } from 'rxjs/operators'
-import { DataObjects } from '../.././components/ObjectGeneric';
-import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
 
 
@@ -18,7 +14,7 @@ declare var $: any;
 })
 export class VCodeComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
+  constructor() {
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
