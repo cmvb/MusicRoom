@@ -75,7 +75,7 @@ export class UbicacionesQueryComponent implements OnInit {
     this.departamentoSeleccionado = null;
     this.ciudadSeleccionada = null;
     this.tipoUbicacionSeleccionada = null;
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia

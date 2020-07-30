@@ -61,7 +61,7 @@ export class TercerosQueryComponent implements OnInit {
     this.msg = this.textProperties.getProperties(this.sesionService.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.objetoFiltro = this.objectModelInitializer.getDataTercero();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia

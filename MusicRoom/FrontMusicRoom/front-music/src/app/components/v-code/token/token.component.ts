@@ -6,6 +6,7 @@ import { TextProperties } from 'src/app/config/TextProperties';
 import { Util } from 'src/app/config/Util';
 import { SesionService } from 'src/app/services/sesionService/sesion.service';
 import { RestService } from '../../.././services/rest.service';
+import { Enumerados } from 'src/app/config/Enumerados';
 
 declare var $: any;
 
@@ -48,7 +49,7 @@ export class TokenComponent implements OnInit {
   enumTipoUsuario = [];
   enumTipoDocumento = [];
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public util: Util, public sesionService: SesionService, private messageService: MessageService) {
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public util: Util, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
     this.usuario = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
     this.msg = this.textProperties.getProperties(this.sesionService.idioma);

@@ -14,7 +14,7 @@ export class SesionService {
   tokenSesion: any;
   decodedToken: any;
   expirationDate: any;
-  idioma: 1;
+  idioma: any;
 
   // Excepciones
   mensajeError403: any;
@@ -25,6 +25,7 @@ export class SesionService {
   mensajeConfirmacion: any;
 
   constructor(public objectModelInitializer: ObjectModelInitializer) {
+    this.idioma = this.objectModelInitializer.getConst().idiomaEs;
   }
 
   inicializar() {

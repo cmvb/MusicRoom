@@ -44,6 +44,7 @@ export class RegisterComponent implements OnInit {
   maxDate = new Date();
 
   // Enumerados
+  enums: any;
   enumTipoUsuario = [];
   enumTipoDocumento = [];
 
@@ -51,6 +52,7 @@ export class RegisterComponent implements OnInit {
     this.usuario = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
     this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.enums = this.enumerados.getEnumerados();
     this.step = 1;
     this.locale = this.sesionService.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
     this.usuario.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
@@ -65,8 +67,8 @@ export class RegisterComponent implements OnInit {
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
     this.consultarTodosUsuarios();
-    this.enumTipoUsuario = this.util.getEnum(this.enums.getEnumerados().tipoUsuario.cod);
-    this.enumTipoDocumento = this.util.getEnum(this.enums.getEnumerados().tipoDocumento.cod);
+    this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
+    this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
 
     this.items = [
       {

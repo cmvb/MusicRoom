@@ -76,7 +76,6 @@ export class SidebarComponent implements OnInit {
   }
 
   irMenu(menu) {
-    this.util.limpiarVariableSesion();
     this.router.navigate(['/' + menu]);
   }
 

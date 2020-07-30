@@ -19,7 +19,6 @@ import { SalasEditComponent } from '../components/salas/salasEdit.component';
 import { SalasQueryComponent } from '../components/salas/salasQuery.component';
 import { MultiUploadComponent } from '../components/multi-upload/multi-upload.component';
 import { DualListBoxComponent } from '../components/dual-list-box/dual-list-box.component';
-import { ModalsComponent } from '../components/modals/modals.component';
 import { VCodeComponent } from '../components/v-code/v-code.component';
 import { TokenComponent } from '../components/v-code/token/token.component';
 import { BandasIntegrantesQueryComponent } from '../components/bandasIntegrantes/bandasIntegrantesQuery.component';
@@ -35,7 +34,6 @@ const routes: Routes = [
 
   { path: 'multi-upload', component: MultiUploadComponent },
   { path: 'dual-list-box', component: DualListBoxComponent },
-  { path: 'modals', component: ModalsComponent },
   { path: 'home', component: HomeComponent, canActivate: [Guardian] },
   { path: 'register', component: RegisterComponent, canActivate: [Guardian] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [Guardian] },

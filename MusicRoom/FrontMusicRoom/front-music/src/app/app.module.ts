@@ -80,6 +80,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ConsultaComponent } from './components/consulta/consulta.component';
 import { DualListBoxComponent } from './components/dual-list-box/dual-list-box.component';
 import { MultiUploadComponent } from './components/multi-upload/multi-upload.component';
+import { Enumerados } from './config/Enumerados';
+import { ObjectModelInitializer } from './config/ObjectModelInitializer';
+import { MessageService } from 'primeng/api';
+import { SesionService } from './services/sesionService/sesion.service';
 
 // Constantes
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -187,7 +191,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     StepsModule,
     PdfViewerModule
   ],
-  providers: [TextProperties, Guardian, Util, Functions, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [TextProperties, Enumerados, ObjectModelInitializer, Guardian, Util, Functions, MessageService, SesionService, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

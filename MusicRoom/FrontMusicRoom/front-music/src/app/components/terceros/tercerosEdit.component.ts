@@ -56,7 +56,7 @@ export class TercerosEditComponent implements OnInit {
     this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
     this.objeto.ubicacionTb = this.objectModelInitializer.getDataUbicacion();
     this.enums = this.enumerados.getEnumerados();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia

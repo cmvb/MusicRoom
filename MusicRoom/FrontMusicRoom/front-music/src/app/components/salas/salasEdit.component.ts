@@ -100,7 +100,7 @@ export class SalasEditComponent implements OnInit {
     this.objeto.estado = this.const.estadoActivoNumString
     this.objeto.terceroTb = this.objectModelInitializer.getDataTercero();
     this.enums = this.enumerados.getEnumerados();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
     this.acceptStr = "image/*";
   }
 

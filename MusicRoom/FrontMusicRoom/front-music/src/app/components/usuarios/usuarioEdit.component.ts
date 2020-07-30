@@ -60,7 +60,7 @@ export class UsuarioEditComponent implements OnInit {
     this.objeto.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.enums = this.enumerados.getEnumerados();
     this.locale = this.sesionService.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia

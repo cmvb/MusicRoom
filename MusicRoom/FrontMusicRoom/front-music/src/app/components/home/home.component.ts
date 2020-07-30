@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
             let tokenSesion = this.objectModelInitializer.getTokenSesion();
             let token = JSON.stringify(resp);
             tokenSesion.name = this.objectModelInitializer.getConst().tokenNameAUTH;
-            tokenSesion.token = token;
+            tokenSesion.token = JSON.parse(token);
             this.sesionService.tokenSesion = tokenSesion;
 
             this.loguear(url, obj);

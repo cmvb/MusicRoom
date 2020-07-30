@@ -24,39 +24,38 @@ export class Guardian implements CanActivate {
     const helper = new JwtHelperService();
 
     let sesionOK = true;
-
     if (!URLactual.includes("register") && !URLactual.includes("home") && !URLactual.includes("error") && URLactual.toString() !== (this.objectModelInitializer.getConst().urlDomain)) {
-      let ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+      if (typeof this.sesionService.tokenSesion !== 'undefined' && this.sesionService.tokenSesion !== null) {
+        let ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+        if (this.sesionService.usuarioSesion !== null && ACCESS_TOKEN !== null) {
+          const decodedToken = helper.decodeToken(ACCESS_TOKEN.access_token);
+          const expirationDate = helper.getTokenExpirationDate(ACCESS_TOKEN.access_token);
+          const isExpired = helper.isTokenExpired(ACCESS_TOKEN.access_token);
 
-      if (this.sesionService.usuarioSesion !== null && ACCESS_TOKEN !== null) {
-        const decodedToken = helper.decodeToken(ACCESS_TOKEN.access_token);
-        const expirationDate = helper.getTokenExpirationDate(ACCESS_TOKEN.access_token);
-        const isExpired = helper.isTokenExpired(ACCESS_TOKEN.access_token);
+          if (!isExpired) {
+            let tienePermisos = this.sesionService.tienePermisos(URLactual);
 
-        if (!isExpired) {
-          let tienePermisos = this.sesionService.tienePermisos(URLactual);
-
-          if (!tienePermisos) {
+            if (!tienePermisos) {
+              this.sesionService.decodedToken = JSON.stringify(decodedToken);
+              this.sesionService.expirationDate = JSON.stringify(expirationDate);
+              this.sesionService.mensajeError403 = this.msg.lbl_mensaje_error_403_ingresar_ruta + URLactual + '. ' + this.msg.lbl_mensaje_error_403_no_permisos;
+              this.router.navigate(['/error403']);
+            }
+          }
+          else {
             this.sesionService.decodedToken = JSON.stringify(decodedToken);
             this.sesionService.expirationDate = JSON.stringify(expirationDate);
-            this.sesionService.mensajeError403 = this.msg.lbl_mensaje_error_403_ingresar_ruta + URLactual + '. ' + this.msg.lbl_mensaje_error_403_no_permisos;
+            this.sesionService.mensajeError403 = this.msg.lbl_mensaje_error_403_sesion_expirada;
             this.router.navigate(['/error403']);
           }
         }
         else {
-          this.sesionService.decodedToken = JSON.stringify(decodedToken);
-          this.sesionService.expirationDate = JSON.stringify(expirationDate);
-          this.sesionService.mensajeError403 = this.msg.lbl_mensaje_error_403_sesion_expirada;
-          this.router.navigate(['/error403']);
+          this.sesionService.mensajeError500 = this.msg.lbl_mensaje_error_500_no_sesion;
+          this.router.navigate(['/error500']);
         }
-      }
-      else {
-        this.sesionService.mensajeError500 = this.msg.lbl_mensaje_error_500_no_sesion;
-        this.router.navigate(['/error500']);
       }
     } else if (URLactual.includes("home")) {
       // TODO: Verificar si tiene sesión y enviar al dashboard
-      debugger;
     }
 
     return true;

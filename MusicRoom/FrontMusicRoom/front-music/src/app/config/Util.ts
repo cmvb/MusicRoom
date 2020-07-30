@@ -24,7 +24,7 @@ export class Util {
   headers = new Headers({ 'Content-Type': 'application/json' });
   options = new RequestOptions({ headers: this.headers });
 
-  constructor(private http: Http, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, dataFunctions: Functions, private messageService: MessageService) {
+  constructor(private http: Http, public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, dataFunctions: Functions, private messageService: MessageService) {
     this.usuarioEjemplo = this.objectModelInitializer.getDataUsuario();
     this.mensaje = this.objectModelInitializer.getDataMessage();
     this.const = this.objectModelInitializer.getConst();

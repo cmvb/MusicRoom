@@ -90,7 +90,7 @@ export class UbicacionesEditComponent implements OnInit {
     this.nombreDepartamentoD = null;
     this.codigoCiudadC = null;
     this.nombreCiudadC = null;
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token;
+    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
