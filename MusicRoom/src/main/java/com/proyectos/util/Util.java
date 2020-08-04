@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -34,7 +35,6 @@ import com.proyectos.model.UsuarioTB;
 
 public abstract class Util {
 
-	private static final Logger LOG = Logger.getLogger(Util.class.getName());
 	public static final String NOMBRE_LLAVE_TOKEN = "app.bean.sesion";
 
 	private static final String CARACTERES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -96,6 +96,21 @@ public abstract class Util {
 
 	public static final String INFORME_MOVIDO_SFTP_SATISFACTORIAMENTE = "El Informe fue creado correctamente en el servidor SFTP.";
 	public static final String INFORME_NO_PUDO_SER_MOVIDO_SFTP = "El Informe no pudo ser creado en el servidor SFTP, validar la conexión.";
+
+	public static String generarToken(String usuario) {
+		char[] SYM_USUARIO = usuario.toCharArray();
+		char[] BUF_USUARIO = new char[TAMANO_TOKEN];
+		SecureRandom random = new SecureRandom();
+		for (int i = 0; i < BUFFER.length; i++) {
+			BUFFER[i] = SIMBOLOS[random.nextInt(SIMBOLOS.length)];
+		}
+		for (int i = 0; i < BUF_USUARIO.length; i++) {
+			BUF_USUARIO[i] = SYM_USUARIO[random.nextInt(SYM_USUARIO.length)];
+		}
+		String result = new String(BUFFER) + new String(BUF_USUARIO);
+		
+		return result.substring(5, 15);
+	}
 
 	public static final String extensionArchivo(String nombreArchivoConExtension) {
 		String extension = nombreArchivoConExtension.substring(nombreArchivoConExtension.lastIndexOf("."),
