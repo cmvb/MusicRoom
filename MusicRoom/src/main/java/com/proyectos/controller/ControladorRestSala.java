@@ -1,12 +1,12 @@
 package com.proyectos.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,15 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.proyectos.exception.ModelNotFoundException;
-import com.proyectos.model.ArchivoTB;
 import com.proyectos.model.SalaTB;
 import com.proyectos.service.IArchivosService;
-import com.proyectos.service.IReportesService;
 import com.proyectos.service.ISalaService;
 import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.PropertiesUtil;
@@ -37,9 +33,6 @@ import com.proyectos.util.Util;
 public class ControladorRestSala {
 
 	private final String PERMISO_ADMINISTRADOR = "@restAuthService.hasAccess('/music-room', '/')";
-
-	@Autowired
-	IReportesService reporteService;
 
 	@Autowired
 	IArchivosService archivoService;
@@ -78,6 +71,19 @@ public class ControladorRestSala {
 	@RequestMapping("/crearSala")
 	public ResponseEntity<SalaTB> crear(@RequestBody SalaTB sala) {
 		List<String> errores = Util.validaDatos(ConstantesTablasNombre.MRA_SALA_TB, sala);
+		if (StringUtils.isBlank(sala.getFoto1Tb().getNombreArchivo())) {
+			sala.setFoto1Tb(null);
+		}
+		if (StringUtils.isBlank(sala.getFoto2Tb().getNombreArchivo())) {
+			sala.setFoto2Tb(null);
+		}
+		if (StringUtils.isBlank(sala.getFoto3Tb().getNombreArchivo())) {
+			sala.setFoto3Tb(null);
+		}
+		if (StringUtils.isBlank(sala.getFoto4Tb().getNombreArchivo())) {
+			sala.setFoto4Tb(null);
+		}
+
 		SalaTB salaNueva = new SalaTB();
 		if (errores.isEmpty()) {
 			List<SalaTB> listaSalas = salaService.consultarTodos();
@@ -98,6 +104,12 @@ public class ControladorRestSala {
 			if (errores.isEmpty()) {
 				salaNueva = new SalaTB();
 				salaNueva = salaService.crear(sala);
+				if (salaNueva == null) {
+					String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+					String mensajeError = PropertiesUtil.getProperty("lbl_mtto_sala_foto_principal")
+							+ PropertiesUtil.getProperty("lbl_mtto_sala_error_transferir_sftp_foto_principal");
+					throw new ModelNotFoundException(erroresTitle + mensajeError);
+				}
 			} else {
 				StringBuilder mensajeErrores = new StringBuilder();
 				String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
@@ -148,6 +160,12 @@ public class ControladorRestSala {
 			if (errores.isEmpty()) {
 				salaNueva = new SalaTB();
 				salaNueva = salaService.modificar(sala);
+				if (salaNueva == null) {
+					String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
+					String mensajeError = PropertiesUtil.getProperty("lbl_mtto_sala_foto_principal")
+							+ PropertiesUtil.getProperty("lbl_mtto_sala_error_transferir_sftp_foto_principal");
+					throw new ModelNotFoundException(erroresTitle + mensajeError);
+				}
 			} else {
 				StringBuilder mensajeErrores = new StringBuilder();
 				String erroresTitle = PropertiesUtil.getProperty("musicroom.msg.validate.erroresEncontrados");
@@ -181,29 +199,4 @@ public class ControladorRestSala {
 		}
 	}
 
-	///////////////////////////////
-
-	@GetMapping(value = "/generarReporteEJM", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<byte[]> generarReporteEJM() {
-		byte[] data = reporteService.generarReporteEJM("consultaUsuarios.jasper");
-		return new ResponseEntity<byte[]>(data, HttpStatus.OK);
-	}
-
-	@PostMapping(value = "/guardarArchivo", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<ArchivoTB> guardarArchivo(@RequestParam("file") MultipartFile file) throws IOException {
-		ArchivoTB archivo = new ArchivoTB();
-		archivo.setNombreArchivo(file.getName());
-		archivo.setValor(file.getBytes());
-		archivo.setTipoArchivo(".png");
-
-		ArchivoTB resultado = archivoService.guardarArchivo(archivo);
-		return new ResponseEntity<ArchivoTB>(resultado, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/leerArchivo/{idArchivo}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<byte[]> leerArchivo(@PathVariable("idArchivo") Long idArchivo) throws IOException {
-		byte[] resultado = archivoService.leerArchivo(idArchivo);
-
-		return new ResponseEntity<byte[]>(resultado, HttpStatus.OK);
-	}
 }

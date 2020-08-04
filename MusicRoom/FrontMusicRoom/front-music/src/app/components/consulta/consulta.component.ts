@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import 'rxjs/add/operator/map';
-import { DataObjects } from '../ObjectGeneric';
-import { Util } from '../Util';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
 
 @Component({
   selector: 'app-consulta',
@@ -26,12 +27,10 @@ export class ConsultaComponent implements OnInit {
 
   msg: any;
   const: any;
-  util: any;
 
-  constructor(private http: Http, private router: Router, datasObject: DataObjects, util: Util) {
-    this.const = datasObject.getConst();
-    this.msg = datasObject.getProperties(this.const.idiomaEs);
-    this.util = util;
+  constructor(private http: Http, private router: Router, public objectModelInitializer: ObjectModelInitializer, public textProperties: TextProperties, public util: Util, private sanitizer: DomSanitizer) {
+    this.const = this.objectModelInitializer.getConst();
+    this.msg = this.textProperties.getProperties(this.const.idiomaEs);
     this.enumRows = [5, 10, 15, 20, 50, 100];
     this.rows = this.enumRows[0];
   }
@@ -51,5 +50,14 @@ export class ConsultaComponent implements OnInit {
   eliminar(obj) {
     this.enviarObjetoEliminar.emit(obj);
     return true;
+  }
+
+  cargarImagen(dato: any, tipoArchivo) {
+    if (tipoArchivo === 'svg') {
+      return this.sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,' + dato);
+    } else {
+      tipoArchivo = tipoArchivo + ';base64,';
+      return 'data:image/' + tipoArchivo + dato;
+    }
   }
 }

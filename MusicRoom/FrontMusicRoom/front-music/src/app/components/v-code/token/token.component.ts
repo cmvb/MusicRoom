@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MenuItem, MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
-import { DataObjects } from '../../.././components/ObjectGeneric';
-import { Util } from '../../.././components/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
 import { RestService } from '../../.././services/rest.service';
-import { debug } from 'util';
+import { Enumerados } from 'src/app/config/Enumerados';
 
 declare var $: any;
 
@@ -22,11 +22,9 @@ export class TokenComponent implements OnInit {
   sesion: any;
 
   // Objetos de Datos
-  ex: any;
   usuario: any;
   codigoVerificacion: any;
   nuevaPassword: any;
-  msgs = [];
   logueado: boolean;
   step: any;
   isDisabled: any;
@@ -41,7 +39,6 @@ export class TokenComponent implements OnInit {
   indexTemp: number = 0;
 
   // Utilidades
-  util: any;
   msg: any;
   const: any;
   locale: any;
@@ -52,21 +49,19 @@ export class TokenComponent implements OnInit {
   enumTipoUsuario = [];
   enumTipoDocumento = [];
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.usuario = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.ex = datasObject.getDataException();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public util: Util, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
+    this.usuario = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
     this.step = 1;
-    this.locale = datasObject.getLocaleESForCalendar();
+    this.locale = this.sesionService.objServiceSesion.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
     this.usuario.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.usuario.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
-    this.enums = datasObject.getEnumerados();
+    this.enums = this.enumerados.getEnumerados();
     this.isDisabled = true;
-    this.verificacionTB = datasObject.getDataVCode();
-    this.objetoVCODE = datasObject.getDataVCode();
+    this.verificacionTB = this.objectModelInitializer.getDataVCode();
+    this.objetoVCODE = this.objectModelInitializer.getDataVCode();
 
     let URLactual = window.location.href;
     this.codigoVerificacion = URLactual.replace(this.const.urlVCode, '');
@@ -83,15 +78,15 @@ export class TokenComponent implements OnInit {
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
     this.consultarVCODE();
 
-    if (this.util.getSesionXItem('usuarioRegister') != null) {
-      this.usuario = JSON.parse(localStorage.getItem('usuarioRegister'));
+    if (typeof this.sesionService.objServiceSesion.usuarioRegister !== 'undefined' && this.sesionService.objServiceSesion.usuarioRegister !== null) {
+      this.usuario = this.sesionService.objServiceSesion.usuarioRegister;
       this.usuario.fechaNacimiento = new Date(this.usuario.fechaNacimiento);
       this.nuevaPassword = this.usuario.password;
     }
 
     this.items = [
       {
-        label: 'PERSONAL',
+        label: this.msg.lbl_info_titulo_step_personal,
         command: (event: any) => {
           this.activeIndex = 0;
           this.step = 1;
@@ -101,10 +96,8 @@ export class TokenComponent implements OnInit {
         }
       },
       {
-        label: 'IDENTIFICACIÓN',
+        label: this.msg.lbl_info_titulo_step_identificacion,
         command: (event: any) => {
-          let nowActiveIndex = this.activeIndex;
-
           if (this.validarStep(1)) {
             this.indexTemp = 1;
             this.activeIndex = 1;
@@ -116,15 +109,13 @@ export class TokenComponent implements OnInit {
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       },
       {
-        label: 'SEGURIDAD',
+        label: this.msg.lbl_info_titulo_step_seguridad,
         command: (event: any) => {
-          let nowActiveIndex = this.activeIndex;
-
           if (this.validarStep(2)) {
             this.indexTemp = 2;
             this.activeIndex = 2;
@@ -136,15 +127,13 @@ export class TokenComponent implements OnInit {
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       },
       {
-        label: 'CONFIRMACIÓN',
+        label: this.msg.lbl_info_titulo_step_confirmacion,
         command: (event: any) => {
-          let nowActiveIndex = this.activeIndex;
-
           if (this.validarStep(3)) {
             // Enviar Correo con el Código de Verificación
             this.enviarCorreoCodVerificacionReg();
@@ -158,7 +147,7 @@ export class TokenComponent implements OnInit {
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.const.severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       }
@@ -171,24 +160,23 @@ export class TokenComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'consultarVCodePorCodigoVerificacion';
       let obj = this.objetoVCODE;
       obj.token = this.codigoVerificacion;
-      obj.estado = "1";
+      obj.estado = this.const.estadoActivoNumString
 
       this.restService.postREST(url, obj)
         .subscribe(resp => {
           console.log(resp, "res");
           this.verificacionTB = resp;
-          
+
           // Validar si el VCODE ya expiró. Si es así, redirigir a la pantalla de error con un mensaje informativo
           let vCodeValido = this.verificacionTB.token === this.codigoVerificacion;
           if (!vCodeValido) {
-            localStorage.setItem('mensajeError500', 'El Código de Verificación ya expiró.');
-            window.location.replace(this.const.urlDomain + 'error500');
-            //this.router.navigate(['/error500']);
+            this.sesionService.objServiceSesion.mensajeError500 = this.msg.lbl_vcode_expiro;
+            sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
+            this.router.navigate(['/error500']);
           }
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -201,7 +189,7 @@ export class TokenComponent implements OnInit {
 
   ngAfterViewInit() {
     this.messageService.clear();
-    this.messageService.add({ severity: this.const.severity[0], summary: "Personal", detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
+    this.messageService.add({ severity: this.const.severity[0], summary: this.msg.lbl_info_titulo_step_personal, detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
 
     // Ubicar al usuario en el paso 3 donde envía el código de confirmación
     if ($('.ui-steps-number')[2] !== undefined) {
@@ -221,8 +209,7 @@ export class TokenComponent implements OnInit {
           this.listaUsuarios = this.dataUsuarios;
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -240,7 +227,7 @@ export class TokenComponent implements OnInit {
 
       this.restService.getREST(url)
         .subscribe(resp => {
-          this.messageService.add({ severity: this.const.severity[0], summary: "INFORMACIÓN: ", detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
+          this.messageService.add({ severity: this.const.severity[0], summary: this.msg.lbl_summary_info, detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
         });
 
     } catch (e) {
@@ -290,8 +277,8 @@ export class TokenComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
-    this.msgs = [];
+    console.clear();
+    this.messageService.clear();
   }
 
   registrarse() {
@@ -309,14 +296,16 @@ export class TokenComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.sesion.usuarioTb = resp;
+          this.sesionService.objServiceSesion.usuarioSesion = this.sesion;
+          sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
 
-          // Procesamiento o Lógica Específica
-          this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
           this.irDashboard();
         },
           error => {
-            this.ex = error.error;
-            this.msgs.push(this.util.mostrarNotificacion(this.ex));
+            let mensaje = this.util.mostrarNotificacion(error.error);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
             console.log(error, "error");
           })
     } catch (e) {

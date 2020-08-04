@@ -10,7 +10,7 @@ import com.proyectos.model.SalaTB;
 public interface ISalaDao {
 
 	/*
-	 * Metodo para consultar todos los terceros
+	 * Metodo para consultar todas las salas
 	 */
 	List<SalaTB> consultarTodos();
 

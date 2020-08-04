@@ -19,7 +19,7 @@ import com.proyectos.util.PropertiesUtil;
 @RestController
 public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-	private final String ERROR_NO_DATOS_BD = "No entity found for query";
+	private final String ERROR_NO_DATOS_BD = "Entidad no encontrada para el QUERY";
 
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> manejarTodasExcepciones(Exception ex, WebRequest request) {

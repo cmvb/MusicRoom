@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
- html, body, table {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+html,
+body,
+table {
+  font-family: "Roboto", "Helvetica", sans-serif;
   /*font-family: "Questrial";*/
 }
 
@@ -28,9 +30,24 @@ input {
   text-transform: uppercase;
 }
 
-body .ui-inputtext{
+input:focus {
+  border-bottom: 1px solid orange !important;
+  box-shadow: 0px 1px 1px #ffb300 !important;
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-input > input {
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  margin-top: -5px;
+}
+
+body .ui-inputtext {
   background: #ffffff !important;
-  border: 1px solid #a6a6a6 !important;  
+  border: 1px solid #a6a6a6 !important;
   color: #212121 !important;
 }
 
@@ -39,36 +56,41 @@ body .ui-table .ui-table-tbody > tr {
   color: #212121 !important;
 }
 
-.ui-table-wrapper.ng-star-inserted{
+.ui-table-wrapper.ng-star-inserted {
   background: #212121 !important;
 }
 
-body .ui-table .ui-table-caption, body .ui-table .ui-table-summary {
+body .ui-table .ui-table-caption,
+body .ui-table .ui-table-summary {
   background-color: #212121 !important;
   color: #f3f3f3 !important;
 }
 
-.text-white{
+.text-white {
   color: white;
 }
 
-.text-warning{
+.text-warning {
   color: orange;
 }
 
-.text-danger{
+.text-danger {
   color: darkred;
 }
 
-.text-info{
+.text-info {
   color: darkblue;
 }
 
-.text-success{
+.card-af {
+  height: 45px;
+}
+
+.text-success {
   color: darkgreen;
 }
 
-.text-gray{
+.text-gray {
   color: #424242;
 }
 
@@ -77,7 +99,7 @@ button {
   cursor: pointer;
 }
 
-#fondoOpaco{
+#fondoOpaco {
   position: fixed;
   top: 0;
   left: 0;
@@ -93,7 +115,7 @@ button {
   padding: 5px 0;
 }
 
-a{
+a {
   cursor: pointer;
 }
 
@@ -131,7 +153,7 @@ p {
 
 /* END iOS Safari specific workaround */
 
-#menu{
+#menu {
   cursor: pointer;
 }
 
@@ -194,7 +216,7 @@ p {
 }
 
 .demo-layout .demo-navigation .mdl-navigation__link:hover {
-  color: #37474F;
+  color: #37474f;
 }
 
 .demo-navigation .mdl-navigation__link .material-icons {
@@ -214,19 +236,19 @@ p {
 }
 
 .demo-chart:nth-child(1) {
-  color: #ACEC00;
+  color: #acec00;
 }
 
 .demo-chart:nth-child(2) {
-  color: #00BBD6;
+  color: #00bbd6;
 }
 
 .demo-chart:nth-child(3) {
-  color: #BA65C9;
+  color: #ba65c9;
 }
 
 .demo-chart:nth-child(4) {
-  color: #EF3C79;
+  color: #ef3c79;
 }
 
 .demo-graphs {
@@ -247,11 +269,13 @@ p {
  * Using a browserhacks.com solution for now.
  */
 
-_:-ms-input-placeholder, :root .demo-graphs {
+_:-ms-input-placeholder,
+:root .demo-graphs {
   min-height: 664px;
 }
 
-_:-ms-input-placeholder, :root .demo-graph {
+_:-ms-input-placeholder,
+:root .demo-graph {
   max-height: 300px;
 }
 
@@ -294,13 +318,13 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .demo-updates .mdl-card__title {
   min-height: 200px;
-  background-image: url('assets/images/dog.png');
+  background-image: url("assets/images/dog.png");
   background-position: 90% 100%;
   background-repeat: no-repeat;
 }
 
 .demo-cards .mdl-card__actions a {
-  color: #00BCD4;
+  color: #00bcd4;
   text-decoration: none;
 }
 
@@ -345,10 +369,11 @@ _:-ms-input-placeholder, :root .demo-graph {
 
 .body-content {
   margin: 0 10px;
+  width: 100%;
 }
 
 .content-page {
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   background: #ececec69;
   height: 100%;
   min-height: 555px;
@@ -371,7 +396,7 @@ _:-ms-input-placeholder, :root .demo-graph {
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url('assets/images/fondo3.jpg');
+  background-image: url("assets/images/fondo3.jpg");
   height: auto;
   box-shadow: 0px 0px 10px 0px rgb(96, 125, 139);
 }
@@ -389,12 +414,12 @@ _:-ms-input-placeholder, :root .demo-graph {
   padding: 0;
   height: 55px;
   color: #222222;
-  background-color: #607d8b;
+  background-color: rgba(0, 0, 0, 0.26);
 }
 
 .content-page-login {
   margin-top: 7%;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   background: #ffffff;
   padding: 10px;
   margin-bottom: 10%;
@@ -404,6 +429,13 @@ _:-ms-input-placeholder, :root .demo-graph {
   margin-right: 25%;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.imagenPrincipalTabla {
+  max-width: 100%;
+  padding: 10px;
+  border-radius: 15px;
+  max-height: 200px;
 }
 
 .ui-g {
@@ -421,10 +453,10 @@ _:-ms-input-placeholder, :root .demo-graph {
 .mttoTitle {
   color: #f4f4f4;
   background: #222222;
-  border-bottom: 1px solid rgb(255,171,64);
+  border-bottom: 1px solid rgb(255, 171, 64);
   border-radius: 5px;
   padding: 5px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 .shadow {
@@ -450,11 +482,12 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .boxShiny {
-  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, .14), 0 3px 1px -2px rgba(255, 255, 255, .2), 0 1px 5px 0 rgba(255, 255, 255, .12);
+  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2),
+    0 1px 5px 0 rgba(255, 255, 255, 0.12);
 }
 
 .boxShadow {
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 .alturaImgLogin {
@@ -471,28 +504,39 @@ _:-ms-input-placeholder, :root .demo-graph {
   text-align: justify;
 }
 
-.ui-messages ul>li {
+.ui-messages ul > li {
   margin-right: 20px;
   display: inherit;
 }
 
 .ui-messages .ui-messages-close {
-  top: 0.10em !important;
-  right: 0em !important;
-  font-size: 1.5em !important;
+  top: 0 !important;
+  right: 0 !important;
+  font-size: 10px !important;
+  padding: 5px;
+}
+
+.ui-toast .ui-toast-close-icon {
+  top: 0 !important;
+  right: 0 !important;
+  font-size: 10px !important;
+  padding: 5px;
 }
 
 .ui-messages .ui-messages-icon {
   font-size: 4em !important;
 }
 
-.ui-messages.ui-messages-info .ui-messages-close:hover, .ui-messages.ui-messages-warn .ui-messages-close:hover, .ui-messages.ui-messages-error .ui-messages-close:hover, .ui-messages.ui-messages-success .ui-messages-close:hover {
+.ui-messages.ui-messages-info .ui-messages-close:hover,
+.ui-messages.ui-messages-warn .ui-messages-close:hover,
+.ui-messages.ui-messages-error .ui-messages-close:hover,
+.ui-messages.ui-messages-success .ui-messages-close:hover {
   color: red;
 }
 
-.mdl-layout__header-row {  
+.mdl-layout__header-row {
   background: #222222;
-  border-bottom: 1px solid rgb(255,171,64);
+  border-bottom: 1px solid rgb(255, 171, 64);
 }
 
 .mdl-card {
@@ -514,11 +558,15 @@ _:-ms-input-placeholder, :root .demo-graph {
   padding: 5px 10px;
 }
 
-.ui-float-label>label {
+.ui-float-label > label {
   padding: 0 10px !important;
 }
 
-.ui-paginator .ui-paginator-first, .ui-paginator .ui-paginator-prev, .ui-paginator .ui-paginator-next, .ui-paginator .ui-paginator-last, .ui-paginator .ui-paginator-pages .ui-paginator-page {
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-prev,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-pages .ui-paginator-page {
   height: 19px !important;
   line-height: 18px !important;
 }
@@ -537,17 +585,18 @@ _:-ms-input-placeholder, :root .demo-graph {
   color: white !important;
 }
 
-.ui-table, .ui-table table {
-  box-shadow: 0 7px 5px 0 rgba(0, 0, 0, .14), 0 5px 4px -2px rgba(0, 0, 0, .2), 0 3px 10px 0 rgba(0, 0, 0, .12);
+.ui-table,
+.ui-table table {
+  box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.14), 0 5px 4px -2px rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-.ui-table .ui-table-thead>tr>th {
+.ui-table .ui-table-thead > tr > th {
   padding: 5px !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
 }
 
-.ui-table .ui-table-tbody>tr>td {
+.ui-table .ui-table-tbody > tr > td {
   padding: 2px !important;
   text-transform: uppercase;
 }
@@ -570,7 +619,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .obligatorio::before {
-  content: '* ';
+  content: "* ";
   color: red;
 }
 
@@ -578,7 +627,8 @@ _:-ms-input-placeholder, :root .demo-graph {
   display: flex;
 }
 
-.mdl-card, .mdl-card__supporting-text {
+.mdl-card,
+.mdl-card__supporting-text {
   overflow: visible;
 }
 
@@ -590,7 +640,8 @@ _:-ms-input-placeholder, :root .demo-graph {
   border: 1px solid #a6a6a6;
 }
 
-.ng-select .ng-select-container:hover, .ng-select .ng-select-container .ng-value-container .ng-input>input:hover {
+.ng-select .ng-select-container:hover,
+.ng-select .ng-select-container .ng-value-container .ng-input > input:hover {
   cursor: pointer;
 }
 
@@ -599,10 +650,10 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .titleToken {
-  font-family: 'New Rocker', cursive;
+  font-family: "New Rocker", cursive;
   font-size: 18px;
   text-align: center;
-  background: rgba(255, 255, 255, .7);
+  background: rgba(255, 255, 255, 0.7);
   text-shadow: 0px 0px 5px #007ad9;
 }
 
@@ -635,7 +686,8 @@ _:-ms-input-placeholder, :root .demo-graph {
   padding: 3px !important;
 }
 
-.ui-datepicker table td>a, body .ui-datepicker table td>span {
+.ui-datepicker table td > a,
+body .ui-datepicker table td > span {
   padding: 1px !important;
 }
 
@@ -648,11 +700,12 @@ _:-ms-input-placeholder, :root .demo-graph {
   right: 10px;
 }
 
-.ui-calendar .ui-datepicker-prev, .ui-calendar .ui-datepicker-next {
+.ui-calendar .ui-datepicker-prev,
+.ui-calendar .ui-datepicker-next {
   display: none;
 }
 
-.ui-table .ui-table-tbody>tr:nth-child(even) {
+.ui-table .ui-table-tbody > tr:nth-child(even) {
   background-color: #dcdcdc !important;
 }
 
@@ -665,7 +718,7 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .hoverWarning:hover {
-  color: rgb(255,171,64);
+  color: rgb(255, 171, 64);
 }
 
 .mdl-button--icon {
@@ -694,10 +747,11 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 #menu ul li.primera {
-  border-top: solid 1px #FFF;
+  border-top: solid 1px #fff;
 }
 
-#menu ul li a, #menu ul li span {
+#menu ul li a,
+#menu ul li span {
   display: block;
   text-decoration: none;
   border-top: none;
@@ -726,7 +780,8 @@ a:active {
   display: none;
 }
 
-#menu ul li a:hover ul, #menu ul li a:active ul {
+#menu ul li a:hover ul,
+#menu ul li a:active ul {
   display: block;
   position: relative;
   width: 162px;
@@ -751,7 +806,8 @@ a:active {
   padding: 0px 0px 0px 23px;
 }
 
-#menu ul li span.nivel1, #menu ul li ul li.primera {
+#menu ul li span.nivel1,
+#menu ul li ul li.primera {
   border-bottom: 1px solid;
 }
 
@@ -815,16 +871,17 @@ table.falsa {
   color: #333333 !important;
 }
 
-.ng-select.ng-select-disabled>.ng-select-container {
+.ng-select.ng-select-disabled > .ng-select-container {
   background-color: #dedede;
   cursor: not-allowed !important;
 }
 
-.ng-select.ng-select-disabled>.ng-select-container input:disabled {
+.ng-select.ng-select-disabled > .ng-select-container input:disabled {
   cursor: not-allowed !important;
 }
 
-.comboTabla.ng-select.ng-select-single .ng-select-container, .comboTabla.ng-select .ng-select-container {
+.comboTabla.ng-select.ng-select-single .ng-select-container,
+.comboTabla.ng-select .ng-select-container {
   min-height: 22px !important;
   height: 22px !important;
 }
@@ -858,7 +915,8 @@ table.falsa {
   background: #f4f4f4;
 }
 
-.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-icon, .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-text {
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-icon,
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem .ui-menuitem-link .ui-menuitem-text {
   margin-right: 0 !important;
 }
 
@@ -872,14 +930,19 @@ table.falsa {
   margin-right: 10px;
 }
 
+.fondo-cover {
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+
 .custom .ui-scrollpanel-wrapper {
   border-right: 9px solid #f4f4f4;
 }
 
 .custom .ui-scrollpanel-bar {
-  background-color: rgb(255,171,64);
+  background-color: rgb(255, 171, 64);
   opacity: 1;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
 
 .custom .ui-scrollpanel-bar:hover {
@@ -903,7 +966,8 @@ table.falsa {
   display: inline-flex;
 }
 
-.register .ui-inputtext, .register.ng-select.ng-select-single .ng-select-container {
+.register .ui-inputtext,
+.register.ng-select.ng-select-single .ng-select-container {
   height: 44px;
 }
 
@@ -916,12 +980,12 @@ table.falsa {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-image: url('assets/images/fondoMusicRoom.png');
+  background-image: url("assets/images/fondoMusicRoom.png");
   background-size: cover;
 }
 
 #notfound .notfound-bg:after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;
@@ -938,7 +1002,7 @@ table.falsa {
 }
 
 #notfound .notfound:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -967,7 +1031,7 @@ table.falsa {
 }
 
 .notfound .notfound-404 h1 {
-  font-family: 'New Rocker', cursive;
+  font-family: "New Rocker", cursive;
   /*font-family: 'Passion One', cursive;*/
   position: inherit;
   font-size: 220px;
@@ -1038,7 +1102,7 @@ table.falsa {
   margin-bottom: 15px;
 }
 
-.notfound-social>a {
+.notfound-social > a {
   display: inline-block;
   height: 40px;
   line-height: 40px;
@@ -1051,12 +1115,12 @@ table.falsa {
   transition: 0.2s all;
 }
 
-.notfound-social>a:hover {
+.notfound-social > a:hover {
   color: #fff;
   background-color: #ff00b4;
 }
 
-.flickity-prev-next-button{
+.flickity-prev-next-button {
   top: 50%;
   width: 15px !important;
   min-width: 15px !important;
@@ -1073,15 +1137,15 @@ table.falsa {
   font-weight: bold;
 }
 
-.flickity-enabled.is-draggable{
+.flickity-enabled.is-draggable {
   border-radius: 10px;
 }
 
-.carousel-cell{
+.carousel-cell {
   width: 100% !important;
 }
 
-.carousel-cell.is-selected{
+.carousel-cell.is-selected {
   display: block;
   width: 100% !important;
   background: whitesmoke;
@@ -1118,24 +1182,23 @@ body .ui-dialog {
   width: 100%;
 }
 
-.ui-messages ul{
+.ui-messages ul {
   display: block !important;
 }
-
 
 .ui-fileupload-row {
   width: 100%;
   display: table !important;
 }
 
-.ui-fileupload-row>div {
+.ui-fileupload-row > div {
   padding: 0 5px;
   overflow: hidden;
   max-width: 100px;
   text-overflow: ellipsis;
 }
 
-.ui-fileupload-row>div>.ui-button{
+.ui-fileupload-row > div > .ui-button {
   width: 20px !important;
   height: 20px !important;
   border-radius: 50px;
@@ -1143,105 +1206,212 @@ body .ui-dialog {
   min-width: 20px !important;
 }
 
+.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper {
+  bottom: 7px !important;
+}
+
+.ng-select {
+  padding-bottom: 0 !important;
+}
+
+.comboTabla.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper {
+  bottom: 0px !important;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper {
+  bottom: 5px !important;
+}
+
+.comboTabla.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper {
+  bottom: -2px !important;
+  display: none;
+}
+
+.comboTabla.ng-select.ng-select-single .ng-select-container .ng-value-container,
+.comboTabla.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  padding: 6px 3px !important;
+  border: none;
+  margin-top: -5px !important;
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+  top: calc(100%);
+}
+
+.info {
+  color: #6982fd !important;
+}
+
+.success {
+  color: #227522 !important;
+}
+
+.warning {
+  color: #ffe399 !important;
+}
+
+.error {
+  color: #d21717 !important;
+}
+
+.ui-messages ul > li {
+  margin: -10px 15px;
+  font-size: 12px;
+}
+
+.ui-messages ul > li:first-child {
+  margin: 5px;
+  font-size: 16px;
+}
+
+.mdl-button--fab.mdl-button--mini-fab {
+  height: 40px;
+  min-width: 40px !important;
+  width: 40px;
+}
+
 // Estilos Msgs Info
-body .ui-messages.ui-messages-info, body .ui-message.ui-message-info, body .ui-growl .ui-growl-item-container.ui-growl-message-info, body .ui-toast .ui-toast-message.ui-toast-message-info{
+body .ui-messages.ui-messages-info,
+body .ui-message.ui-message-info,
+body .ui-growl .ui-growl-item-container.ui-growl-message-info,
+body .ui-toast .ui-toast-message.ui-toast-message-info {
   background-color: #6982fd !important;
   color: #212121 !important;
 }
-body .ui-messages.ui-messages-info .ui-messages-icon, body .ui-messages.ui-messages-info .ui-messages-close, body .ui-message.ui-message-info .ui-message-icon, body .ui-growl .ui-growl-item-container.ui-growl-message-info .ui-growl-image, body .ui-toast .ui-toast-message.ui-toast-message-info .ui-toast-close-icon{
+body .ui-messages.ui-messages-info .ui-messages-icon,
+body .ui-messages.ui-messages-info .ui-messages-close,
+body .ui-message.ui-message-info .ui-message-icon,
+body .ui-growl .ui-growl-item-container.ui-growl-message-info .ui-growl-image,
+body .ui-toast .ui-toast-message.ui-toast-message-info .ui-toast-close-icon {
   color: #212121 !important;
 }
 
 // Estilos Msgs Success
-body .ui-messages.ui-messages-success, body .ui-message.ui-message-success, body .ui-growl .ui-growl-item-container.ui-growl-message-success, body .ui-toast .ui-toast-message.ui-toast-message-success{
+body .ui-messages.ui-messages-success,
+body .ui-message.ui-message-success,
+body .ui-growl .ui-growl-item-container.ui-growl-message-success,
+body .ui-toast .ui-toast-message.ui-toast-message-success {
   background-color: #227522 !important;
   color: #fff !important;
 }
-body .ui-messages.ui-messages-success .ui-messages-icon, body .ui-messages.ui-messages-success .ui-messages-close, body .ui-message.ui-message-success .ui-message-icon, body .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image, body .ui-toast .ui-toast-message.ui-toast-message-success .ui-toast-close-icon{
+body .ui-messages.ui-messages-success .ui-messages-icon,
+body .ui-messages.ui-messages-success .ui-messages-close,
+body .ui-message.ui-message-success .ui-message-icon,
+body .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image,
+body .ui-toast .ui-toast-message.ui-toast-message-success .ui-toast-close-icon {
   color: #fff !important;
 }
 
 // Estilos Msgs Warning
-body .ui-messages.ui-messages-warn, body .ui-message.ui-message-warn, body .ui-growl .ui-growl-item-container.ui-growl-message-warn, body .ui-toast .ui-toast-message.ui-toast-message-warn{
+body .ui-messages.ui-messages-warn,
+body .ui-message.ui-message-warn,
+body .ui-growl .ui-growl-item-container.ui-growl-message-warn,
+body .ui-toast .ui-toast-message.ui-toast-message-warn {
   background-color: #ffe399 !important;
   color: #212121 !important;
 }
-body .ui-messages.ui-messages-warn .ui-messages-icon, body .ui-messages.ui-messages-warn .ui-messages-close, body .ui-message.ui-message-warn .ui-message-icon, body .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image, body .ui-toast .ui-toast-message.ui-toast-message-warn .ui-toast-close-icon{
+body .ui-messages.ui-messages-warn .ui-messages-icon,
+body .ui-messages.ui-messages-warn .ui-messages-close,
+body .ui-message.ui-message-warn .ui-message-icon,
+body .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image,
+body .ui-toast .ui-toast-message.ui-toast-message-warn .ui-toast-close-icon {
   color: #212121 !important;
 }
 
 // Estilos Msgs Error
-body .ui-messages.ui-messages-error, body .ui-message.ui-message-error, body .ui-growl .ui-growl-item-container.ui-growl-message-error, body .ui-toast .ui-toast-message.ui-toast-message-error{
-  background-color:#d21717 !important;
+body .ui-messages.ui-messages-error,
+body .ui-message.ui-message-error,
+body .ui-growl .ui-growl-item-container.ui-growl-message-error,
+body .ui-toast .ui-toast-message.ui-toast-message-error {
+  background-color: #d21717 !important;
   color: #fff !important;
 }
-body .ui-messages.ui-messages-error .ui-messages-icon, body .ui-messages.ui-messages-error .ui-messages-close, body .ui-message.ui-message-error .ui-message-icon, body .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image, body .ui-toast .ui-toast-message.ui-toast-message-error .ui-toast-close-icon{
+body .ui-messages.ui-messages-error .ui-messages-icon,
+body .ui-messages.ui-messages-error .ui-messages-close,
+body .ui-message.ui-message-error .ui-message-icon,
+body .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image,
+body .ui-toast .ui-toast-message.ui-toast-message-error .ui-toast-close-icon {
   color: #fff !important;
 }
 
 body .ui-button {
   background-color: #ffab40 !important;
-  border: 1px solid #FFB300 !important;
+  border: 1px solid #ffb300 !important;
+}
+
+.ui-inputgroup {
+  display: flex !important;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding: 2px 3px !important;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  padding: 2px 3px !important;
 }
 
 /* ---------------------------- MediaQuery ---------------------------- */
 
 @media only screen and (max-width: 1200px) {
   .content-page-login {
-      width: 90%;
-      margin-left: 5%;
-      margin-right: 5%;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
   }
 }
 
 @media only screen and (max-width: 640px) {
   .hidden-sm {
-      display: none;
+    display: none;
   }
   .ajustarBtnTable {
-      display: contents !important;
+    display: contents !important;
   }
   #carouselSalas > .carouselFL > .flickity-viewport {
-      overflow-y: auto;
-      height: 100% !important;
-      min-height: 220px !important;
+    overflow-y: auto;
+    height: 100% !important;
+    min-height: 220px !important;
   }
 }
 
 @media only screen and (max-width: 1024px) {
   .mdl-layout__drawer-button {
-      background: #ffffffad;
-      border-radius: 50px;
-      color: black;
+    background: #ffffffad;
+    border-radius: 50px;
+    color: black;
   }
 }
 
 @media screen and (max-width: 40em) {
-  .ui-table.ui-table-responsive .ui-table-tbody>tr>td {
-      border-top-color: #c8c8c8 !important;
-      border-top-style: solid !important;
-      border-top-width: 1px !important;
-      border-right-color: #c8c8c8 !important;
-      border-right-style: solid !important;
-      border-right-width: 1px !important;
-      border-bottom-color: initial;
-      border-bottom-style: none;
-      border-bottom-width: 0px;
-      border-left-color: #c8c8c8 !important;
-      border-left-style: solid !important;
-      border-left-width: 1px !important;
+  .ui-table.ui-table-responsive .ui-table-tbody > tr > td {
+    border-top-color: #c8c8c8 !important;
+    border-top-style: solid !important;
+    border-top-width: 1px !important;
+    border-right-color: #c8c8c8 !important;
+    border-right-style: solid !important;
+    border-right-width: 1px !important;
+    border-bottom-color: initial;
+    border-bottom-style: none;
+    border-bottom-width: 0px;
+    border-left-color: #c8c8c8 !important;
+    border-left-style: solid !important;
+    border-left-width: 1px !important;
   }
 }
 
 @media only screen and (max-width: 480px) {
   .notfound .notfound-404 {
-      height: 146px;
+    height: 146px;
   }
   .notfound .notfound-404 h1 {
-      font-size: 146px;
+    font-size: 146px;
   }
   .notfound h2 {
-      font-size: 22px;
+    font-size: 22px;
   }
 }
 

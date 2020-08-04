@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
 import { RestService } from '../../services/rest.service';
-import { DataObjects } from '../ObjectGeneric';
-import { Util } from '../Util';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+import { TerceroService } from 'src/app/services/terceroService/tercero.service';
 
 declare var $: any;
 
@@ -23,10 +25,8 @@ export class TercerosEditComponent implements OnInit {
   sesion: any;
 
   // Utilidades
-  util: any;
   msg: any;
   const: any;
-  ex: any;
   isDisabled: boolean;
 
   // Objetos de Datos
@@ -47,17 +47,16 @@ export class TercerosEditComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.usuarioSesion = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
-    this.objeto = datasObject.getDataTercero();
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public terceroService: TerceroService) {
+    this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
+    this.objeto = this.objectModelInitializer.getDataTercero();
     this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
-    this.objeto.ubicacionTb = datasObject.getDataUbicacion();
-    this.enums = datasObject.getEnumerados();
-    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
+    this.objeto.ubicacionTb = this.objectModelInitializer.getDataUbicacion();
+    this.enums = this.enumerados.getEnumerados();
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -66,23 +65,24 @@ export class TercerosEditComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    this.util.limpiarSesionXItem(['mensajeConfirmacion']);
+    this.sesionService.objServiceSesion.mensajeConfirmacion = undefined;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
-    this.listaCiudades = JSON.parse(localStorage.getItem('listaCiudades'));
+    this.listaCiudades = this.terceroService.listaCiudades;
     this.enumFiltroCiudades = this.util.obtenerEnumeradoDeListaUbicacion(this.listaCiudades, 2);
 
-    this.phase = this.util.getSesionXItem('phase');
+    this.phase = this.sesionService.objServiceSesion.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
 
-    if (this.util.getSesionXItem('editParam') != null) {
-      this.objeto = JSON.parse(localStorage.getItem('editParam'));
+    if (typeof this.terceroService.editParam !== 'undefined' && this.terceroService.editParam !== null) {
+      this.objeto = this.terceroService.editParam;
       this.inicializarCombos();
-      this.ciudadSeleccionada = this.util.obtenerUbicacionPorCodigo(this.objeto.ubicacionTb.codigoCiudad, this.listaCiudades, 2);      
+      this.ciudadSeleccionada = this.util.obtenerUbicacionPorCodigo(this.objeto.ubicacionTb.codigoCiudad, this.listaCiudades, 2);
     }
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
+    console.clear();
+    this.messageService.clear();
   }
 
   irGuardar() {
@@ -94,21 +94,17 @@ export class TercerosEditComponent implements OnInit {
 
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
-          console.log(resp, "res");
           this.data = resp;
-          let mensajeConfirmacion = 'El Tercero #' + this.data.idTercero + ' fue ' + (this.phase === this.const.phaseAdd ? 'creado' : 'actualizado') + ' satisfactoriamente.';
-          this.util.agregarSesionXItem([{ item: 'mensajeConfirmacion', valor: mensajeConfirmacion }]);
+          let mensajeConfirmacion = this.msg.lbl_detail_el_registro + this.data.idTercero + this.msg.lbl_detail_fue + (this.phase === this.const.phaseAdd ? this.msg.lbl_detail_creado : this.msg.lbl_detail_actualizado) + this.msg.lbl_detail_satisfactoriamente;
+          this.sesionService.objServiceSesion.mensajeConfirmacion = mensajeConfirmacion;
           this.irAtras();
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
             this.inicializarCombos();
-
-            console.log(error, "error");
           })
     } catch (e) {
       console.log(e);
@@ -117,8 +113,8 @@ export class TercerosEditComponent implements OnInit {
 
   ajustarCombos() {
     this.objeto.estado = this.objeto.estado === undefined ? null : this.objeto.estado.value;
-    
-    if (this.ciudadSeleccionada != null) {
+
+    if (this.ciudadSeleccionada !== null) {
       let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
       Object.assign(this.objeto.ubicacionTb, ciudad);
     }
@@ -133,7 +129,7 @@ export class TercerosEditComponent implements OnInit {
   }
 
   irAtras() {
-    this.util.limpiarSesionXItem(['listaConsulta']);
+    this.terceroService.listaConsulta;
     this.router.navigate(['/terceroQuery']);
   }
 

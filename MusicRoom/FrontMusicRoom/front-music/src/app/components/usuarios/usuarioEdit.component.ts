@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
 import { RestService } from '../../services/rest.service';
-import { DataObjects } from '../ObjectGeneric';
-import { Util } from '../Util';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+import { UsuarioService } from 'src/app/services/usuarioService/usuario.service';
 
 declare var $: any;
 
@@ -24,11 +26,9 @@ export class UsuarioEditComponent implements OnInit {
   sesion: any;
 
   // Utilidades
-  util: any;
   msg: any;
   const: any;
   locale: any;
-  ex: any;
   maxDate = new Date();
   isDisabled: boolean;
 
@@ -49,19 +49,18 @@ export class UsuarioEditComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.usuarioSesion = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
-    this.objeto = datasObject.getDataUsuario();
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public usuarioService: UsuarioService) {
+    this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
+    this.objeto = this.objectModelInitializer.getDataUsuario();
     this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
     this.objeto.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.objeto.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
-    this.enums = datasObject.getEnumerados();
-    this.locale = datasObject.getLocaleESForCalendar();
-    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
+    this.enums = this.enumerados.getEnumerados();
+    this.locale = this.sesionService.objServiceSesion.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -70,22 +69,23 @@ export class UsuarioEditComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    this.util.limpiarSesionXItem(['mensajeConfirmacion']);
+    this.sesionService.objServiceSesion.mensajeConfirmacion = undefined;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
     this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
-    this.phase = this.util.getSesionXItem('phase');
+    this.phase = this.sesionService.objServiceSesion.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
 
-    if (this.util.getSesionXItem('editParam') != null) {
-      this.objeto = JSON.parse(localStorage.getItem('editParam'));
+    if (typeof this.usuarioService.editParam !== 'undefined' && this.usuarioService.editParam !== null) {
+      this.objeto = this.usuarioService.editParam
       this.objeto.fechaNacimiento = new Date(this.objeto.fechaNacimiento);
       this.inicializarCombos();
     }
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
+    console.clear();
+    this.messageService.clear();
   }
 
   irGuardar() {
@@ -99,13 +99,12 @@ export class UsuarioEditComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
-          let mensajeConfirmacion = 'El Usuario ' + this.data.usuario + ' fue ' + (this.phase === this.const.phaseAdd ? 'creado' : 'actualizado') + ' satisfactoriamente.';
-          this.util.agregarSesionXItem([{ item: 'mensajeConfirmacion', valor: mensajeConfirmacion }]);
+          let mensajeConfirmacion = this.msg.lbl_detail_el_registro + this.data.usuario + this.msg.lbl_detail_fue + (this.phase === this.const.phaseAdd ? this.msg.lbl_detail_creado : this.msg.lbl_detail_actualizado) + this.msg.lbl_detail_satisfactoriamente;
+          this.sesionService.objServiceSesion.mensajeConfirmacion = mensajeConfirmacion;
           this.irAtras();
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -131,7 +130,7 @@ export class UsuarioEditComponent implements OnInit {
   }
 
   irAtras() {
-    this.util.limpiarSesionXItem(['listaConsulta']);
+    this.usuarioService.listaConsulta = undefined;
     this.router.navigate(['/usuarioQuery']);
   }
 

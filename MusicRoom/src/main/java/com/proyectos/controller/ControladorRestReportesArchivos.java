@@ -22,6 +22,8 @@ import com.proyectos.service.IReportesService;
 @RequestMapping("/music-room/reporte-archivo")
 public class ControladorRestReportesArchivos {
 
+	final private String PUNTO = "\\.";
+
 	@Autowired
 	IReportesService reporteService;
 
@@ -34,14 +36,14 @@ public class ControladorRestReportesArchivos {
 		return new ResponseEntity<byte[]>(data, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/guardarArchivo", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/guardarArchivo", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArchivoTB> guardarArchivo(@RequestParam("file") MultipartFile file) throws IOException {
 		ArchivoTB archivo = new ArchivoTB();
-		archivo.setNombreArchivo(file.getName());
+		archivo.setNombreArchivo(file.getOriginalFilename().split(this.PUNTO)[0]);
 		archivo.setValor(file.getBytes());
-		archivo.setTipoArchivo(".png");
+		archivo.setTipoArchivo(file.getOriginalFilename().split(this.PUNTO)[1]);
 
-		ArchivoTB resultado = archivoService.guardarArchivo(archivo);
+		ArchivoTB resultado = archivoService.guardarArchivo(archivo, file.getInputStream());
 		return new ResponseEntity<ArchivoTB>(resultado, HttpStatus.OK);
 	}
 

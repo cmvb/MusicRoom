@@ -15,8 +15,7 @@
 		<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad floatRight hidden-sm">
 			<mdl-icon class="floatRight textRight">search</mdl-icon>
 			<input class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12 ui-xs-12 ui-g-nopad inputTabla floatRight" type="text"
-				pInputText size="50" placeholder="Filtrar..." (input)="dt.filterGlobal($event.target.value, 'contains')"
-				style="width:90%">
+				pInputText size="50" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:90%">
 		</div>
 	</ng-template>
 
@@ -29,6 +28,7 @@
 			</th>
 		</tr>
 	</ng-template>
+
 	<ng-template pTemplate="body" let-rowData let-columns="cols">
 		<tr>
 			<td class="btnActions ajustarBtnTable">
@@ -47,7 +47,10 @@
 			</td>
 
 			<td *ngFor="let col of cols">
-				{{rowData[col.field]}}
+				{{rowData[col.field].valor != null ? '' : rowData[col.field]}}
+				<img *ngIf="rowData[col.field].valor != null" class="imagenPrincipalTabla"
+					[src]="cargarImagen(rowData[col.field].valor, rowData[col.field].tipoArchivo)"
+					alt="{{rowData[col.field] != null ? rowData[col.field].nombreArchivo : ''}}" />
 			</td>
 		</tr>
 	</ng-template>

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
 import { RestService } from '../../services/rest.service';
-import { DataObjects } from '../ObjectGeneric';
-import { Util } from '../Util';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+import { SalaService } from 'src/app/services/salaService/sala.service';
 
 declare var $: any;
 
@@ -23,9 +25,7 @@ export class SalasQueryComponent implements OnInit {
   sesion: any;
 
   // Utilidades
-  util: any;
   msg: any;
-  ex: any;
   const: any;
 
   // Objetos de Datos
@@ -45,7 +45,8 @@ export class SalasQueryComponent implements OnInit {
   btnEliminar = true;
   listaCabeceras = [
     { 'campoLista': 'nombreSala', 'nombreCabecera': 'Sala' },
-    { 'campoLista': 'infoAdicional', 'nombreCabecera': 'Información' }
+    { 'campoLista': 'infoAdicional', 'nombreCabecera': 'Información' },
+    { 'campoLista': 'fotoPrincipalTb', 'nombreCabecera': 'Foto Principal' },
   ];
 
   // Propiedades de las peticiones REST
@@ -53,14 +54,13 @@ export class SalasQueryComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.usuarioSesion = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
-    this.objetoFiltro = datasObject.getDataSala();
-    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public salaService: SalaService) {
+    this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
+    this.objetoFiltro = this.objectModelInitializer.getDataSala();
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -75,16 +75,16 @@ export class SalasQueryComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (this.util.getSesionXItem('mensajeConfirmacion') != null) {
-      let mensajeConfirmacion = JSON.parse(localStorage.getItem('mensajeConfirmacion'));
+    if (typeof this.sesionService.objServiceSesion.mensajeConfirmacion !== 'undefined' && this.sesionService.objServiceSesion.mensajeConfirmacion !== null) {
+      let mensajeConfirmacion = this.sesionService.objServiceSesion.mensajeConfirmacion;
       this.messageService.clear();
-      this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: mensajeConfirmacion });
-      this.ex.mensaje = mensajeConfirmacion;
+      this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: mensajeConfirmacion });
     }
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
+    console.clear();
+    this.messageService.clear();
   }
 
   consultarSalas() {
@@ -93,21 +93,15 @@ export class SalasQueryComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerSala + 'consultarPorFiltros';
       this.ajustarCombos();
       let obj = this.objetoFiltro;
-      obj.estado = "1";
+      obj.estado = this.const.estadoActivoNumString
 
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
-          console.log(resp, "res");
           this.data = resp;
           this.listaConsulta = this.data;
-
-          /*for (let i in this.listaConsulta) {
-            this.listaConsulta[i].ubicacionTabla = this.listaConsulta[i].ubicacionTb.nombreCiudad + " (" + this.listaConsulta[i].ubicacionTb.nombreDepartamento + ")";
-          }*/
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -131,12 +125,9 @@ export class SalasQueryComponent implements OnInit {
           this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
-
-            console.log(error, "error");
           })
     } catch (e) {
       console.log(e);
@@ -151,13 +142,21 @@ export class SalasQueryComponent implements OnInit {
   }
 
   editar(objetoEdit) {
-    this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }, { item: 'listaTerceros', valor: this.listaTerceros }]);
+    this.sesionService.objServiceSesion.phase = this.const.phaseEdit;
+    this.salaService.objetoFiltro = this.objetoFiltro;
+    this.salaService.listaConsulta = this.listaConsulta;
+    this.salaService.editParam = objetoEdit;
+    this.salaService.listaTerceros = this.listaTerceros;
     this.router.navigate(['/salaEdit']);
     return true;
   }
 
   irCrear() {
-    this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }, { item: 'listaTerceros', valor: this.listaTerceros }]);
+    this.sesionService.objServiceSesion.phase = this.const.phaseAdd;
+    this.salaService.objetoFiltro = this.objetoFiltro;
+    this.salaService.listaConsulta = this.listaConsulta;
+    this.salaService.editParam = null;
+    this.salaService.listaTerceros = this.listaTerceros;
     this.router.navigate(['/salaEdit']);
     return true;
   }
@@ -169,21 +168,16 @@ export class SalasQueryComponent implements OnInit {
 
       this.restService.postSecureREST(url, objetoEdit, this.ACCESS_TOKEN)
         .subscribe(resp => {
-          console.log(resp, "res");
           this.data = resp;
           this.limpiar();
           this.consultarSalas();
           this.messageService.clear();
-          this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: 'La Sala fue eliminada satisfactoriamente.' });
-          this.ex.mensaje = 'La Sala fue eliminada satisfactoriamente.';
+          this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_detail_el_registro_eliminado });
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
-
-            console.log(error, "error");
           })
     } catch (e) {
       console.log(e);
@@ -197,7 +191,7 @@ export class SalasQueryComponent implements OnInit {
   }
 
   ajustarCombos() {
-    if (this.terceroSeleccionado != null) {
+    if (this.terceroSeleccionado !== null) {
       let tercero = this.util.obtenerTerceroDeEnum(this.terceroSeleccionado.value.idTercero, this.listaTerceros);
       Object.assign(this.objetoFiltro.terceroTb, tercero);
     }

@@ -15,15 +15,17 @@
 									<span class="ui-inputgroup-addon">
 										<mdl-icon>people</mdl-icon>
 									</span>
-									<input class="mdl-textfield__input text-warning" [(ngModel)]="usuario.usuario" type="text"
-										pInputText placeholder="Usuario">
+									<input (keydown)="$event.keyCode == 13 ? login() : null"
+										class="mdl-textfield__input text-warning" [(ngModel)]="usuario.usuario"
+										type="text" pInputText placeholder="Usuario">
 								</div>
 								<div class="ui-inputgroup mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 									<span class="ui-inputgroup-addon">
 										<mdl-icon>lock</mdl-icon>
 									</span>
-									<input class="mdl-textfield__input text-warning" [(ngModel)]="usuario.password" type="password"
-										pInputText placeholder="Clave">
+									<input (keydown)="$event.keyCode == 13 ? login() : null"
+										class="mdl-textfield__input text-warning" [(ngModel)]="usuario.password"
+										type="password" pInputText placeholder="Clave">
 								</div>
 
 								<div class="ui-g center">
@@ -41,14 +43,15 @@
 
 								<div class="ui-g center">
 									<div class="ui-g-6 ui-lg-6 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-										<a (click)="irRecordarClave()" class="cursorPointer">{{msg.lbl_btn_olvidaste_tu_clave}}</a>
+										<a (click)="irRecordarClave()"
+											class="cursorPointer">{{msg.lbl_btn_olvidaste_tu_clave}}</a>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="ui-g">
 							<div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 ui-xs-12 ui-g-nopad fontWhite center">
-								<p-messages class="w100" severity="const.severity[2]" [(value)]="msgs"></p-messages>
+								<p-messages class="w100"></p-messages>
 								<p>Template by <a href="https://www.linkedin.com/in/carlos-baene/">CMVB Projects</a>.
 								</p>
 								<p>Copyright © 2019 CMVB All rights reserved. Dev: Carlos Baene</p>

@@ -10,7 +10,9 @@
     </mdl-layout-drawer>
 
     <mdl-layout-content>
-      <p-scrollPanel [style]="{width: '100%', height: '100vh'}" styleClass="custom">
+      <p-scrollPanel
+        [style]="{width: '100%', height: '100vh', background: 'url(assets/images/modulos/ubicaciones.jpg)'}"
+        styleClass="custom fondo-cover">
         <div class="body-content">
           <!-- Aquí creamos nuestro contenido para las diferentes páginas -->
           <div class="content-page">
@@ -142,16 +144,18 @@
                     <div *ngIf="phase !== const.phaseAdd" class="mdl-card__supporting-text">
                       <div class="ui-g center">
                         <!-- TAB PAIS -->
-                        <div *ngIf="objeto.tipoUbicacion !== 0" class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion !== 0"
+                          class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_pais}}</label>
                           <span class="ui-float-label">
                             <ng-select id="txtPaisEd" (change)="cargarDepartamentosPorPais($event)"
-                              [disabled]="objeto.tipoUbicacion !== 0"
-                              [(ngModel)]="paisSeleccionado" [items]="enumFiltroPaises">
+                              [disabled]="objeto.tipoUbicacion !== 0" [(ngModel)]="paisSeleccionado"
+                              [items]="enumFiltroPaises">
                             </ng-select>
                           </span>
                         </div>
-                        <div *ngIf="objeto.tipoUbicacion === 0" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion === 0"
+                          class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
                             {{msg.lbl_mtto_ubicacion_pais}}</label>
                           <span class="ui-float-label">
@@ -159,7 +163,8 @@
                               [(ngModel)]="codigoPaisP" type="text" size="20">
                           </span>
                         </div>
-                        <div *ngIf="objeto.tipoUbicacion === 0" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion === 0"
+                          class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
                             {{msg.lbl_mtto_ubicacion_pais}}</label>
                           <span class="ui-float-label">
@@ -170,7 +175,8 @@
                         <!-- TAB PAIS -->
 
                         <!-- TAB DEPARTAMENTO -->
-                        <div *ngIf="objeto.tipoUbicacion !== 1" class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion !== 1"
+                          class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_departamento}}</label>
                           <span class="ui-float-label">
                             <ng-select id="txtDepartamentoEd" (change)="cargarCiudadesPorDepartamento($event)"
@@ -179,7 +185,8 @@
                             </ng-select>
                           </span>
                         </div>
-                        <div *ngIf="objeto.tipoUbicacion === 1" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion === 1"
+                          class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
                             {{msg.lbl_mtto_ubicacion_departamento}}</label>
                           <span class="ui-float-label">
@@ -187,7 +194,8 @@
                               [(ngModel)]="codigoDepartamentoD" type="text" size="20">
                           </span>
                         </div>
-                        <div *ngIf="objeto.tipoUbicacion === 1" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion === 1"
+                          class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
                             {{msg.lbl_mtto_ubicacion_departamento}}</label>
                           <span class="ui-float-label">
@@ -198,15 +206,17 @@
                         <!-- TAB DEPARTAMENTO -->
 
                         <!-- TAB CIUDAD -->
-                        <div *ngIf="objeto.tipoUbicacion !== 2" class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion !== 2"
+                          class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_ciudad}}</label>
                           <span class="ui-float-label">
-                            <ng-select [disabled]="objeto.tipoUbicacion !== 2"
-                              id="txtCiudadEd" [(ngModel)]="ciudadSeleccionada" [items]="enumFiltroCiudades">
+                            <ng-select [disabled]="objeto.tipoUbicacion !== 2" id="txtCiudadEd"
+                              [(ngModel)]="ciudadSeleccionada" [items]="enumFiltroCiudades">
                             </ng-select>
                           </span>
                         </div>
-                        <div *ngIf="objeto.tipoUbicacion === 2" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion === 2"
+                          class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_codigo}}
                             {{msg.lbl_mtto_ubicacion_ciudad}}</label>
                           <span class="ui-float-label">
@@ -214,7 +224,8 @@
                               [(ngModel)]="codigoCiudadC" type="text" size="20">
                           </span>
                         </div>
-                        <div *ngIf="objeto.tipoUbicacion === 2" class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
+                        <div *ngIf="objeto.tipoUbicacion === 2"
+                          class="ui-g-3 ui-lg-3 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
                           <label class="obligatorio" for="float-input">{{msg.lbl_mtto_ubicacion_nombre}}
                             {{msg.lbl_mtto_ubicacion_ciudad}}</label>
                           <span class="ui-float-label">
@@ -274,4 +285,3 @@
   <!-- Importamos el Footer -->
   <app-footer></app-footer>
 </div>
-

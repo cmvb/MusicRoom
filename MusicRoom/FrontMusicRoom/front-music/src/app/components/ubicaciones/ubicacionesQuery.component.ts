@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
 import { RestService } from '../../services/rest.service';
-import { DataObjects } from '../ObjectGeneric';
-import { Util } from '../Util';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+import { UbicacionService } from 'src/app/services/ubicacionService/ubicacion.service';
 
 declare var $: any;
 
@@ -23,9 +25,7 @@ export class UbicacionesQueryComponent implements OnInit {
   sesion: any;
 
   // Utilidades
-  util: any;
   msg: any;
-  ex: any;
   const: any;
 
   // Objetos de Datos
@@ -43,8 +43,8 @@ export class UbicacionesQueryComponent implements OnInit {
   listaCiudades = [];
   enumFiltroPaises = [];
   enumFiltroDepartamentos = [];
-  enumFiltroCiudades = [];  
-  enumFiltroTipoUbicacion = []; 
+  enumFiltroCiudades = [];
+  enumFiltroTipoUbicacion = [];
   paisSeleccionado: any;
   departamentoSeleccionado: any;
   ciudadSeleccionada: any;
@@ -64,19 +64,18 @@ export class UbicacionesQueryComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.usuarioSesion = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.enums = datasObject.getEnumerados();
-    this.util = util;
-    this.objetoFiltro = datasObject.getDataUbicacion();
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public ubicacionService: UbicacionService) {
+    this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
+    this.enums = this.enumerados.getEnumerados();
+    this.objetoFiltro = this.objectModelInitializer.getDataUbicacion();
     this.paisSeleccionado = null;
     this.departamentoSeleccionado = null;
     this.ciudadSeleccionada = null;
     this.tipoUbicacionSeleccionada = null;
-    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -84,7 +83,7 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   // Procesos que se ejecutan al cargar el componente
-  ngOnInit() {    
+  ngOnInit() {
     this.enumFiltroTipoUbicacion = this.util.getEnum(this.enums.tipoUbicacion.cod);
     this.tipoUbicacionSeleccionada = this.enumFiltroTipoUbicacion[0];
 
@@ -98,16 +97,16 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (this.util.getSesionXItem('mensajeConfirmacion') != null) {
-      let mensajeConfirmacion = JSON.parse(localStorage.getItem('mensajeConfirmacion'));
+    if (typeof this.sesionService.objServiceSesion.mensajeConfirmacion !== 'undefined' && this.sesionService.objServiceSesion.mensajeConfirmacion !== null) {
+      let mensajeConfirmacion = this.sesionService.objServiceSesion.mensajeConfirmacion;
       this.messageService.clear();
-      this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: mensajeConfirmacion });
-      this.ex.mensaje = mensajeConfirmacion;
+      this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: mensajeConfirmacion });
     }
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
+    console.clear();
+    this.messageService.clear();
   }
 
   consultarUbicaciones() {
@@ -116,7 +115,7 @@ export class UbicacionesQueryComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerUbicacion + 'consultarPorFiltros';
       this.ajustarCombos();
       let obj = this.objetoFiltro;
-      obj.estado = "1";
+      obj.estado = this.const.estadoActivoNumString
       obj.tipoUbicacion = this.tipoUbicacionSeleccionada.value;
 
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
@@ -126,8 +125,7 @@ export class UbicacionesQueryComponent implements OnInit {
           this.listaConsulta = this.data;
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -139,21 +137,21 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   ajustarCombos() {
-    if (this.paisSeleccionado != null) {
+    if (this.paisSeleccionado !== null) {
       let pais = this.util.obtenerUbicacionDeEnum(this.paisSeleccionado.value.idUbicacion, this.listaPaises);
       this.objetoFiltro.codigoPais = pais.codigoPais;
     } else {
       this.objetoFiltro.codigoPais = null;
     }
 
-    if (this.departamentoSeleccionado != null) {
+    if (this.departamentoSeleccionado !== null) {
       let departamento = this.util.obtenerUbicacionDeEnum(this.departamentoSeleccionado.value.idUbicacion, this.listaDepartamentos);
       this.objetoFiltro.codigoDepartamento = departamento.codigoDepartamento;
     } else {
       this.objetoFiltro.codigoDepartamento = null;
     }
 
-    if (this.ciudadSeleccionada != null) {
+    if (this.ciudadSeleccionada !== null) {
       let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
       this.objetoFiltro.codigoCiudad = ciudad.codigoCiudad;
     } else {
@@ -174,8 +172,7 @@ export class UbicacionesQueryComponent implements OnInit {
           this.enumFiltroPaises = this.util.obtenerEnumeradoDeListaUbicacion(this.listaPaises, 0);
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -199,8 +196,7 @@ export class UbicacionesQueryComponent implements OnInit {
           this.enumFiltroDepartamentos = this.util.obtenerEnumeradoDeListaUbicacion(this.listaDepartamentos, 1);
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -224,8 +220,7 @@ export class UbicacionesQueryComponent implements OnInit {
           this.enumFiltroCiudades = this.util.obtenerEnumeradoDeListaUbicacion(this.listaCiudades, 2);
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -244,13 +239,25 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   editar(objetoEdit) {
-    this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseEdit }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: objetoEdit }, { item: 'listaCiudades', valor: this.listaCiudades }, { item: 'listaDepartamentos', valor: this.listaDepartamentos }, { item: 'listaPaises', valor: this.listaPaises }]);
+    this.sesionService.objServiceSesion.phase = this.const.phaseEdit;
+    this.ubicacionService.objetoFiltro = this.objetoFiltro;
+    this.ubicacionService.listaConsulta = this.listaConsulta;
+    this.ubicacionService.editParam = objetoEdit;
+    this.ubicacionService.listaCiudades = this.listaCiudades;
+    this.ubicacionService.listaDepartamentos = this.listaDepartamentos;
+    this.ubicacionService.listaPaises = this.listaPaises;
     this.router.navigate(['/ubicacionEdit']);
     return true;
   }
 
   irCrear() {
-    this.util.agregarSesionXItem([{ item: 'phase', valor: this.const.phaseAdd }, { item: 'objetoFiltro', valor: this.objetoFiltro }, { item: 'listaConsulta', valor: this.listaConsulta }, { item: 'editParam', valor: null }, { item: 'listaCiudades', valor: this.listaCiudades }, { item: 'listaDepartamentos', valor: this.listaDepartamentos }, { item: 'listaPaises', valor: this.listaPaises }]);
+    this.sesionService.objServiceSesion.phase = this.const.phaseAdd;
+    this.ubicacionService.objetoFiltro = this.objetoFiltro;
+    this.ubicacionService.listaConsulta = this.listaConsulta;
+    this.ubicacionService.editParam = null;
+    this.ubicacionService.listaCiudades = this.listaCiudades;
+    this.ubicacionService.listaDepartamentos = this.listaDepartamentos;
+    this.ubicacionService.listaPaises = this.listaPaises;
     this.router.navigate(['/ubicacionEdit']);
     return true;
   }
@@ -267,12 +274,10 @@ export class UbicacionesQueryComponent implements OnInit {
           this.limpiar();
           this.consultarUbicaciones();
           this.messageService.clear();
-          this.messageService.add({ severity: this.const.severity[1], summary: 'CONFIRMACIÓN: ', detail: 'La Ubicación fue eliminada satisfactoriamente.' });
-          this.ex.mensaje = 'La Ubicación fue eliminada satisfactoriamente.';
+          this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_detail_el_registro_eliminado });
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -284,7 +289,7 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   cargarDepartamentosPorPais(event) {
-    if (this.paisSeleccionado != null) {
+    if (this.paisSeleccionado !== null) {
       let nuevaListaDepartamentos = [];
       let paisUbicacion = this.util.obtenerUbicacionDeEnum(this.paisSeleccionado.value.idUbicacion, this.listaPaises);
 
@@ -304,7 +309,7 @@ export class UbicacionesQueryComponent implements OnInit {
   }
 
   cargarCiudadesPorDepartamento(event) {
-    if (this.departamentoSeleccionado != null) {
+    if (this.departamentoSeleccionado !== null) {
       let nuevaListaCiudades = [];
       let departamentoUbicacion = this.util.obtenerUbicacionDeEnum(this.departamentoSeleccionado.value.idUbicacion, this.listaDepartamentos);
 

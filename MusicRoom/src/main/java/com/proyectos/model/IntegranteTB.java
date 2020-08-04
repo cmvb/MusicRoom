@@ -4,13 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
@@ -38,15 +33,6 @@ public class IntegranteTB extends BaseEntidadTB implements Serializable {
 	@NotNull
 	@Column(name = "int_instrumento_accesorio", nullable = false, length = 10)
 	private short instrumentoAccesorio;
-
-	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "int_banda", nullable = false, insertable = false)
-	private BandaTB bandaTb;
-
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "int_foto")
-	private ArchivoTB fotoTb;
 
 	public long getIdIntegrante() {
 		return idIntegrante;
@@ -78,22 +64,6 @@ public class IntegranteTB extends BaseEntidadTB implements Serializable {
 
 	public void setInstrumentoAccesorio(short instrumentoAccesorio) {
 		this.instrumentoAccesorio = instrumentoAccesorio;
-	}
-
-	public BandaTB getBandaTb() {
-		return bandaTb;
-	}
-
-	public void setBandaTb(BandaTB bandaTb) {
-		this.bandaTb = bandaTb;
-	}
-
-	public ArchivoTB getFotoTb() {
-		return fotoTb;
-	}
-
-	public void setFotoTb(ArchivoTB fotoTb) {
-		this.fotoTb = fotoTb;
 	}
 
 }

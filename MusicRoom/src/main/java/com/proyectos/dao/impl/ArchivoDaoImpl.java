@@ -1,9 +1,13 @@
 package com.proyectos.dao.impl;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,6 +31,53 @@ public class ArchivoDaoImpl extends AbstractDao<ArchivoTB> implements IArchivoDa
 		archivo = colocarValoresDefecto(archivo);
 		super.create(archivo);
 		return archivo;
+	}
+
+	@Override
+	public ArchivoTB modificarArchivo(ArchivoTB archivo) {
+		archivo = colocarValoresDefecto(archivo);
+		super.update(archivo);
+		return archivo;
+	}
+
+	@Override
+	public void flushCommitEM() {
+		super.flushCommitEM();
+	}
+
+	@Override
+	public boolean modificarRutaArchivo(String nombreArchivo, String nuevaRuta) {
+		// PARAMETROS
+		Map<String, Object> pamameters = new HashMap<>();
+
+		// QUERY
+		StringBuilder JPQL = new StringBuilder("SELECT t FROM ArchivoTB t WHERE 1 = 1 ");
+		// Q. Order By
+		JPQL.append(" ORDER BY t.idArchivo");
+		// END QUERY
+
+		TypedQuery<ArchivoTB> query = em.createQuery(JPQL.toString(), ArchivoTB.class);
+		pamameters.forEach((k, v) -> query.setParameter(k, v));
+
+		List<ArchivoTB> listaArchivos = query.getResultList();
+		ArchivoTB archivoModificado = null;
+		if (listaArchivos != null) {
+			for (ArchivoTB archivo : listaArchivos) {
+				if ((archivo.getNombreArchivo() + archivo.getTipoArchivo()).toUpperCase()
+						.equals(nombreArchivo.toUpperCase())) {
+					archivo.setRutaArchivo(nuevaRuta);
+					archivoModificado = archivo;
+					break;
+				}
+			}
+		}
+
+		if (archivoModificado != null) {
+			this.modificarArchivo(archivoModificado);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

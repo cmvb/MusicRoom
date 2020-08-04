@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
-import { DataObjects } from '../.././components/ObjectGeneric';
-import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { bypassSanitizationTrustResourceUrl } from '@angular/core/src/sanitization/bypass';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
 
 declare var $: any;
 
@@ -18,6 +18,7 @@ declare var $: any;
   providers: [RestService, MessageService]
 })
 export class DashboardComponent implements OnInit {
+  ACCESS_TOKEN: any;
   availableCars: any[];
   selectedCars: any[];
   draggedCar: any;
@@ -34,29 +35,24 @@ export class DashboardComponent implements OnInit {
   imagenEstado = false;
 
   // Objetos de Datos
-  ex: any;
   objeto: any;
-  msgs = [];
   data: any;
 
   // Utilidades
-  util: any;
   msg: any;
   const: any;
   locale: any;
   maxDate = new Date();
 
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService, private sanitization: DomSanitizer) {
-    this.sesion = datasObject.getDataSesion();
-    this.ex = datasObject.getDataException();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
-    this.locale = datasObject.getLocaleESForCalendar();
-    this.util = util;
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, private sanitization: DomSanitizer) {
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
+    this.locale = this.sesionService.objServiceSesion.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
     this.srcImg = 'assets/images/icons/';
     this.selectedFiles = undefined;
+    this.ACCESS_TOKEN =  this.sesionService.objServiceSesion.tokenSesion.token;
   }
 
   ngOnInit() {
@@ -100,14 +96,9 @@ export class DashboardComponent implements OnInit {
     return index;
   }
 
-
-
-
-
-
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
-    this.msgs = [];
+    console.clear();
+    this.messageService.clear();
   }
 
   generarReporte() {
@@ -127,8 +118,7 @@ export class DashboardComponent implements OnInit {
           reader.readAsArrayBuffer(this.data);
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -158,8 +148,7 @@ export class DashboardComponent implements OnInit {
           a.click();
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -172,7 +161,6 @@ export class DashboardComponent implements OnInit {
   }
 
   selectFiles(e: any) {
-    console.log(e.target.files);
     this.currentFileUpload = e.target.files[0];
     this.nameFile = e.target.files[0].name;
     this.selectedFiles = e.target.files;
@@ -184,7 +172,7 @@ export class DashboardComponent implements OnInit {
       let url = this.const.urlRestService + this.const.urlControllerReporte + 'guardarArchivo';
       let obj = this.currentFileUpload;
 
-      this.restService.postFileREST(url, obj)
+      this.restService.postSecureFileREST(url, this.currentFileUpload, this.ACCESS_TOKEN)
         .subscribe(resp => {
           console.log(resp, "res");
           this.data = resp;
@@ -192,8 +180,7 @@ export class DashboardComponent implements OnInit {
           this.selectedFiles = undefined;
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -219,8 +206,7 @@ export class DashboardComponent implements OnInit {
           this.convertirArchivo(this.data);
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 

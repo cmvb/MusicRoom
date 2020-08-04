@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
 import { MenuItem, MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
 import { RestService } from '../../services/rest.service';
-import { DataObjects } from '../ObjectGeneric';
-import { Util } from '../Util';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+import { UbicacionService } from 'src/app/services/ubicacionService/ubicacion.service';
 
 declare var $: any;
 
@@ -23,10 +25,8 @@ export class UbicacionesEditComponent implements OnInit {
   sesion: any;
 
   // Utilidades
-  util: any;
   msg: any;
   const: any;
-  ex: any;
   isDisabled: boolean;
   tabsMenu: MenuItem[];
   activeItem: MenuItem;
@@ -70,14 +70,13 @@ export class UbicacionesEditComponent implements OnInit {
   options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.usuarioSesion = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.enums = datasObject.getEnumerados();
-    this.util = util;
-    this.objeto = datasObject.getDataUbicacion();
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public ubicacionService: UbicacionService) {
+    this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
+    this.enums = this.enumerados.getEnumerados();
+    this.objeto = this.objectModelInitializer.getDataUbicacion();
     this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
     this.paisSeleccionado = null;
     this.departamentoSeleccionado = null;
@@ -91,7 +90,7 @@ export class UbicacionesEditComponent implements OnInit {
     this.nombreDepartamentoD = null;
     this.codigoCiudadC = null;
     this.nombreCiudadC = null;
-    this.ACCESS_TOKEN = JSON.parse(sessionStorage.getItem(this.const.tokenNameAUTH)).access_token;
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -101,23 +100,23 @@ export class UbicacionesEditComponent implements OnInit {
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
     this.inicializarCombos();
-    this.util.limpiarSesionXItem(['mensajeConfirmacion']);
-    this.phase = this.util.getSesionXItem('phase');
+    this.sesionService.objServiceSesion.mensajeConfirmacion = undefined;
+    this.phase = this.sesionService.objServiceSesion.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
 
     // Paises
-    this.listaPaises = this.util.getSesionXItem('listaPaises');
+    this.listaPaises = this.ubicacionService.listaPaises;
     this.enumFiltroPaises = this.util.obtenerEnumeradoDeListaUbicacion(this.listaPaises, 0);
     // Departamentos
-    this.listaDepartamentos = this.util.getSesionXItem('listaDepartamentos');
+    this.listaDepartamentos = this.ubicacionService.listaDepartamentos;
     this.enumFiltroDepartamentos = this.util.obtenerEnumeradoDeListaUbicacion(this.listaDepartamentos, 1);
     // Ciudades
-    this.listaCiudades = this.util.getSesionXItem('listaCiudades');
+    this.listaCiudades = this.ubicacionService.listaCiudades;
     this.enumFiltroCiudades = this.util.obtenerEnumeradoDeListaUbicacion(this.listaCiudades, 2);
 
-    if (this.util.getSesionXItem('editParam') != null) {
-      this.objeto = JSON.parse(localStorage.getItem('editParam'));
+    if (typeof this.ubicacionService.editParam !== 'undefined' && this.ubicacionService.editParam !== null) {
+      this.objeto = this.ubicacionService.editParam;
       this.colocarValoresObjetoEdit();
       if (this.phase !== this.const.phaseAdd) {
         if (this.objeto.tipoUbicacion === 0) {
@@ -136,9 +135,9 @@ export class UbicacionesEditComponent implements OnInit {
     }
 
     this.tabsMenu = [
-      { id: '1', label: 'País', icon: 'flag' },
-      { id: '2', label: 'Departamento/Región', icon: 'location_on' },
-      { id: '3', label: 'Ciudad/Municipio', icon: 'location_city' }
+      { id: '1', label: this.msg.lbl_enum_tipo_ubicacion_valor_pais, icon: 'flag' },
+      { id: '2', label: this.msg.lbl_enum_tipo_ubicacion_valor_departamento, icon: 'location_on' },
+      { id: '3', label: this.msg.lbl_enum_tipo_ubicacion_valor_ciudad, icon: 'location_city' }
     ];
 
     this.activeItem = this.tabsMenu[0];
@@ -218,21 +217,21 @@ export class UbicacionesEditComponent implements OnInit {
       }
     }
     else {
-      if (this.paisSeleccionado != null && typeof this.paisSeleccionado.value != 'undefined') {
+      if (this.paisSeleccionado !== null && typeof this.paisSeleccionado.value != 'undefined') {
         let pais = this.util.obtenerUbicacionDeEnum(this.paisSeleccionado.value.idUbicacion, this.listaPaises);
         this.objeto.codigoPais = pais.codigoPais;
       }
       else {
         this.objeto.codigoPais = null;
       }
-      if (this.departamentoSeleccionado != null && typeof this.departamentoSeleccionado.value != 'undefined') {
+      if (this.departamentoSeleccionado !== null && typeof this.departamentoSeleccionado.value != 'undefined') {
         let departamento = this.util.obtenerUbicacionDeEnum(this.departamentoSeleccionado.value.idUbicacion, this.listaDepartamentos);
         this.objeto.codigoDepartamento = departamento.codigoDepartamento;
       }
       else {
         this.objeto.codigoDepartamento = null;
       }
-      if (this.ciudadSeleccionada != null && typeof this.ciudadSeleccionada.value != 'undefined') {
+      if (this.ciudadSeleccionada !== null && typeof this.ciudadSeleccionada.value != 'undefined') {
         let ciudad = this.util.obtenerUbicacionDeEnum(this.ciudadSeleccionada.value.idUbicacion, this.listaCiudades);
         this.objeto.codigoCiudad = ciudad.codigoCiudad;
       }
@@ -243,7 +242,8 @@ export class UbicacionesEditComponent implements OnInit {
   }
 
   limpiarExcepcion() {
-    this.ex = this.util.limpiarExcepcion();
+    console.clear();
+    this.messageService.clear();
   }
 
   irGuardar() {
@@ -266,15 +266,13 @@ export class UbicacionesEditComponent implements OnInit {
 
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
-          console.log(resp, "res");
           this.data = resp;
-          let mensajeConfirmacion = 'La Ubicación #' + this.data.idUbicacion + ' fue ' + (this.phase === this.const.phaseAdd ? 'creada' : 'actualizada') + ' satisfactoriamente.';
-          this.util.agregarSesionXItem([{ item: 'mensajeConfirmacion', valor: mensajeConfirmacion }]);
+          let mensajeConfirmacion = this.msg.lbl_detail_el_registro + this.data.idUbicacion + this.msg.lbl_detail_fue + (this.phase === this.const.phaseAdd ? this.msg.lbl_detail_creado : this.msg.lbl_detail_actualizado) + this.msg.lbl_detail_satisfactoriamente;
+          this.sesionService.objServiceSesion.mensajeConfirmacion = mensajeConfirmacion;
           this.irAtras();
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -288,7 +286,7 @@ export class UbicacionesEditComponent implements OnInit {
   }
 
   irAtras() {
-    this.util.limpiarSesionXItem(['listaConsulta']);
+    this.ubicacionService.listaConsulta;
     this.router.navigate(['/ubicacionQuery']);
   }
 
@@ -299,7 +297,7 @@ export class UbicacionesEditComponent implements OnInit {
   }
 
   cargarDepartamentosPorPais() {
-    if (this.paisSeleccionado != null) {
+    if (this.paisSeleccionado !== null) {
       let nuevaListaDepartamentos = [];
       let paisUbicacion = this.util.obtenerUbicacionDeEnum(this.paisSeleccionado.value.idUbicacion, this.listaPaises);
 
@@ -319,7 +317,7 @@ export class UbicacionesEditComponent implements OnInit {
   }
 
   cargarCiudadesPorDepartamento() {
-    if (this.departamentoSeleccionado != null) {
+    if (this.departamentoSeleccionado !== null) {
       let nuevaListaCiudades = [];
       let departamentoUbicacion = this.util.obtenerUbicacionDeEnum(this.departamentoSeleccionado.value.idUbicacion, this.listaDepartamentos);
 

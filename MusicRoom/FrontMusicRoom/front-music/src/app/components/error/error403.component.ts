@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
-import { MenuItem, MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
-import { DataObjects } from '../.././components/ObjectGeneric';
-import { Util } from '../.././components/Util';
+import { MessageService } from 'primeng/api';
 import { RestService } from '../.././services/rest.service';
-import { debug } from 'util';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+
 
 @Component({
   selector: 'app-error403',
@@ -19,22 +20,17 @@ export class Error403Component implements OnInit {
   mensajeError: any;
   decodedToken: any;
   expirationDate: any;
-  ex: any;
-  msgs = [];
 
   // Utilidades
-  util: any;
   msg: any;
   const: any;
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.ex = datasObject.getDataException();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
-    this.mensajeError = localStorage.getItem('mensajeError403');
-    this.decodedToken = localStorage.getItem('decodedToken');
-    this.expirationDate = localStorage.getItem('expirationDate');
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.const = this.objectModelInitializer.getConst();
+    this.mensajeError = this.sesionService.objServiceSesion.mensajeError403;
+    this.decodedToken = this.sesionService.objServiceSesion.decodedToken;
+    this.expirationDate = this.sesionService.objServiceSesion.expirationDate;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia

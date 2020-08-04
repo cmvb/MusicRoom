@@ -1,26 +1,28 @@
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Util } from '.././components/Util';
-import { DataObjects } from '.././components/ObjectGeneric';
+import { ObjectModelInitializer } from '../config/ObjectModelInitializer';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
+const httpFileOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data', 'Accept': 'application/json' })
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
   // Utilidades
-  util: any;
   AUTH: any;
 
-  constructor(private http: HttpClient, private router: Router, datasObject: DataObjects, util: Util, ) {
+  constructor(private http: HttpClient, private router: Router, public objectModelInitializer: ObjectModelInitializer) {
     this.AUTH = {
-      TOKEN_AUTH_USERNAME: datasObject.getConst().tokenUsernameAUTH,
-      TOKEN_AUTH_PASSWORD: datasObject.getConst().tokenPasswordAUTH,
-      TOKEN_AUTH_NAME: datasObject.getConst().tokenNameAUTH
+      TOKEN_AUTH_USERNAME: this.objectModelInitializer.getConst().tokenUsernameAUTH,
+      TOKEN_AUTH_PASSWORD: this.objectModelInitializer.getConst().tokenPasswordAUTH,
+      TOKEN_AUTH_NAME: this.objectModelInitializer.getConst().tokenNameAUTH
     };
   }
 
@@ -73,6 +75,15 @@ export class RestService {
   postSecureREST(url, data, token) {
     return this.http.post(url, data, {
       headers: new HttpHeaders().set('Authorization', 'bearer ' + token).set('Content-Type', 'application/json')
+    });
+  }
+
+  postSecureFileREST(url, data: File, token) {
+    let formData = new FormData();
+    formData.append("file", data);
+
+    return this.http.post(url, formData, {
+      headers: new HttpHeaders().set('Authorization', 'bearer ' + token)
     });
   }
   // END SERVICES WITH SECURITY

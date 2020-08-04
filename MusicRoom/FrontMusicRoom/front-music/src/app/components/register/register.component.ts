@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MenuItem, MessageService } from 'primeng/api';
-import 'rxjs/add/operator/map';
-import { DataObjects } from '../.././components/ObjectGeneric';
-import { Util } from '../.././components/Util';
 import { RestService } from '../.././services/rest.service';
-import { debug } from 'util';
+import { ObjectModelInitializer } from 'src/app/config/ObjectModelInitializer';
+import { TextProperties } from 'src/app/config/TextProperties';
+import { Util } from 'src/app/config/Util';
+import { Enumerados } from 'src/app/config/Enumerados';
+import { SesionService } from 'src/app/services/sesionService/sesion.service';
+
 
 declare var $: any;
 
@@ -22,11 +24,9 @@ export class RegisterComponent implements OnInit {
   sesion: any;
 
   // Objetos de Datos
-  ex: any;
   usuario: any;
   codigoVerificacion: any;
   nuevaPassword: any;
-  msgs = [];
   logueado: boolean;
   step: any;
   isDisabled: any;
@@ -39,9 +39,7 @@ export class RegisterComponent implements OnInit {
   indexTemp: number = 0;
 
   // Utilidades
-  util: any;
   msg: any;
-  const: any;
   locale: any;
   maxDate = new Date();
 
@@ -50,18 +48,15 @@ export class RegisterComponent implements OnInit {
   enumTipoUsuario = [];
   enumTipoDocumento = [];
 
-  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, datasObject: DataObjects, util: Util, private messageService: MessageService) {
-    this.usuario = datasObject.getDataUsuario();
-    this.sesion = datasObject.getDataSesion();
-    this.ex = datasObject.getDataException();
-    this.msg = datasObject.getProperties(datasObject.getConst().idiomaEs);
-    this.const = datasObject.getConst();
-    this.util = util;
+  constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
+    this.usuario = this.objectModelInitializer.getDataUsuario();
+    this.sesion = this.objectModelInitializer.getDataSesion();
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
+    this.enums = this.enumerados.getEnumerados();
     this.step = 1;
-    this.locale = datasObject.getLocaleESForCalendar();
+    this.locale = this.sesionService.objServiceSesion.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
     this.usuario.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.usuario.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
-    this.enums = datasObject.getEnumerados();
     this.isDisabled = true;
   }
 
@@ -83,54 +78,48 @@ export class RegisterComponent implements OnInit {
           this.step = 1;
           this.isDisabled = true;
           this.messageService.clear();
-          this.messageService.add({ severity: this.const.severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
+          this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
         }
       },
       {
         label: 'IDENTIFICACIÓN',
         command: (event: any) => {
-          let nowActiveIndex = this.activeIndex;
-
           if (this.validarStep(1)) {
             this.indexTemp = 1;
             this.activeIndex = 1;
             this.step = 2;
             this.isDisabled = true;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_2_registrar_usuario });
+            this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_2_registrar_usuario });
           }
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       },
       {
         label: 'SEGURIDAD',
         command: (event: any) => {
-          let nowActiveIndex = this.activeIndex;
-
           if (this.validarStep(2)) {
             this.indexTemp = 2;
             this.activeIndex = 2;
             this.step = 3;
             this.isDisabled = true;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_3_registrar_usuario });
+            this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_3_registrar_usuario });
           }
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       },
       {
         label: 'CONFIRMACIÓN',
         command: (event: any) => {
-          let nowActiveIndex = this.activeIndex;
-
           if (this.validarStep(3)) {
             // Enviar Correo con el Código de Verificación
             this.enviarCorreoCodVerificacionReg();
@@ -139,12 +128,12 @@ export class RegisterComponent implements OnInit {
             this.step = 4;
             this.isDisabled = false;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_4_registrar_usuario });
+            this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[0], summary: event.item.label, detail: this.msg.lbl_mtto_generico_step_4_registrar_usuario });
           }
           else {
             this.activeIndex = this.indexTemp;
             this.messageService.clear();
-            this.messageService.add({ severity: this.const.severity[2], summary: "ADVERTENCIA", detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
+            this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[2], summary: this.msg.lbl_summary_warning, detail: this.msg.lbl_mtto_generico_step_registrar_usuario_error });
           }
         }
       }
@@ -152,14 +141,14 @@ export class RegisterComponent implements OnInit {
 
     console.clear();
     this.messageService.clear();
-    this.messageService.add({ severity: this.const.severity[0], summary: "Personal", detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
+    this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[0], summary: "Personal", detail: this.msg.lbl_mtto_generico_step_1_registrar_usuario });
   }
 
 
   consultarTodosUsuarios() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'consultarUsuariosRegister';
+      let url = this.objectModelInitializer.getConst().urlRestService + this.objectModelInitializer.getConst().urlControllerUsuario + 'consultarUsuariosRegister';
 
       this.restService.getREST(url)
         .subscribe(resp => {
@@ -168,8 +157,7 @@ export class RegisterComponent implements OnInit {
           this.listaUsuarios = this.dataUsuarios;
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -184,18 +172,16 @@ export class RegisterComponent implements OnInit {
     try {
       this.limpiarExcepcion();
       let nombreCompleto = this.usuario.nombre + ' ' + this.usuario.apellido;
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email + '/' + this.usuario.usuario + '/' + nombreCompleto;
+      let url = this.objectModelInitializer.getConst().urlRestService + this.objectModelInitializer.getConst().urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email + '/' + this.usuario.usuario + '/' + nombreCompleto;
+      this.sesionService.objServiceSesion.usuarioRegister = this.usuario;
+      sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
 
-      this.util.agregarSesionXItem([{ item: 'usuarioRegister', valor: this.usuario }]);
-
-      debugger;
       this.restService.getREST(url)
         .subscribe(resp => {
-          this.messageService.add({ severity: this.const.severity[0], summary: "INFORMACIÓN: ", detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
+          this.messageService.add({ severity: this.objectModelInitializer.getConst().severity[0], summary: this.msg.lbl_summary_info, detail: this.msg.lbl_mtto_generico_codigo_verificaicion_enviado_ok });
         },
           error => {
-            this.ex = error.error;
-            let mensaje = this.util.mostrarNotificacion(this.ex);
+            let mensaje = this.util.mostrarNotificacion(error.error);
             this.messageService.clear();
             this.messageService.add(mensaje);
 
@@ -250,14 +236,13 @@ export class RegisterComponent implements OnInit {
 
   limpiarExcepcion() {
     console.clear();
-    this.ex = this.util.limpiarExcepcion();
-    this.msgs = [];
+    this.messageService.clear();
   }
 
   registrarse() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerUsuario + 'registrarse';
+      let url = this.objectModelInitializer.getConst().urlRestService + this.objectModelInitializer.getConst().urlControllerUsuario + 'registrarse';
       let obj = this.util.copiarElemento(this.usuario, this.util.usuarioEjemplo);
 
       obj.tipoDocumento = this.usuario.tipoDocumento.value;
@@ -269,14 +254,16 @@ export class RegisterComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.sesion.usuarioTb = resp;
+          this.sesionService.objServiceSesion.usuarioSesion = this.sesion;
+          sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
 
-          // Procesamiento o Lógica Específica
-          this.util.agregarSesionXItem([{ item: 'usuarioSesion', valor: this.sesion }]);
           this.irLogin();
         },
           error => {
-            this.ex = error.error;
-            this.msgs.push(this.util.mostrarNotificacion(this.ex));
+            let mensaje = this.util.mostrarNotificacion(error.error);
+            this.messageService.clear();
+            this.messageService.add(mensaje);
+
             console.log(error, "error");
           })
     } catch (e) {

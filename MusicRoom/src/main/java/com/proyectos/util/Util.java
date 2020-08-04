@@ -4,12 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.sql.Timestamp;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -17,32 +12,21 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import com.csvreader.CsvReader;
 import com.proyectos.enums.ESeveridadMensaje;
 import com.proyectos.enums.ETipoDocumento;
 import com.proyectos.enums.ETipoUbicacion;
 import com.proyectos.enums.ETipoUsuario;
+import com.proyectos.model.BandaTB;
+import com.proyectos.model.IntegranteTB;
 import com.proyectos.model.SalaTB;
 import com.proyectos.model.TerceroTB;
 import com.proyectos.model.UbicacionTB;
@@ -113,145 +97,12 @@ public abstract class Util {
 	public static final String INFORME_MOVIDO_SFTP_SATISFACTORIAMENTE = "El Informe fue creado correctamente en el servidor SFTP.";
 	public static final String INFORME_NO_PUDO_SER_MOVIDO_SFTP = "El Informe no pudo ser creado en el servidor SFTP, validar la conexión.";
 
-	/**
-	 * Permite leer el contenido del archivo guardandolo en una lista de String
-	 *
-	 * @param file        archivo que se quiere leer extension
-	 * @param delimitador tipo de separador del archivo plano, puede ser coma o
-	 *                    punto y coma, entre otros.s
-	 * @return lista de String con los registros del archivo.
-	 */
-	public static final List<String> listaCargueArchivos(InputStream file, String delimitador) {
-		List<String> resultado = new ArrayList<>();
-		CsvReader cvsReader = null;
-		try {
-			cvsReader = new CsvReader(new java.io.InputStreamReader(file, "ISO-8859-1"), delimitador.charAt(0));
-			while (cvsReader.readRecord()) {
-				resultado.add(cvsReader.getRawRecord());
-			}
-		} catch (IOException e) {
-			LOG.error(e.getMessage());
-		} finally {
-			try {
-				if (cvsReader != null) {
-					cvsReader.close();
-				}
-				if (file != null) {
-					file.close();
-				}
-			} catch (IOException eI) {
-				LOG.error(eI.getMessage());
-			}
-		}
-		return resultado;
-	}
-
-	/**
-	 * Devuelve solo la extension del archivo.
-	 *
-	 * @param nombreArchivoConExtension recibe el nombre del archivo con la
-	 *                                  extension
-	 * @return nombre de la extension
-	 */
 	public static final String extensionArchivo(String nombreArchivoConExtension) {
 		String extension = nombreArchivoConExtension.substring(nombreArchivoConExtension.lastIndexOf("."),
 				nombreArchivoConExtension.length());
 		return extension;
 	}
 
-	/**
-	 * Metodo que transforma un texto en entidad XML Document
-	 *
-	 * @param xmlStr es un String que contiene el xml en texto
-	 * @return Document entidad XML
-	 */
-	public static Document convertStringToDocument(String xmlStr) {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder;
-		try {
-			builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(new InputSource(new StringReader(xmlStr)));
-			return doc;
-		} catch (IOException | ParserConfigurationException | SAXException e) {
-			LOG.error(e.getMessage());
-		}
-		return null;
-	}
-
-	/**
-	 * Permite validar en contenido de una cadena de caracteres
-	 *
-	 * @param cadena
-	 * @return true si la cadena cumple las validaciones
-	 */
-	public static boolean vacio(String cadena) {
-		return cadena == null || cadena.length() == 0 || cadena.equals("null") || cadena.trim().length() == 0;
-	}
-
-	/**
-	 * Genera Token En Preasignacion para guardar en el inventario
-	 *
-	 * @param usuario
-	 * @return
-	 */
-	public static String generarToken(String usuario) {
-		char[] SYM_USUARIO = usuario.toCharArray();
-		char[] BUF_USUARIO = new char[TAMANO_TOKEN];
-
-		SecureRandom random = new SecureRandom();
-		for (int i = 0; i < BUFFER.length; i++) {
-			BUFFER[i] = SIMBOLOS[random.nextInt(SIMBOLOS.length)];
-		}
-		for (int i = 0; i < BUF_USUARIO.length; i++) {
-			BUF_USUARIO[i] = SYM_USUARIO[random.nextInt(SYM_USUARIO.length)];
-		}
-
-		String result = new String(BUFFER) + new String(BUF_USUARIO);
-
-		return result.substring(5, 15);
-	}
-
-	/**
-	 * Encripta un texto dada una llave (Para los casos sera el usuario)
-	 *
-	 * @param texto
-	 * @param llave
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static String encriptar(String texto, String llave) {
-
-		// llave para encriptar datos
-		String secretKey = llave;
-		String base64EncryptedString = "";
-
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
-
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-			Cipher cipher = Cipher.getInstance("DESede");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-
-			byte[] plainTextBytes = texto.getBytes("utf-8");
-			byte[] buf = cipher.doFinal(plainTextBytes);
-			byte[] base64Bytes = Base64.encodeBase64(buf);
-			base64EncryptedString = new String(base64Bytes);
-
-		} catch (Exception ex) {
-			LOG.error((Supplier<String>) ex);
-			return null;
-		}
-		return base64EncryptedString;
-	}
-
-	/**
-	 * Devuelve el nombre de un mes
-	 *
-	 * @param mes empieza desde cero 0 registro de la lista interna es un row
-	 * @return nombre mes
-	 */
 	public static String devolverNombreMes(int mes) {
 		if (mes == 0) {
 			return "Ene";
@@ -336,29 +187,10 @@ public abstract class Util {
 		return data;
 	}
 
-	/**
-	 * Limpiar los espacios de un texto
-	 *
-	 * @param text
-	 * @return
-	 */
-	public static String limpiarEspaciosPasarMayuscula(String text) {
-		return text.replaceAll("\\s", "").toUpperCase();
-	}
-
-	/**
-	 * Validar si una estructura de correo es correcto
-	 *
-	 * @param email
-	 * @return
-	 */
 	public static boolean esCorreoValido(String email) {
 		return EMAIL_PATTERN.matcher(email.toLowerCase()).matches();
 	}
 
-	/*
-	 * Permite convertir un string a una fecha con un formato determinado
-	 */
 	public static Date convertirStringToDate(String fechaString, String formato) {
 		Date fecha = null;
 		if (fechaString != null && formato != null) {
@@ -373,10 +205,6 @@ public abstract class Util {
 		return fecha;
 	}
 
-	/*
-	 * Permite convertir un string a una fecha LocalDateTime con un formato
-	 * determinado
-	 */
 	public static LocalDateTime convertirStringToLocalDateTime(String fechaString, String formato) {
 		LocalDateTime fecha = null;
 		if (fechaString != null && formato != null) {
@@ -387,165 +215,16 @@ public abstract class Util {
 		return fecha;
 	}
 
-	/**
-	 * remplaza parametros de la consulta
-	 *
-	 * @param query
-	 * @param params
-	 * @return
-	 */
-	public static String reemplazarParametros(String query, Object... params) {
-		for (Object object : params) {
-			if (object != null) {
-				if (object instanceof Integer[]) {
-					StringBuilder fromCharArray = new StringBuilder("");
-					for (int j = 0; j < ((Integer[]) object).length; j++) {
-						fromCharArray.append(",").append(((Integer[]) object)[j]);
-					}
-					query = query.replaceFirst("\\?",
-							fromCharArray.toString().substring(1, fromCharArray.toString().length()));
-
-				} else if (object instanceof Character[]) {
-					StringBuilder fromCharArray = new StringBuilder("");
-					for (int j = 0; j < ((Character[]) object).length; j++) {
-						fromCharArray.append(",'").append(((Character[]) object)[j]).append("'");
-					}
-					query = query.replaceFirst("\\?",
-							fromCharArray.toString().substring(1, fromCharArray.toString().length()));
-
-				} else if (object instanceof String[]) {
-					StringBuilder fromCharArray = new StringBuilder("");
-					for (int j = 0; j < ((String[]) object).length; j++) {
-						fromCharArray.append(",'").append(((String[]) object)[j]).append("'");
-					}
-					query = query.replaceFirst("\\?",
-							fromCharArray.toString().substring(1, fromCharArray.toString().length()));
-
-				} else if (object instanceof Long[]) {
-					StringBuilder fromCharArray = new StringBuilder("");
-					for (int j = 0; j < ((Long[]) object).length; j++) {
-						fromCharArray.append(",'").append(((Long[]) object)[j]).append("'");
-					}
-					query = query.replaceFirst("\\?",
-							fromCharArray.toString().substring(1, fromCharArray.toString().length()));
-				} else if (object instanceof BigDecimal) {
-					query = query.replaceFirst("\\?", ((BigDecimal) object).toString());
-				} else if (object instanceof Character) {
-					query = query.replaceFirst("\\?", ((Character) object).toString());
-				} else if (object instanceof String) {
-					if (((String) object).contains("--replace")) {
-						query = query.replaceFirst("\\--replace", ((String) object).replace("--replace", ""));
-					} else {
-						query = query.replaceFirst("\\?", "'" + ((String) object) + "'");
-					}
-				} else if (object instanceof Double) {
-					query = query.replaceFirst("\\?", ((Double) object).toString());
-				} else if (object instanceof Integer) {
-					query = query.replaceFirst("\\?", ((Integer) object).toString());
-				} else if (object instanceof Date) {
-					query = query.replaceFirst("\\?", "'" + ((Date) object).toString() + "-00.00.00.000'");
-				} else if (object instanceof Timestamp) {
-					query = query.replaceFirst("\\?", "'" + ((Timestamp) object).toString() + "' ");
-				} else if (object instanceof LocalDateTime) {
-					query = query.replaceFirst("\\?", "'" + ((LocalDateTime) object).toString() + "' ");
-				} else if (object instanceof Long) {
-					query = query.replaceFirst("\\?", ((Long) object).toString());
-				}
-			}
-		}
-
-		return query;
-	}
-
-	/**
-	 * Retorna una fecha formateada para informes en BD
-	 *
-	 * @param fecha
-	 * @return
-	 */
-	public static String obtenerFechaArmadaParaInforme(LocalDateTime fecha) {
-
-		String dia = fecha.getDayOfMonth() >= 10 ? fecha.getDayOfMonth() + "." : "0" + fecha.getDayOfMonth() + ".";
-		String mes = fecha.getMonthValue() >= 10 ? fecha.getMonthValue() + "." : "0" + fecha.getMonthValue() + ".";
-		String anio = String.valueOf(fecha.getYear());
-
-		return dia + mes + anio;
-	}
-
-	/**
-	 * Retorna una fecha formateada para informes en BD. El segundo parametro define
-	 * si es una fecha final o inicial
-	 *
-	 * @param fecha
-	 * @param esFechaInicial
-	 * @return
-	 */
-	public static String obtenerFechaArmadaConHorasParaInforme(LocalDateTime fecha, boolean esFechaInicial) {
-
-		String dia = fecha.getDayOfMonth() >= 10 ? fecha.getDayOfMonth() + "." : "0" + fecha.getDayOfMonth() + ".";
-		String mes = fecha.getMonthValue() >= 10 ? fecha.getMonthValue() + "." : "0" + fecha.getMonthValue() + ".";
-		String anio = String.valueOf(fecha.getYear());
-
-		return dia + mes + anio + (esFechaInicial ? ":00:00:00" : ":23:59:59");
-	}
-
-	public static String obtenerFechaArmadaConHorasParaInforme(LocalDate fecha, boolean esFechaInicial) {
-
-		String dia = fecha.getDayOfMonth() >= 10 ? fecha.getDayOfMonth() + "." : "0" + fecha.getDayOfMonth() + ".";
-		String mes = fecha.getMonthValue() >= 10 ? fecha.getMonthValue() + "." : "0" + fecha.getMonthValue() + ".";
-		String anio = String.valueOf(fecha.getYear());
-
-		return dia + mes + anio + (esFechaInicial ? ":00:00:00" : ":23:59:59");
-	}
-
-	/**
-	 *
-	 * Permite dar formato a fechas que sean tipo LocalDateTime
-	 *
-	 * @param dateTime
-	 * @param format
-	 * @return
-	 */
 	public static String formatoFechaLocalDateTime(LocalDateTime dateTime, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return dateTime.format(formatter);
 	}
 
-	/**
-	 *
-	 * Permite dar formato a fechas que sean tipo LocalDateTime
-	 *
-	 * @param date
-	 * @param format
-	 * @return
-	 */
 	public static String formatoFechaLocalDate(LocalDate date, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return date.format(formatter);
 	}
 
-	/**
-	 *
-	 * Permite Retornar la clase o severidad para notificaciones y mensajes
-	 *
-	 * @param severidad
-	 * @return
-	 */
-	public static String getESeveridadMensaje(ESeveridadMensaje severidad) {
-		// Ejemplo de envio de param --> ESeveridadMensaje va =
-		// ESeveridadMensaje.DANGER;
-		return severidad.getNombre();
-	}
-
-	/**
-	 *
-	 * Permite Retornar El titulo para los mensajes notificaciones de acuerdo a la
-	 * clase bootstrap
-	 *
-	 * @param claseMsj
-	 * @return String
-	 *
-	 */
 	public static String getTituloNotificacion(String claseMsj) {
 		String titulo = Util.INFORMACION;
 
@@ -558,13 +237,6 @@ public abstract class Util {
 		return titulo;
 	}
 
-	/**
-	 * calcula los dias entre fecha inicial y fecha final
-	 *
-	 * @param fechaInicial
-	 * @param fechaFinal
-	 * @return
-	 */
 	public static long getDiasRangoFechas(LocalDateTime fechaInicial, Date fechaFinal) {
 		long milisegundos = 24 * 60 * 60 * 1000; // Milisegundos al dia
 		long dias = 0;
@@ -573,108 +245,10 @@ public abstract class Util {
 		return dias;
 	}
 
-	/**
-	 *
-	 * Obtiene la Lista de Escala Movil
-	 *
-	 * @return
-	 *
-	 */
-	public static List<Integer> escalaMovil() {
-		List<Integer> listaEscala = new ArrayList<>();
-		int numero = 0;
-		for (int i = 0; i < 99; i++) {
-			numero++;
-			listaEscala.add(numero);
-		}
-		return listaEscala;
-	}
-
-	/**
-	 * valida si la cadena es numero
-	 *
-	 * @param cadena
-	 * @return
-	 */
 	public static boolean esNumero(String cadena) {
 		return cadena.matches("[0-9]*");
 	}
 
-	/**
-	 * Encripta un texto dada una llave (Para los casos sera el usuario)
-	 *
-	 * @param texto
-	 * @param llave
-	 * @return
-	 */
-	public static String Encriptar(String texto, String llave) {
-
-		String secretKey = llave; // llave para encriptar datos
-		String base64EncryptedString = "";
-
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
-
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-			Cipher cipher = Cipher.getInstance("DESede");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-
-			byte[] plainTextBytes = texto.getBytes("utf-8");
-			byte[] buf = cipher.doFinal(plainTextBytes);
-			byte[] base64Bytes = Base64.encodeBase64(buf);
-			base64EncryptedString = new String(base64Bytes);
-
-		} catch (Exception ex) {
-			LOG.error("Error al Encriptar Texto", ex);
-			return null;
-		}
-		return base64EncryptedString;
-	}
-
-	/**
-	 * Des-Encripta un texto dada una llave (Para los casos sera el usuario)
-	 *
-	 * @param textoEncriptado
-	 * @param llave
-	 * @return
-	 * @throws java.lang.Exception
-	 *
-	 */
-	public static String Desencriptar(String textoEncriptado, String llave) throws Exception {
-
-		String secretKey = llave; // llave para encriptar datos
-		String base64EncryptedString = "";
-
-		try {
-			byte[] message = Base64.decodeBase64(textoEncriptado.getBytes("utf-8"));
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
-			byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
-			SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-
-			Cipher decipher = Cipher.getInstance("DESede");
-			decipher.init(Cipher.DECRYPT_MODE, key);
-
-			byte[] plainText = decipher.doFinal(message);
-
-			base64EncryptedString = new String(plainText, "UTF-8");
-
-		} catch (Exception ex) {
-			LOG.error("Error al Encriptar Texto", ex);
-			return null;
-		}
-		return base64EncryptedString;
-	}
-
-	/**
-	 * Lee un fichero y lo guarda en un String
-	 *
-	 * @param rutaArchivo ruta del archivo
-	 * @return archivo leido en un string
-	 * @throws java.io.FileNotFoundException
-	 */
 	public static String obtenerFicheroString(String rutaArchivo) throws FileNotFoundException, IOException {
 		String file = "";
 
@@ -691,33 +265,6 @@ public abstract class Util {
 		return file;
 	}
 
-	/**
-	 * Lee un fichero y lo guarda en un String
-	 *
-	 * @param texto              ruta del archivo
-	 * @param mapaLlaveReemplazo mapa que contiene la llave que se va a reemplzar y
-	 *                           el texto por el cual se va a reemplazar
-	 * @return archivo leido en un string
-	 * @throws java.io.FileNotFoundException
-	 */
-	public static String reemplazarTexto(String texto, Map<String, String> mapaLlaveReemplazo)
-			throws FileNotFoundException, IOException {
-		for (String llave : mapaLlaveReemplazo.keySet()) {
-			texto = texto.replace(llave, mapaLlaveReemplazo.get(llave));
-		}
-
-		return texto;
-	}
-
-	/**
-	 * Arma una tabla HTML a partir de una lista de Cabeceras y una matriz de datos
-	 *
-	 * @param cabeceras etiquetas que van en el header de la tabla
-	 * @param datos     texto que va en las columnas del cuerpo de la tabla, cada
-	 *                  registro de la lista interna es un row
-	 * @return tabla html
-	 * @throws java.io.FileNotFoundException
-	 */
 	public static String armarTablaHtmlBodyMsgEmail(List<String> cabeceras, List<ArrayList<String>> datos)
 			throws FileNotFoundException, IOException {
 		if (cabeceras == null || datos == null) {
@@ -762,68 +309,9 @@ public abstract class Util {
 		return data;
 	}
 
-	/**
-	 * Valida caracteres especiales
-	 *
-	 * @param cadenaValidar
-	 * @return
-	 */
 	public static boolean validarCaracteres(String cadenaValidar) {
 		Pattern mask = Pattern.compile(ConstantesValidaciones.EXPRESION_REGULAR_DE_TEXTO_INGRESADO);
 		return mask.matcher(cadenaValidar).matches();
-	}
-
-	/**
-	 * Valida Direcciones
-	 *
-	 * @param cadenaValidar
-	 * @return
-	 */
-	public static boolean validarDirecciones(String cadenaValidar) {
-		Pattern mask = Pattern.compile(ConstantesValidaciones.EXPRESION_REGULAR_DE_DIRECCIONES);
-		return mask.matcher(cadenaValidar).matches();
-	}
-
-	/**
-	 * Limpiar los espacios de un texto
-	 *
-	 * @param text
-	 * @return
-	 */
-	public static String limpiarEspacios(String text) {
-		return text.replaceAll("\\s", "");
-	}
-
-	public static Double formatearDecimales(Double numero, Integer numeroDecimales) {
-		return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
-	}
-
-	/*
-	 * Permite validar un rango de fechas en meses
-	 */
-	public static boolean esValidoRangoFecha(String fechaInicio, String fechaFin, int calendarMeses) {
-		boolean result = false;
-		try {
-			Date dateInicio = convertirStringToDate(fechaInicio, "dd/MM/yyyy");
-			Date dateFin = convertirStringToDate(fechaFin, "dd/MM/yyyy");
-
-			if (dateInicio != null && dateFin != null) {
-				int dias = (int) ((dateFin.getTime() - dateInicio.getTime()) / 86400000);
-				if (dias < 0) {
-					dias = dias * (-1);
-				}
-
-				int mul = calendarMeses * 30;
-
-				if (dias <= mul) {
-					result = true;
-				}
-			}
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-
-		return result;
 	}
 
 	public static List<String> validaDatos(String tabla, Object objeto) {
@@ -846,9 +334,18 @@ public abstract class Util {
 			errores = validarSala((SalaTB) objeto);
 
 			break;
+		case ConstantesTablasNombre.MRA_BANDA_TB:
+			errores = validarBanda((BandaTB) objeto);
+
+			break;
+		case ConstantesTablasNombre.MRA_INTEGRANTE_TB:
+			errores = validarIntegrantes((List<IntegranteTB>) objeto);
+
+			break;
 		}
 
 		return errores;
+
 	}
 
 	private static List<String> validarUsuario(UsuarioTB usuario) {
@@ -991,20 +488,67 @@ public abstract class Util {
 		}
 		if (sala.getFotoPrincipalTb() == null) {
 			errores.add(PropertiesUtil.getProperty("lbl_mtto_sala_foto_principal") + VALOR_INCORRECTO);
+		}
+
+		return errores;
+	}
+
+	private static List<String> validarBanda(BandaTB banda) {
+		List<String> errores = new ArrayList<>();
+		final String VALOR_INCORRECTO = PropertiesUtil.getProperty("musicroom.msg.validate.valor.incorrecto");
+
+		if (StringUtils.isBlank(banda.getNombreBanda())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_banda_nombre_banda") + VALOR_INCORRECTO);
+		}
+		if (StringUtils.isBlank(banda.getGenero())) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_banda_genero") + VALOR_INCORRECTO);
+		}
+		if (banda.getFotoTb() == null) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_banda_foto") + VALOR_INCORRECTO);
+		}
+		if (banda.getLogoTb() == null) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_banda_logo") + VALOR_INCORRECTO);
+		}
+		if (banda.getFechaInicio() == null) {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_banda_fecha_inicio") + VALOR_INCORRECTO);
 		} else {
-			// Validar archivo foto principal
+			Date ahora = new Date();
+			if (banda.getFechaInicio().after(ahora)) {
+				errores.add(PropertiesUtil.getProperty("lbl_mtto_banda_fecha_inicio") + VALOR_INCORRECTO);
+			}
 		}
-		if (sala.getFoto1Tb() != null) {
-			// Validar archivo foto 1
-		}
-		if (sala.getFoto2Tb() != null) {
-			// Validar archivo foto 2
-		}
-		if (sala.getFoto3Tb() != null) {
-			// Validar archivo foto 3
-		}
-		if (sala.getFoto4Tb() != null) {
-			// Validar archivo foto 4
+
+		return errores;
+	}
+
+	private static List<String> validarIntegrantes(List<IntegranteTB> listaIntegrantes) {
+		List<String> errores = new ArrayList<>();
+		final String VALOR_INCORRECTO = PropertiesUtil.getProperty("musicroom.msg.validate.valor.incorrecto");
+		final String LISTA_VACIA = PropertiesUtil.getProperty("musicroom.msg.validate.integrantes.lista.vacia");
+		final String INTEGRANTE_NUM = PropertiesUtil.getProperty("musicroom.msg.validate.integrante.numero");
+
+		if (listaIntegrantes != null && !listaIntegrantes.isEmpty()) {
+			int i = 1;
+			for (IntegranteTB integrante : listaIntegrantes) {
+				String VALIDACIONES = new String("");
+				if (StringUtils.isBlank(integrante.getNombreIntegrante())) {
+					VALIDACIONES = VALIDACIONES + PropertiesUtil.getProperty("lbl_mtto_integrante_nombre_integrante");
+				}
+				if (integrante.getInstrumentoAccesorio() <= 0) {
+					VALIDACIONES = VALIDACIONES
+							+ PropertiesUtil.getProperty("lbl_mtto_integrante_instrumento_accesorio");
+				}
+				if (integrante.getEdadIntegrante() <= 18) {
+					VALIDACIONES = VALIDACIONES + PropertiesUtil.getProperty("lbl_mtto_integrante_edad");
+				}
+
+				if (StringUtils.isNotBlank(VALIDACIONES)) {
+					errores.add(INTEGRANTE_NUM + " #" + i + " | " + VALIDACIONES + VALOR_INCORRECTO);
+				}
+				i++;
+			}
+		} else {
+			errores.add(PropertiesUtil.getProperty("lbl_mtto_banda_integrantes") + LISTA_VACIA);
 		}
 
 		return errores;
@@ -1059,5 +603,15 @@ public abstract class Util {
 
 		return listaRoles;
 
+	}
+
+	public static byte[] b64ToBytesArray(String b64) {
+		try {
+			byte[] name = Base64.getEncoder().encode(b64.getBytes());
+			byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes("UTF-8"));
+			return decodedString;
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
 	}
 }
