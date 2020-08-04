@@ -51,10 +51,10 @@ export class RegisterComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
     this.usuario = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.enums = this.enumerados.getEnumerados();
     this.step = 1;
-    this.locale = this.sesionService.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
+    this.locale = this.sesionService.objServiceSesion.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
     this.usuario.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.usuario.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.isDisabled = true;
@@ -173,7 +173,8 @@ export class RegisterComponent implements OnInit {
       this.limpiarExcepcion();
       let nombreCompleto = this.usuario.nombre + ' ' + this.usuario.apellido;
       let url = this.objectModelInitializer.getConst().urlRestService + this.objectModelInitializer.getConst().urlControllerUsuario + 'enviarCodigoVerificacion/' + this.codigoVerificacion + '/' + this.usuario.email + '/' + this.usuario.usuario + '/' + nombreCompleto;
-      this.sesionService.usuarioRegister = this.usuario;
+      this.sesionService.objServiceSesion.usuarioRegister = this.usuario;
+      sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
 
       this.restService.getREST(url)
         .subscribe(resp => {
@@ -253,7 +254,9 @@ export class RegisterComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.sesion.usuarioTb = resp;
-          this.sesionService.usuarioSesion = this.sesion;
+          this.sesionService.objServiceSesion.usuarioSesion = this.sesion;
+          sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
+
           this.irLogin();
         },
           error => {

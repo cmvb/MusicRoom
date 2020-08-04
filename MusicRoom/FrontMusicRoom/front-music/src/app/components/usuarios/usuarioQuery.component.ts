@@ -51,10 +51,10 @@ export class UsuarioQueryComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public usuarioService: UsuarioService) {
     this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.objetoFiltro = this.objectModelInitializer.getDataUsuario();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -67,8 +67,8 @@ export class UsuarioQueryComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (typeof this.sesionService.mensajeConfirmacion !== 'undefined' && this.sesionService.mensajeConfirmacion !== null) {
-      let mensajeConfirmacion = this.sesionService.mensajeConfirmacion;
+    if (typeof this.sesionService.objServiceSesion.mensajeConfirmacion !== 'undefined' && this.sesionService.objServiceSesion.mensajeConfirmacion !== null) {
+      let mensajeConfirmacion = this.sesionService.objServiceSesion.mensajeConfirmacion;
       this.messageService.clear();
       this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: mensajeConfirmacion });
     }
@@ -81,7 +81,6 @@ export class UsuarioQueryComponent implements OnInit {
 
   consultarUsuarios() {
     try {
-      debugger;
       this.limpiarExcepcion();
       let url = this.const.urlRestService + this.const.urlControllerUsuario + 'consultarPorFiltros';
       let obj = this.objetoFiltro;
@@ -113,7 +112,7 @@ export class UsuarioQueryComponent implements OnInit {
   }
 
   editar(objetoEdit) {
-    this.sesionService.phase = this.const.phaseEdit;
+    this.sesionService.objServiceSesion.phase = this.const.phaseEdit;
     this.usuarioService.objetoFiltro = this.objetoFiltro;
     this.usuarioService.listaConsulta = this.listaConsulta;
     this.usuarioService.editParam = objetoEdit;
@@ -122,7 +121,7 @@ export class UsuarioQueryComponent implements OnInit {
   }
 
   irCrear() {
-    this.sesionService.phase = this.const.phaseAdd;
+    this.sesionService.objServiceSesion.phase = this.const.phaseAdd;
     this.usuarioService.objetoFiltro = this.objetoFiltro;
     this.usuarioService.listaConsulta = this.listaConsulta;
     this.usuarioService.editParam = null;

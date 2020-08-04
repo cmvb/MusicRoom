@@ -22,8 +22,8 @@ export class HeaderComponent implements OnInit {
   usuarioSesion: any;
 
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public sesionService: SesionService, public util: Util) {
-    this.usuarioSesion = this.sesionService.usuarioSesion;
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.usuarioSesion = this.sesionService.objServiceSesion.usuarioSesion;
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
   }
 

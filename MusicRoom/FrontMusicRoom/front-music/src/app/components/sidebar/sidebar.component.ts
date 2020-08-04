@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
     this.usuario = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.isAdmin = false;
     this.mapaRolXMenuG = new Map();
@@ -86,7 +86,7 @@ export class SidebarComponent implements OnInit {
 
   construirMapaURLS() {
     let mapaUrls = new Map();
-    let usuarioSesion = this.sesionService.usuarioSesion;
+    let usuarioSesion = this.sesionService.objServiceSesion.usuarioSesion;
 
     if (usuarioSesion !== undefined && usuarioSesion !== null && usuarioSesion.usuarioTb !== undefined && usuarioSesion.usuarioTb !== null && usuarioSesion.usuarioTb.listaRoles !== undefined && usuarioSesion.usuarioTb.listaRoles !== null) {
       for (let i in usuarioSesion.usuarioTb.listaRoles) {

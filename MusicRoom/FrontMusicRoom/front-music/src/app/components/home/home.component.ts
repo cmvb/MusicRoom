@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
     this.usuario = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -64,7 +64,8 @@ export class HomeComponent implements OnInit {
             let token = JSON.stringify(resp);
             tokenSesion.name = this.objectModelInitializer.getConst().tokenNameAUTH;
             tokenSesion.token = JSON.parse(token);
-            this.sesionService.tokenSesion = tokenSesion;
+            this.sesionService.objServiceSesion.tokenSesion = tokenSesion;
+            sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
 
             this.loguear(url, obj);
           }
@@ -89,7 +90,8 @@ export class HomeComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.sesion = resp;
-          this.sesionService.usuarioSesion = this.sesion;
+          this.sesionService.objServiceSesion.usuarioSesion = this.sesion;
+          sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
           this.irDashboard();
         },
           error => {

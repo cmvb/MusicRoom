@@ -13,7 +13,7 @@ export class Guardian implements CanActivate {
   msg: any;
 
   constructor(private router: Router, public objectModelInitializer: ObjectModelInitializer, public textProperties: TextProperties, public sesionService: SesionService) {
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
   }
 
   canActivate(
@@ -25,9 +25,9 @@ export class Guardian implements CanActivate {
 
     let sesionOK = true;
     if (!URLactual.includes("register") && !URLactual.includes("home") && !URLactual.includes("error") && URLactual.toString() !== (this.objectModelInitializer.getConst().urlDomain)) {
-      if (typeof this.sesionService.tokenSesion !== 'undefined' && this.sesionService.tokenSesion !== null) {
-        let ACCESS_TOKEN = this.sesionService.tokenSesion.token;
-        if (this.sesionService.usuarioSesion !== null && ACCESS_TOKEN !== null) {
+      if (typeof this.sesionService.objServiceSesion.tokenSesion !== 'undefined' && this.sesionService.objServiceSesion.tokenSesion !== null) {
+        let ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token;
+        if (this.sesionService.objServiceSesion.usuarioSesion !== null && ACCESS_TOKEN !== null) {
           const decodedToken = helper.decodeToken(ACCESS_TOKEN.access_token);
           const expirationDate = helper.getTokenExpirationDate(ACCESS_TOKEN.access_token);
           const isExpired = helper.isTokenExpired(ACCESS_TOKEN.access_token);
@@ -36,21 +36,21 @@ export class Guardian implements CanActivate {
             let tienePermisos = this.sesionService.tienePermisos(URLactual);
 
             if (!tienePermisos) {
-              this.sesionService.decodedToken = JSON.stringify(decodedToken);
-              this.sesionService.expirationDate = JSON.stringify(expirationDate);
-              this.sesionService.mensajeError403 = this.msg.lbl_mensaje_error_403_ingresar_ruta + URLactual + '. ' + this.msg.lbl_mensaje_error_403_no_permisos;
+              this.sesionService.objServiceSesion.decodedToken = JSON.stringify(decodedToken);
+              this.sesionService.objServiceSesion.expirationDate = JSON.stringify(expirationDate);
+              this.sesionService.objServiceSesion.mensajeError403 = this.msg.lbl_mensaje_error_403_ingresar_ruta + URLactual + '. ' + this.msg.lbl_mensaje_error_403_no_permisos;
               this.router.navigate(['/error403']);
             }
           }
           else {
-            this.sesionService.decodedToken = JSON.stringify(decodedToken);
-            this.sesionService.expirationDate = JSON.stringify(expirationDate);
-            this.sesionService.mensajeError403 = this.msg.lbl_mensaje_error_403_sesion_expirada;
+            this.sesionService.objServiceSesion.decodedToken = JSON.stringify(decodedToken);
+            this.sesionService.objServiceSesion.expirationDate = JSON.stringify(expirationDate);
+            this.sesionService.objServiceSesion.mensajeError403 = this.msg.lbl_mensaje_error_403_sesion_expirada;
             this.router.navigate(['/error403']);
           }
         }
         else {
-          this.sesionService.mensajeError500 = this.msg.lbl_mensaje_error_500_no_sesion;
+          this.sesionService.objServiceSesion.mensajeError500 = this.msg.lbl_mensaje_error_500_no_sesion;
           this.router.navigate(['/error500']);
         }
       }

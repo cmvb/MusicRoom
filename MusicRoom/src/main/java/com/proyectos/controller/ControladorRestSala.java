@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyectos.exception.ModelNotFoundException;
 import com.proyectos.model.SalaTB;
 import com.proyectos.service.IArchivosService;
-import com.proyectos.service.IReportesService;
 import com.proyectos.service.ISalaService;
 import com.proyectos.util.ConstantesTablasNombre;
 import com.proyectos.util.PropertiesUtil;
@@ -34,9 +33,6 @@ import com.proyectos.util.Util;
 public class ControladorRestSala {
 
 	private final String PERMISO_ADMINISTRADOR = "@restAuthService.hasAccess('/music-room', '/')";
-
-	@Autowired
-	IReportesService reporteService;
 
 	@Autowired
 	IArchivosService archivoService;

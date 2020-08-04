@@ -57,10 +57,10 @@ export class BandasIntegrantesQueryComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public bandaIntegranteService: BandaIntegranteService) {
     this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.objetoFiltro = this.objectModelInitializer.getDataSala();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -75,8 +75,8 @@ export class BandasIntegrantesQueryComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (typeof this.sesionService.mensajeConfirmacion !== 'undefined' && this.sesionService.mensajeConfirmacion !== null) {
-      let mensajeConfirmacion = this.sesionService.mensajeConfirmacion;
+    if (typeof this.sesionService.objServiceSesion.mensajeConfirmacion !== 'undefined' && this.sesionService.objServiceSesion.mensajeConfirmacion !== null) {
+      let mensajeConfirmacion = this.sesionService.objServiceSesion.mensajeConfirmacion;
       this.messageService.clear();
       this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: mensajeConfirmacion });
     }
@@ -139,7 +139,7 @@ export class BandasIntegrantesQueryComponent implements OnInit {
   }
 
   editar(objetoEdit) {
-    this.sesionService.phase = this.const.phaseEdit;
+    this.sesionService.objServiceSesion.phase = this.const.phaseEdit;
     this.bandaIntegranteService.objetoFiltro = this.objetoFiltro;
     this.bandaIntegranteService.listaConsulta = this.listaConsulta;
     this.bandaIntegranteService.editParam = null;
@@ -149,7 +149,7 @@ export class BandasIntegrantesQueryComponent implements OnInit {
   }
 
   irCrear() {
-    this.sesionService.phase = this.const.phaseAdd;
+    this.sesionService.objServiceSesion.phase = this.const.phaseAdd;
     this.bandaIntegranteService.objetoFiltro = this.objetoFiltro;
     this.bandaIntegranteService.listaConsulta = this.listaConsulta;
     this.bandaIntegranteService.editParam = null;

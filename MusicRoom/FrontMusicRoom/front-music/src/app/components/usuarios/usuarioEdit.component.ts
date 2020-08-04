@@ -52,15 +52,15 @@ export class UsuarioEditComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public usuarioService: UsuarioService) {
     this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.objeto = this.objectModelInitializer.getDataUsuario();
     this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
     this.objeto.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.objeto.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.enums = this.enumerados.getEnumerados();
-    this.locale = this.sesionService.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
+    this.locale = this.sesionService.objServiceSesion.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -69,11 +69,11 @@ export class UsuarioEditComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    this.sesionService.mensajeConfirmacion = undefined;
+    this.sesionService.objServiceSesion.mensajeConfirmacion = undefined;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
     this.enumTipoUsuario = this.util.getEnum(this.enums.tipoUsuario.cod);
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
-    this.phase = this.sesionService.phase;
+    this.phase = this.sesionService.objServiceSesion.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
 
     if (typeof this.usuarioService.editParam !== 'undefined' && this.usuarioService.editParam !== null) {
@@ -100,7 +100,7 @@ export class UsuarioEditComponent implements OnInit {
           console.log(resp, "res");
           this.data = resp;
           let mensajeConfirmacion = this.msg.lbl_detail_el_registro + this.data.usuario + this.msg.lbl_detail_fue + (this.phase === this.const.phaseAdd ? this.msg.lbl_detail_creado : this.msg.lbl_detail_actualizado) + this.msg.lbl_detail_satisfactoriamente;
-          this.sesionService.mensajeConfirmacion = mensajeConfirmacion;
+          this.sesionService.objServiceSesion.mensajeConfirmacion = mensajeConfirmacion;
           this.irAtras();
         },
           error => {

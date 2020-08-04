@@ -28,7 +28,7 @@ export class Util {
     this.usuarioEjemplo = this.objectModelInitializer.getDataUsuario();
     this.mensaje = this.objectModelInitializer.getDataMessage();
     this.const = this.objectModelInitializer.getConst();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.func = dataFunctions;
     this.enums = this.enumerados.getEnumerados();
     this.modeloTablas = this.objectModelInitializer.getDataModeloTablas();
@@ -67,7 +67,7 @@ export class Util {
       return false;
     }
     for (let item in listaPhases) {
-      if (listaPhases[item].toString().toUpperCase() === this.sesionService.phase.toString().toUpperCase()) {
+      if (listaPhases[item].toString().toUpperCase() === this.sesionService.objServiceSesion.phase.toString().toUpperCase()) {
         return true;
       }
     }
@@ -84,7 +84,7 @@ export class Util {
       return false;
     }
     for (let item in listaPhases) {
-      if (listaPhases[item].toString().toUpperCase() === this.sesionService.phase.toString().toUpperCase()) {
+      if (listaPhases[item].toString().toUpperCase() === this.sesionService.objServiceSesion.phase.toString().toUpperCase()) {
         return true;
       }
     }

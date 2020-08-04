@@ -94,13 +94,13 @@ export class SalasEditComponent implements OnInit {
     });
     this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.objeto = this.objectModelInitializer.getDataSala();
     this.objeto.estado = this.const.estadoActivoNumString
     this.objeto.terceroTb = this.objectModelInitializer.getDataTercero();
     this.enums = this.enumerados.getEnumerados();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
     this.acceptStr = "image/*";
   }
 
@@ -116,12 +116,12 @@ export class SalasEditComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    this.sesionService.mensajeConfirmacion = undefined;
+    this.sesionService.objServiceSesion.mensajeConfirmacion = undefined;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
     this.listaTerceros = this.salaService.listaTerceros;
     this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
 
-    this.phase = this.sesionService.phase;
+    this.phase = this.sesionService.objServiceSesion.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
 
     if (typeof this.salaService.editParam !== 'undefined' && this.salaService.editParam !== null) {
@@ -400,7 +400,7 @@ export class SalasEditComponent implements OnInit {
           .subscribe(resp => {
             this.data = resp;
             let mensajeConfirmacion = this.msg.lbl_detail_el_registro + this.data.idSala + this.msg.lbl_detail_fue + (this.phase === this.const.phaseAdd ? this.msg.lbl_detail_creado : this.msg.lbl_detail_actualizado) + this.msg.lbl_detail_satisfactoriamente;
-            this.sesionService.mensajeConfirmacion = mensajeConfirmacion;
+            this.sesionService.objServiceSesion.mensajeConfirmacion = mensajeConfirmacion;
             this.irAtras();
           },
             error => {

@@ -10,7 +10,7 @@ export class Enumerados {
   }
 
   getEnumerados() {
-    let properties = this.textProperties.getProperties(this.sesionService.idioma);
+    let properties = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
 
     return {
       sino: {

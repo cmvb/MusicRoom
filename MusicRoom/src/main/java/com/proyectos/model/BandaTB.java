@@ -2,19 +2,16 @@ package com.proyectos.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
@@ -43,10 +40,6 @@ public class BandaTB extends BaseEntidadTB implements Serializable {
 	@Column(name = "ban_fecha_inicio", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInicio;
-
-	@NotNull
-	@OneToMany(mappedBy = "bandaTb", fetch = FetchType.EAGER)
-	private List<IntegranteTB> listaIntegrantesTb;
 
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ban_foto")
@@ -86,14 +79,6 @@ public class BandaTB extends BaseEntidadTB implements Serializable {
 
 	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;
-	}
-
-	public List<IntegranteTB> getListaIntegrantesTb() {
-		return listaIntegrantesTb;
-	}
-
-	public void setListaIntegrantesTb(List<IntegranteTB> listaIntegrantesTb) {
-		this.listaIntegrantesTb = listaIntegrantesTb;
 	}
 
 	public ArchivoTB getFotoTb() {

@@ -17,6 +17,7 @@ import com.proyectos.dao.AbstractDao;
 import com.proyectos.dao.ISalaDao;
 import com.proyectos.dao.jpa.ISalaJPARepoDao;
 import com.proyectos.model.SalaTB;
+import com.proyectos.util.Util;
 
 @Repository
 public class SalaDaoImpl extends AbstractDao<SalaTB> implements ISalaDao {
@@ -51,15 +52,15 @@ public class SalaDaoImpl extends AbstractDao<SalaTB> implements ISalaDao {
 
 		// QUERY
 		StringBuilder JPQL = new StringBuilder("SELECT t FROM SalaTB t WHERE 1 = 1 ");
-		// Q. Usuario
+		// Q. Nombre
 		if (StringUtils.isNotBlank(salaFiltro.getNombreSala())) {
-			JPQL.append("AND LOWER(t.nombreSala) = LOWER(:NOMBRESALA) ");
-			pamameters.put("NOMBRESALA", salaFiltro.getNombreSala());
+			JPQL.append(" AND LOWER(t.nombreSala) LIKE LOWER(:NOMBRESALA) ");
+			pamameters.put("NOMBRESALA", Util.COMODIN + salaFiltro.getNombreSala() + Util.COMODIN);
 		}
 		// Q. Tercero
 		if (salaFiltro.getTerceroTb() != null && salaFiltro.getTerceroTb().getIdTercero() > 0) {
-			JPQL.append("AND t.ubicacionTb.idUbicacion = :UBICACION ");
-			pamameters.put("UBICACION", salaFiltro.getTerceroTb().getIdTercero());
+			JPQL.append("AND t.terceroTb.idTercero = :TERCERO ");
+			pamameters.put("TERCERO", salaFiltro.getTerceroTb().getIdTercero());
 		}
 		// Q. Order By
 		JPQL.append("ORDER BY t.idSala");

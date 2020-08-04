@@ -50,13 +50,13 @@ export class TercerosEditComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public terceroService: TerceroService) {
     this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.objeto = this.objectModelInitializer.getDataTercero();
     this.objeto.estado = { value: 1, label: this.msg.lbl_enum_si };
     this.objeto.ubicacionTb = this.objectModelInitializer.getDataUbicacion();
     this.enums = this.enumerados.getEnumerados();
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -65,12 +65,12 @@ export class TercerosEditComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    this.sesionService.mensajeConfirmacion = undefined;
+    this.sesionService.objServiceSesion.mensajeConfirmacion = undefined;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
     this.listaCiudades = this.terceroService.listaCiudades;
     this.enumFiltroCiudades = this.util.obtenerEnumeradoDeListaUbicacion(this.listaCiudades, 2);
 
-    this.phase = this.sesionService.phase;
+    this.phase = this.sesionService.objServiceSesion.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
 
     if (typeof this.terceroService.editParam !== 'undefined' && this.terceroService.editParam !== null) {
@@ -96,7 +96,7 @@ export class TercerosEditComponent implements OnInit {
         .subscribe(resp => {
           this.data = resp;
           let mensajeConfirmacion = this.msg.lbl_detail_el_registro + this.data.idTercero + this.msg.lbl_detail_fue + (this.phase === this.const.phaseAdd ? this.msg.lbl_detail_creado : this.msg.lbl_detail_actualizado) + this.msg.lbl_detail_satisfactoriamente;
-          this.sesionService.mensajeConfirmacion = mensajeConfirmacion;
+          this.sesionService.objServiceSesion.mensajeConfirmacion = mensajeConfirmacion;
           this.irAtras();
         },
           error => {

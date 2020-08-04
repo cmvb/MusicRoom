@@ -15,6 +15,11 @@ public interface IIntegranteDao {
 	List<IntegranteTB> consultarTodos();
 
 	/*
+	 * Metodo para consultar los integrantes de la banda por su ID
+	 */
+	List<IntegranteTB> consultarIntegrantes(long idBanda);
+
+	/*
 	 * Metodo para consultar las integrantes que cumplan con los filtros
 	 */
 	List<IntegranteTB> consultarPorFiltros(IntegranteTB integranteFiltro);

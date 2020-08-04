@@ -96,6 +96,27 @@ export class ObjectModelInitializer {
     }
   };
 
+  getDataServiceSesion() {
+    return {
+      // data
+      phase: '',
+      usuarioSesion: '',
+      usuarioRegister: '',
+      tokenSesion: '',
+      decodedToken: '',
+      expirationDate: '',
+      idioma: '',
+
+      // Excepciones
+      mensajeError403: '',
+      mensajeError404: '',
+      mensajeError500: '',
+
+      // Mensajes
+      mensajeConfirmacion: ''
+    }
+  }
+
   getTokenSesion() {
     return {
       name: '',

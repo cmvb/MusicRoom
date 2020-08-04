@@ -28,9 +28,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.exceptionHandling().authenticationEntryPoint(new AuthException()).and().requestMatchers().and()
 				.authorizeRequests().antMatchers("/v2/api-docs/**").authenticated()
-				.antMatchers("/music-room/reporte-archivo/**").authenticated()
-				.antMatchers("/music-room/usuario/").authenticated()
-				.antMatchers("/music-room/usuario/consultarPorFiltros/**").authenticated()
+				.antMatchers("/music-room/reporte-archivo/**").authenticated().antMatchers("/music-room/usuario/")
+				.authenticated().antMatchers("/music-room/usuario/consultarPorFiltros/**").authenticated()
 				.antMatchers("/music-room/usuario/crearUsuario/**").authenticated()
 				.antMatchers("/music-room/usuario/modificarUsuario/**").authenticated()
 				.antMatchers("/music-room/usuario/eliminarUsuario/**").authenticated()
@@ -45,12 +44,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.antMatchers("/music-room/tercero/consultarPorFiltros/**").authenticated()
 				.antMatchers("/music-room/tercero/crearTercero/**").authenticated()
 				.antMatchers("/music-room/tercero/modificarTercero/**").authenticated()
-				.antMatchers("/music-room/tercero/eliminarTercero/**").authenticated()
-				.antMatchers("/music-room/sala/").authenticated()
-				.antMatchers("/music-room/sala/consultarTodos/**").authenticated()
+				.antMatchers("/music-room/tercero/eliminarTercero/**").authenticated().antMatchers("/music-room/sala/")
+				.authenticated().antMatchers("/music-room/sala/consultarTodos/**").authenticated()
 				.antMatchers("/music-room/sala/consultarPorFiltros/**").authenticated()
 				.antMatchers("/music-room/sala/crearSala/**").authenticated()
 				.antMatchers("/music-room/sala/modificarSala/**").authenticated()
-				.antMatchers("/music-room/sala/eliminarSala/**").authenticated();
+				.antMatchers("/music-room/sala/eliminarSala/**").authenticated()
+				.antMatchers("/music-room/bandaIntegrante/").authenticated()
+				.antMatchers("/music-room/bandaIntegrante/consultarTodos/**").authenticated()
+				.antMatchers("/music-room/bandaIntegrante/consultarPorFiltros/**").authenticated()
+				.antMatchers("/music-room/bandaIntegrante/crearBandaIntegrante/**").authenticated()
+				.antMatchers("/music-room/bandaIntegrante/modificarBandaIntegrante/**").authenticated()
+				.antMatchers("/music-room/bandaIntegrante/eliminarBandaIntegrante/**").authenticated();
 	}
 }

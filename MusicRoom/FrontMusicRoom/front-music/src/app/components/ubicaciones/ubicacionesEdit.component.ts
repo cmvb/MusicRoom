@@ -73,7 +73,7 @@ export class UbicacionesEditComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public ubicacionService: UbicacionService) {
     this.usuarioSesion = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.enums = this.enumerados.getEnumerados();
     this.objeto = this.objectModelInitializer.getDataUbicacion();
@@ -90,7 +90,7 @@ export class UbicacionesEditComponent implements OnInit {
     this.nombreDepartamentoD = null;
     this.codigoCiudadC = null;
     this.nombreCiudadC = null;
-    this.ACCESS_TOKEN = this.sesionService.tokenSesion.token.access_token;
+    this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
   // Procesos que se ejecutan cuando algo en el DOM cambia
@@ -100,8 +100,8 @@ export class UbicacionesEditComponent implements OnInit {
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
     this.inicializarCombos();
-    this.sesionService.mensajeConfirmacion = undefined;
-    this.phase = this.sesionService.phase;
+    this.sesionService.objServiceSesion.mensajeConfirmacion = undefined;
+    this.phase = this.sesionService.objServiceSesion.phase;
     this.isDisabled = this.phase !== this.const.phaseAdd;
     this.enumSiNo = this.util.getEnum(this.enums.sino.cod);
 
@@ -268,7 +268,7 @@ export class UbicacionesEditComponent implements OnInit {
         .subscribe(resp => {
           this.data = resp;
           let mensajeConfirmacion = this.msg.lbl_detail_el_registro + this.data.idUbicacion + this.msg.lbl_detail_fue + (this.phase === this.const.phaseAdd ? this.msg.lbl_detail_creado : this.msg.lbl_detail_actualizado) + this.msg.lbl_detail_satisfactoriamente;
-          this.sesionService.mensajeConfirmacion = mensajeConfirmacion;
+          this.sesionService.objServiceSesion.mensajeConfirmacion = mensajeConfirmacion;
           this.irAtras();
         },
           error => {

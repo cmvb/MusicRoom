@@ -52,10 +52,10 @@ export class TokenComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public util: Util, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService) {
     this.usuario = this.objectModelInitializer.getDataUsuario();
     this.sesion = this.objectModelInitializer.getDataSesion();
-    this.msg = this.textProperties.getProperties(this.sesionService.idioma);
+    this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
     this.step = 1;
-    this.locale = this.sesionService.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
+    this.locale = this.sesionService.objServiceSesion.idioma === this.objectModelInitializer.getConst().idiomaEs ? this.objectModelInitializer.getLocaleESForCalendar() : this.objectModelInitializer.getLocaleENForCalendar();
     this.usuario.tipoUsuario = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.usuario.tipoDocumento = { value: 0, label: this.msg.lbl_enum_generico_valor_vacio };
     this.enums = this.enumerados.getEnumerados();
@@ -78,8 +78,8 @@ export class TokenComponent implements OnInit {
     this.enumTipoDocumento = this.util.getEnum(this.enums.tipoDocumento.cod);
     this.consultarVCODE();
 
-    if (typeof this.sesionService.usuarioRegister !== 'undefined' && this.sesionService.usuarioRegister !== null) {
-      this.usuario = this.sesionService.usuarioRegister;
+    if (typeof this.sesionService.objServiceSesion.usuarioRegister !== 'undefined' && this.sesionService.objServiceSesion.usuarioRegister !== null) {
+      this.usuario = this.sesionService.objServiceSesion.usuarioRegister;
       this.usuario.fechaNacimiento = new Date(this.usuario.fechaNacimiento);
       this.nuevaPassword = this.usuario.password;
     }
@@ -170,8 +170,8 @@ export class TokenComponent implements OnInit {
           // Validar si el VCODE ya expiró. Si es así, redirigir a la pantalla de error con un mensaje informativo
           let vCodeValido = this.verificacionTB.token === this.codigoVerificacion;
           if (!vCodeValido) {
-            this.sesionService.mensajeError500 = this.msg.lbl_vcode_expiro;
-            //window.location.replace(this.const.urlDomain + 'error500');
+            this.sesionService.objServiceSesion.mensajeError500 = this.msg.lbl_vcode_expiro;
+            sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
             this.router.navigate(['/error500']);
           }
         },
@@ -296,7 +296,8 @@ export class TokenComponent implements OnInit {
         .subscribe(resp => {
           console.log(resp, "res");
           this.sesion.usuarioTb = resp;
-          this.sesionService.usuarioSesion = this.sesion;
+          this.sesionService.objServiceSesion.usuarioSesion = this.sesion;
+          sessionStorage.setItem('objServiceSesion', JSON.stringify(this.sesionService.objServiceSesion));
 
           this.irDashboard();
         },
