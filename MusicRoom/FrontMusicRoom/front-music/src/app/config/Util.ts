@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptions } from '@angular/http';
 import { Functions } from './Functions';
 import { TextProperties } from './TextProperties';
 import { ObjectModelInitializer } from './ObjectModelInitializer';
@@ -21,10 +20,7 @@ export class Util {
   func: any;
   usuarioEjemplo: any;
 
-  headers = new Headers({ 'Content-Type': 'application/json' });
-  options = new RequestOptions({ headers: this.headers });
-
-  constructor(private http: Http, public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, dataFunctions: Functions, private messageService: MessageService) {
+  constructor(public textProperties: TextProperties, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, dataFunctions: Functions, private messageService: MessageService) {
     this.usuarioEjemplo = this.objectModelInitializer.getDataUsuario();
     this.mensaje = this.objectModelInitializer.getDataMessage();
     this.const = this.objectModelInitializer.getConst();

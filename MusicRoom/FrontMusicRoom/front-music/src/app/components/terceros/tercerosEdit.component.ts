@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RestService } from '../../services/rest.service';
@@ -41,10 +40,6 @@ export class TercerosEditComponent implements OnInit {
   listaCiudades = [];
   enumFiltroCiudades = [];
   ciudadSeleccionada: any;
-
-  // Propiedades de las peticiones REST
-  headers = new Headers({ 'Content-Type': 'application/json' });
-  options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public terceroService: TerceroService) {

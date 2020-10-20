@@ -39,7 +39,7 @@
     "ngx-pagination": "^5.0.0",
     "ngx-ui-loader": "^9.1.1",
     "primeicons": "^4.0.0",
-    "primeng": "^9.1.2",
+    "primeng": "^10.0.0-rc.2",
     "rxjs": "~6.5.4",
     "rxjs-compat": "^6.4.0",
     "save": "^2.4.0",

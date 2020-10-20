@@ -220,9 +220,9 @@ export class TextProperties {
       lbl_mtto_banda_title: idioma == constant.idiomaEs ? 'Configuración de Banda/Grupo Musical' : 'Bands/Musical Group Settings',
       lbl_mtto_banda_nombre: idioma == constant.idiomaEs ? 'Nombre' : 'Name',
       lbl_mtto_banda_fecha_inicio: idioma == constant.idiomaEs ? 'Tercero' : 'Company',
-      lbl_mtto_banda_genero: idioma == constant.idiomaEs ? 'Info. Adicional' : 'Additional Info.',
+      lbl_mtto_banda_genero: idioma == constant.idiomaEs ? 'Género' : 'Gender',
       lbl_mtto_banda_foto_principal: idioma == constant.idiomaEs ? 'Foto Principal' : 'Main Photo',
-      lbl_mtto_banda_logo: idioma == constant.idiomaEs ? 'Foto Principal' : 'Main Photo',
+      lbl_mtto_banda_logo: idioma == constant.idiomaEs ? 'Logo' : 'Logo',
       lbl_mtto_banda_escoger_foto: idioma == constant.idiomaEs ? 'Escoger Foto' : 'Choose Photo',
     }
   };

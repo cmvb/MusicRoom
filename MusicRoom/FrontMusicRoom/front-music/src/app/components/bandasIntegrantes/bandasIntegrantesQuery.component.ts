@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RestService } from '../../services/rest.service';
@@ -35,23 +34,16 @@ export class BandasIntegrantesQueryComponent implements OnInit {
   objetoFiltro: any;
 
   // Enumerados
-  enums: any;
-  listaTerceros = [];
-  enumFiltroTerceros = [];
   terceroSeleccionado: any;
 
   // Opciones del Componente Consulta
   btnEditar = true;
   btnEliminar = true;
   listaCabeceras = [
-    { 'campoLista': 'nombreSala', 'nombreCabecera': 'Sala' },
-    { 'campoLista': 'infoAdicional', 'nombreCabecera': 'Información' },
-    { 'campoLista': 'fotoPrincipalTb', 'nombreCabecera': 'Foto Principal' },
+    { 'campoLista': 'nombreBanda', 'nombreCabecera': 'Banda' },
+    { 'campoLista': 'genero', 'nombreCabecera': 'Género' },
+    { 'campoLista': 'logoTb', 'nombreCabecera': 'Logo' },
   ];
-
-  // Propiedades de las peticiones REST
-  headers = new Headers({ 'Content-Type': 'application/json' });
-  options = new RequestOptions({ headers: this.headers });
 
   // Constructor o Inicializador de Variables
   constructor(private router: Router, private route: ActivatedRoute, public restService: RestService, public textProperties: TextProperties, public util: Util, public objectModelInitializer: ObjectModelInitializer, public enumerados: Enumerados, public sesionService: SesionService, private messageService: MessageService, public bandaIntegranteService: BandaIntegranteService) {
@@ -59,7 +51,7 @@ export class BandasIntegrantesQueryComponent implements OnInit {
     this.sesion = this.objectModelInitializer.getDataSesion();
     this.msg = this.textProperties.getProperties(this.sesionService.objServiceSesion.idioma);
     this.const = this.objectModelInitializer.getConst();
-    this.objetoFiltro = this.objectModelInitializer.getDataSala();
+    this.objetoFiltro = this.objectModelInitializer.getDataBanda();
     this.ACCESS_TOKEN = this.sesionService.objServiceSesion.tokenSesion.token.access_token;
   }
 
@@ -69,9 +61,7 @@ export class BandasIntegrantesQueryComponent implements OnInit {
 
   // Procesos que se ejecutan al cargar el componente
   ngOnInit() {
-    this.consultarSalas();
-    // Terceros
-    this.consultarTerceros();
+    this.consultarBandas();
   }
 
   ngAfterViewInit() {
@@ -87,39 +77,21 @@ export class BandasIntegrantesQueryComponent implements OnInit {
     this.messageService.clear();
   }
 
-  consultarSalas() {
+  consultarBandas() {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerSala + 'consultarPorFiltros';
+      let url = this.const.urlRestService + this.const.urlControllerBandaIntegrante + 'consultarPorFiltros';
       this.ajustarCombos();
       let obj = this.objetoFiltro;
+      obj.fechaInicio = null;
       obj.estado = this.const.estadoActivoNumString
 
+      debugger;
       this.restService.postSecureREST(url, obj, this.ACCESS_TOKEN)
         .subscribe(resp => {
+          debugger;
           this.data = resp;
           this.listaConsulta = this.data;
-        },
-          error => {
-            let mensaje = this.util.mostrarNotificacion(error.error);
-            this.messageService.clear();
-            this.messageService.add(mensaje);
-          })
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  consultarTerceros() {
-    try {
-      this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerTercero;
-
-      this.restService.getSecureREST(url, this.ACCESS_TOKEN)
-        .subscribe(resp => {
-          this.dataC = resp;
-          this.listaTerceros = this.dataC;
-          this.enumFiltroTerceros = this.util.obtenerEnumeradoDeListaTercero(this.listaTerceros);
         },
           error => {
             let mensaje = this.util.mostrarNotificacion(error.error);
@@ -143,8 +115,7 @@ export class BandasIntegrantesQueryComponent implements OnInit {
     this.bandaIntegranteService.objetoFiltro = this.objetoFiltro;
     this.bandaIntegranteService.listaConsulta = this.listaConsulta;
     this.bandaIntegranteService.editParam = null;
-    this.bandaIntegranteService.listaTerceros = this.listaTerceros;
-    this.router.navigate(['/salaEdit']);
+    this.router.navigate(['/bandaIntegranteEdit']);
     return true;
   }
 
@@ -153,21 +124,20 @@ export class BandasIntegrantesQueryComponent implements OnInit {
     this.bandaIntegranteService.objetoFiltro = this.objetoFiltro;
     this.bandaIntegranteService.listaConsulta = this.listaConsulta;
     this.bandaIntegranteService.editParam = null;
-    this.bandaIntegranteService.listaTerceros = this.listaTerceros;
-    this.router.navigate(['/salaEdit']);
+    this.router.navigate(['/bandaIntegranteEdit']);
     return true;
   }
 
   eliminar(objetoEdit) {
     try {
       this.limpiarExcepcion();
-      let url = this.const.urlRestService + this.const.urlControllerSala + 'eliminarSala';
+      let url = this.const.urlRestService + this.const.urlControllerBandaIntegrante + 'eliminarBandaIntegrante';
 
       this.restService.postSecureREST(url, objetoEdit, this.ACCESS_TOKEN)
         .subscribe(resp => {
           this.data = resp;
           this.limpiar();
-          this.consultarSalas();
+          this.consultarBandas();
           this.messageService.clear();
           this.messageService.add({ severity: this.const.severity[1], summary: this.msg.lbl_summary_success, detail: this.msg.lbl_detail_el_registro_eliminado });
         },
@@ -183,17 +153,10 @@ export class BandasIntegrantesQueryComponent implements OnInit {
 
   consultaTeclaEnter(event) {
     if (event.which === 13) {
-      this.consultarSalas();
+      this.consultarBandas();
     }
   }
 
   ajustarCombos() {
-    if (this.terceroSeleccionado !== null) {
-      let tercero = this.util.obtenerTerceroDeEnum(this.terceroSeleccionado.value.idTercero, this.listaTerceros);
-      Object.assign(this.objetoFiltro.terceroTb, tercero);
-    }
-    else {
-      this.objetoFiltro.terceroTb = null;
-    }
   }
 }

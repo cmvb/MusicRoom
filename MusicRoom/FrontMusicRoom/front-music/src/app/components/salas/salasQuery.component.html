@@ -4,7 +4,7 @@
 
   <mdl-layout>
     <mdl-layout-drawer>
-      <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo" />
+      <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.svg" alt="logo" />
       <!-- Importamos el Sidebar o Menú Lateral -->
       <app-sidebar></app-sidebar>
     </mdl-layout-drawer>
@@ -29,7 +29,7 @@
                           <label for="float-input">{{msg.lbl_mtto_sala_nombre}}</label>
                           <span class="ui-float-label">
                             <input pInputText id="txtNombre" (keydown)="consultaTeclaEnter($event)"
-                              [(ngModel)]="objetoFiltro.nombreSala" type="text" size="20">
+                              [(ngModel)]="objetoFiltro.nombreSala" type="text" size="50">
                           </span>
                         </div>
                         <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">

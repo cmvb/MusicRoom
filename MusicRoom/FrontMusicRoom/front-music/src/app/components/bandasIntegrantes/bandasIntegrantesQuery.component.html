@@ -4,7 +4,7 @@
 
   <mdl-layout>
     <mdl-layout-drawer>
-      <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.png" alt="logo" />
+      <img class="logoSidebar" src="/assets/images/MusicRoomLogoLargeT.svg" alt="logo" />
       <!-- Importamos el Sidebar o Menú Lateral -->
       <app-sidebar></app-sidebar>
     </mdl-layout-drawer>
@@ -26,17 +26,17 @@
                     <div class="mdl-card__supporting-text">
                       <div class="ui-g center">
                         <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                          <label for="float-input">{{msg.lbl_mtto_sala_nombre}}</label>
+                          <label for="float-input">{{msg.lbl_mtto_banda_nombre}}</label>
                           <span class="ui-float-label">
                             <input pInputText id="txtNombre" (keydown)="consultaTeclaEnter($event)"
-                              [(ngModel)]="objetoFiltro.nombreSala" type="text" size="20">
+                              [(ngModel)]="objetoFiltro.nombreBanda" type="text" size="50">
                           </span>
                         </div>
                         <div class="ui-g-3 ui-lg-3 ui-md-6 ui-sm-6 ui-xs-12 ui-g-nopad">
-                          <label for="float-input">{{msg.lbl_mtto_sala_tercero}}</label>
+                          <label for="float-input">{{msg.lbl_mtto_banda_genero}}</label>
                           <span class="ui-float-label">
-                            <ng-select id="txtTercero" [(ngModel)]="terceroSeleccionado" [items]="enumFiltroTerceros">
-                            </ng-select>
+                            <input pInputText id="txtGenero" (keydown)="consultaTeclaEnter($event)"
+                              [(ngModel)]="objetoFiltro.genero" type="text" size="50">
                           </span>
                         </div>
                       </div>
@@ -56,7 +56,7 @@
                     <div class="mdl-card__actions mdl-card--border">
                       <div class="ui-g center">
                         <div class="ui-g-2 ui-lg-2 ui-md-4 ui-sm-6 ui-xs-12 ui-g-nopad">
-                          <button (click)="consultarSalas()" mdl-button mdl-tooltip-position="top"
+                          <button (click)="consultarBandas()" mdl-button mdl-tooltip-position="top"
                             mdl-tooltip-large="{{msg.lbl_tip_buscar}}" type="button" mdl-button-type="raised"
                             mdl-colored="primary">
                             <i class="material-icons">search</i> {{msg.lbl_btn_consultar}}

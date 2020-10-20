@@ -1,19 +1,3 @@
-/**
- * Copyright 2015 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 html,
 body,
 table {
@@ -26,8 +10,10 @@ h5 {
 }
 
 input {
+  background: white !important;
   width: 100%;
   text-transform: uppercase;
+  color: #191919 !important;
 }
 
 input:focus {
@@ -500,38 +486,17 @@ _:-ms-input-placeholder,
   display: none;
 }
 
-.ui-messages ul {
+.p-messages ul {
   text-align: justify;
 }
 
-.ui-messages ul > li {
+.p-messages ul > li {
   margin-right: 20px;
   display: inherit;
 }
 
-.ui-messages .ui-messages-close {
-  top: 0 !important;
-  right: 0 !important;
-  font-size: 10px !important;
-  padding: 5px;
-}
-
-.ui-toast .ui-toast-close-icon {
-  top: 0 !important;
-  right: 0 !important;
-  font-size: 10px !important;
-  padding: 5px;
-}
-
-.ui-messages .ui-messages-icon {
+.p-messages .p-messages-icon {
   font-size: 4em !important;
-}
-
-.ui-messages.ui-messages-info .ui-messages-close:hover,
-.ui-messages.ui-messages-warn .ui-messages-close:hover,
-.ui-messages.ui-messages-error .ui-messages-close:hover,
-.ui-messages.ui-messages-success .ui-messages-close:hover {
-  color: red;
 }
 
 .mdl-layout__header-row {
@@ -878,6 +843,7 @@ table.falsa {
 
 .ng-select.ng-select-disabled > .ng-select-container input:disabled {
   cursor: not-allowed !important;
+  background-color: #dedede !important;
 }
 
 .comboTabla.ng-select.ng-select-single .ng-select-container,
@@ -1182,7 +1148,7 @@ body .ui-dialog {
   width: 100%;
 }
 
-.ui-messages ul {
+.p-messages ul {
   display: block !important;
 }
 
@@ -1254,12 +1220,12 @@ body .ui-dialog {
   color: #d21717 !important;
 }
 
-.ui-messages ul > li {
+.p-messages ul > li {
   margin: -10px 15px;
   font-size: 12px;
 }
 
-.ui-messages ul > li:first-child {
+.p-messages ul > li:first-child {
   margin: 5px;
   font-size: 16px;
 }
@@ -1270,69 +1236,94 @@ body .ui-dialog {
   width: 40px;
 }
 
+// MESSAGES STYLES
 // Estilos Msgs Info
-body .ui-messages.ui-messages-info,
-body .ui-message.ui-message-info,
-body .ui-growl .ui-growl-item-container.ui-growl-message-info,
-body .ui-toast .ui-toast-message.ui-toast-message-info {
+body .p-messages.p-messages-info,
+body .p-message.p-message-info,
+body .p-growl .p-growl-item-container.p-growl-message-info,
+body .p-toast .p-toast-message.p-toast-message-info {
   background-color: #6982fd !important;
   color: #212121 !important;
 }
-body .ui-messages.ui-messages-info .ui-messages-icon,
-body .ui-messages.ui-messages-info .ui-messages-close,
-body .ui-message.ui-message-info .ui-message-icon,
-body .ui-growl .ui-growl-item-container.ui-growl-message-info .ui-growl-image,
-body .ui-toast .ui-toast-message.ui-toast-message-info .ui-toast-close-icon {
+body .p-messages.p-messages-info .p-messages-icon,
+body .p-messages.p-messages-info .p-messages-close,
+body .p-message.p-message-info .p-message-icon,
+body .p-message.p-message-info .p-message-close,
+body .p-growl .p-growl-item-container.p-growl-message-info .p-growl-image,
+body .p-toast .p-toast-message.p-toast-message-info .p-toast-icon-close-icon,
+body .p-toast .p-toast-message.p-toast-message-info .p-toast-message-icon {
   color: #212121 !important;
 }
 
 // Estilos Msgs Success
-body .ui-messages.ui-messages-success,
-body .ui-message.ui-message-success,
-body .ui-growl .ui-growl-item-container.ui-growl-message-success,
-body .ui-toast .ui-toast-message.ui-toast-message-success {
+body .p-messages.p-messages-success,
+body .p-message.p-message-success,
+body .p-growl .p-growl-item-container.p-growl-message-success,
+body .p-toast .p-toast-message.p-toast-message-success {
   background-color: #227522 !important;
   color: #fff !important;
 }
-body .ui-messages.ui-messages-success .ui-messages-icon,
-body .ui-messages.ui-messages-success .ui-messages-close,
-body .ui-message.ui-message-success .ui-message-icon,
-body .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image,
-body .ui-toast .ui-toast-message.ui-toast-message-success .ui-toast-close-icon {
+body .p-messages.p-messages-success .p-messages-icon,
+body .p-messages.p-messages-success .p-messages-close,
+body .p-message.p-message-success .p-message-icon,
+body .p-message.p-message-success .p-message-close,
+body .p-growl .p-growl-item-container.p-growl-message-success .p-growl-image,
+body .p-toast .p-toast-message.p-toast-message-success .p-toast-icon-close-icon,
+body .p-toast .p-toast-message.p-toast-message-success .p-toast-message-icon {
   color: #fff !important;
 }
 
 // Estilos Msgs Warning
-body .ui-messages.ui-messages-warn,
-body .ui-message.ui-message-warn,
-body .ui-growl .ui-growl-item-container.ui-growl-message-warn,
-body .ui-toast .ui-toast-message.ui-toast-message-warn {
+body .p-messages.p-messages-warn,
+body .p-message.p-message-warn,
+body .p-growl .p-growl-item-container.p-growl-message-warn,
+body .p-toast .p-toast-message.p-toast-message-warn {
   background-color: #ffe399 !important;
   color: #212121 !important;
 }
-body .ui-messages.ui-messages-warn .ui-messages-icon,
-body .ui-messages.ui-messages-warn .ui-messages-close,
-body .ui-message.ui-message-warn .ui-message-icon,
-body .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image,
-body .ui-toast .ui-toast-message.ui-toast-message-warn .ui-toast-close-icon {
+body .p-messages.p-messages-warn .p-messages-icon,
+body .p-messages.p-messages-warn .p-messages-close,
+body .p-message.p-message-warn .p-message-icon,
+body .p-message.p-message-warn .p-message-close,
+body .p-growl .p-growl-item-container.p-growl-message-warn .p-growl-image,
+body .p-toast .p-toast-message.p-toast-message-warn .p-toast-icon-close-icon,
+body .p-toast .p-toast-message.p-toast-message-warn .p-toast-message-icon {
   color: #212121 !important;
 }
 
 // Estilos Msgs Error
-body .ui-messages.ui-messages-error,
-body .ui-message.ui-message-error,
-body .ui-growl .ui-growl-item-container.ui-growl-message-error,
-body .ui-toast .ui-toast-message.ui-toast-message-error {
+body .p-messages.p-messages-error,
+body .p-message.p-message-error,
+body .p-growl .p-growl-item-container.p-growl-message-error,
+body .p-toast .p-toast-message.p-toast-message-error {
   background-color: #d21717 !important;
   color: #fff !important;
 }
-body .ui-messages.ui-messages-error .ui-messages-icon,
-body .ui-messages.ui-messages-error .ui-messages-close,
-body .ui-message.ui-message-error .ui-message-icon,
-body .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image,
-body .ui-toast .ui-toast-message.ui-toast-message-error .ui-toast-close-icon {
+body .p-messages.p-messages-error .p-messages-icon,
+body .p-messages.p-messages-error .p-messages-close,
+body .p-message.p-message-error .p-message-icon,
+body .p-message.p-message-error .p-message-close,
+body .p-growl .p-growl-item-container.p-growl-message-error .p-growl-image,
+body .p-toast .p-toast-message.p-toast-message-error .p-toast-icon-close-icon,
+body .p-toast .p-toast-message.p-toast-message-error .p-toast-message-icon {
   color: #fff !important;
 }
+
+.p-message.p-message-info .p-message-close,
+.p-message.p-message-warn .p-message-close,
+.p-message.p-message-success .p-message-close,
+.p-message.p-message-error .p-message-close,
+.p-toast .p-toast-message.p-toast-message-info .p-toast-icon-close,
+.p-toast .p-toast-message.p-toast-message-warn .p-toast-icon-close,
+.p-toast .p-toast-message.p-toast-message-success .p-toast-icon-close,
+.p-toast .p-toast-message.p-toast-message-error .p-toast-icon-close {
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  min-width: 30px !important;
+}
+
+// MESSAGES STYLES END
 
 body .ui-button {
   background-color: #ffab40 !important;
@@ -1352,6 +1343,24 @@ body .ui-button {
 .ng-select.ng-select-single .ng-select-container .ng-value-container,
 .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
   padding: 2px 3px !important;
+}
+
+.p-datatable-wrapper.ng-star-inserted {
+  background: #191919 !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0px 5px !important;
+  font-size: 15px !important;
+}
+
+.ng-value.ng-star-inserted {
+  z-index: 1;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background: #ffffff;
+  color: #191919;
 }
 
 /* ---------------------------- MediaQuery ---------------------------- */

@@ -9,7 +9,6 @@ export class BandaIntegranteService {
   objetoFiltro: any;
   listaConsulta: any;
   editParam: any;
-  listaTerceros: any;
 
   constructor(public objectModelInitializer: ObjectModelInitializer) {
   }

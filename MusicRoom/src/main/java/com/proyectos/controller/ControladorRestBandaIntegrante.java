@@ -61,7 +61,7 @@ public class ControladorRestBandaIntegrante {
 	@PreAuthorize("@restAuthService.hasAccess('/music-room/bandaIntegrante', '/crearBandaIntegrante') or "
 			+ PERMISO_ADMINISTRADOR)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RequestMapping("/crearBanda")
+	@RequestMapping("/crearBandaIntegrante")
 	public ResponseEntity<BandaIntegranteDTO> crear(@RequestBody BandaIntegranteDTO bandaIntegrantes) {
 		BandaTB bandaTb = bandaIntegrantes.getBandaTb();
 		List<IntegranteTB> listaIntegrantes = bandaIntegrantes.getListaIntegrantesTb();

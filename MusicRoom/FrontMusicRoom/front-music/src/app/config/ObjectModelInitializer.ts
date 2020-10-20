@@ -57,6 +57,7 @@ export class ObjectModelInitializer {
       urlControllerTercero: 'music-room/tercero/',
       urlControllerReporte: 'music-room/reporte-archivo/',
       urlControllerSala: 'music-room/sala/',
+      urlControllerBandaIntegrante: 'music-room/bandaIntegrante/',
       tokenUsernameAUTH: 'MusicRoomApp',
       tokenPasswordAUTH: 'musicroom2019codex',
       tokenNameAUTH: 'access_token',
@@ -323,6 +324,47 @@ export class ObjectModelInitializer {
       fechaCreacion: '',
       usuarioActualiza: '',
       fechaActualiza: ''
+    }
+  };
+
+  getDataBanda() {
+    return {
+      idBanda: '',
+      nombreBanda: '',
+      genero: '',
+      fechaInicio: '',
+      fotoTb: this.getDataArchivo(),
+      logoTb: this.getDataArchivo(),
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
+    }
+  };
+
+  getDataIntegrante() {
+    return {
+      idIntegrante: '',
+      nombreIntegrante: this.getDataTercero(),
+      edadIntegrante: '',
+      instrumentoAccesorio: '',
+
+      //Abstract
+      estado: '',
+      usuarioCreacion: '',
+      fechaCreacion: '',
+      usuarioActualiza: '',
+      fechaActualiza: ''
+    }
+  };
+
+  getDataBandaIntegrante() {
+    return {
+      bandaTb: this.getDataBanda(),
+      listaIntegrantesTb: [this.getDataIntegrante()]
     }
   };
 

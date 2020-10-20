@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Headers, RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MessageService } from 'primeng/api';
@@ -46,10 +45,6 @@ export class SalasEditComponent implements OnInit {
   listaTerceros = [];
   enumFiltroTerceros = [];
   terceroSeleccionado: any;
-
-  // Propiedades de las peticiones REST
-  headers = new Headers({ 'Content-Type': 'application/json' });
-  options = new RequestOptions({ headers: this.headers });
 
   // Archivos
   imagenData: any;
